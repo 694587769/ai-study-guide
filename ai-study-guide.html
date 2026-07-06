@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>人工智能与大模型系统学习资料</title>
-<link rel="stylesheet" href="./shared/katex/katex.min.css">
+<link rel="stylesheet" href="https://694587769.github.io/ai-study-guide/shared/katex/katex.min.css">
 <style>
 /* ===== CSS Variables ===== */
 :root {
@@ -28,9 +28,9 @@
 }
 
 /* ===== Fonts ===== */
-@font-face { font-family: 'WorkSans'; src: url('./shared/fonts/WorkSans-Regular.ttf') format('truetype'); font-weight: 400; }
-@font-face { font-family: 'WorkSans'; src: url('./shared/fonts/WorkSans-Bold.ttf') format('truetype'); font-weight: 700; }
-@font-face { font-family: 'GeistMono'; src: url('./shared/fonts/GeistMono-Regular.ttf') format('truetype'); font-weight: 400; }
+@font-face { font-family: 'WorkSans'; src: url('https://694587769.github.io/ai-study-guide/shared/fonts/WorkSans-Regular.ttf') format('truetype'); font-weight: 400; }
+@font-face { font-family: 'WorkSans'; src: url('https://694587769.github.io/ai-study-guide/shared/fonts/WorkSans-Bold.ttf') format('truetype'); font-weight: 700; }
+@font-face { font-family: 'GeistMono'; src: url('https://694587769.github.io/ai-study-guide/shared/fonts/GeistMono-Regular.ttf') format('truetype'); font-weight: 400; }
 
 /* ===== Base ===== */
 * { box-sizing: border-box; }
@@ -327,9 +327,175 @@ figcaption {
 
 /* ===== KaTeX overrides ===== */
 .katex { font-size: 1.08em; }
+
+/* ===== Search Widget ===== */
+#custom-search-widget {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  max-width: 320px;
+}
+#custom-search-widget .search-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: var(--shadow);
+  transition: all 0.25s;
+  margin-left: auto;
+  color: var(--muted);
+}
+#custom-search-widget .search-icon-btn:hover {
+  background: var(--bg);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  color: var(--accent);
+}
+#custom-search-widget .search-panel {
+  display: none;
+  width: 100%;
+  max-height: calc(100vh - 80px);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  overflow: hidden;
+  margin-top: 8px;
+}
+#custom-search-widget.expanded .search-panel {
+  display: flex;
+  flex-direction: column;
+}
+#custom-search-widget .search-input-wrap {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--rule);
+  gap: 8px;
+  flex-shrink: 0;
+}
+#custom-search-widget .search-input-wrap input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+  color: var(--ink);
+  min-width: 0;
+}
+#custom-search-widget .search-input-wrap input::placeholder {
+  color: var(--muted);
+}
+#custom-search-widget .search-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--muted);
+  padding: 4px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+#custom-search-widget .search-close:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+#custom-search-widget .search-results {
+  overflow-y: auto;
+  max-height: 60vh;
+  flex: 1;
+}
+#custom-search-widget .search-results::-webkit-scrollbar {
+  width: 4px;
+}
+#custom-search-widget .search-results::-webkit-scrollbar-thumb {
+  background: var(--rule);
+  border-radius: 4px;
+}
+#custom-search-widget .result-count {
+  padding: 8px 14px;
+  font-size: 12px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+#custom-search-widget .search-result-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.65;
+  border-bottom: 1px solid var(--bg);
+  transition: background 0.15s;
+  color: var(--ink);
+}
+#custom-search-widget .search-result-item:hover {
+  background: var(--accent-light);
+}
+#custom-search-widget .search-result-item:last-child {
+  border-bottom: none;
+}
+#custom-search-widget .search-result-item .highlight {
+  background: #fef08a;
+  padding: 1px 3px;
+  border-radius: 2px;
+  color: var(--ink);
+  font-weight: 500;
+}
+#custom-search-widget .search-result-item .result-context {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+#custom-search-widget .no-results {
+  padding: 24px 14px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+@media (max-width: 768px) {
+  #custom-search-widget {
+    width: calc(100vw - 24px);
+    right: 12px;
+    left: 12px;
+    max-width: none;
+    top: 60px;
+  }
+  #custom-search-widget .search-panel {
+    max-height: 60vh;
+  }
+  #custom-search-widget .search-results {
+    max-height: 40vh;
+  }
+}
 </style>
 </head>
 <body>
+<!-- ===== Search Widget ===== -->
+<div id="custom-search-widget">
+  <div class="search-icon-btn" title="搜索页面内容 (Ctrl+K)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </div>
+  <div class="search-panel">
+    <div class="search-input-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="搜索页面内容..." autocomplete="off" />
+      <button class="search-close" title="关闭">✕</button>
+    </div>
+    <div class="search-results"></div>
+  </div>
+</div>
 <button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
 
 <div class="page">
@@ -2222,10 +2388,10 @@ figcaption {
 </div>
 
 <!-- ===== Scripts ===== -->
-<script src="./shared/js/katex.min.js"></script>
-<script src="./shared/js/auto-render.min.js"></script>
-<script src="./shared/js/echarts.min.js"></script>
-<script src="assets/charts.js"></script>
+<script src="https://694587769.github.io/ai-study-guide/shared/js/katex.min.js"></script>
+<script src="https://694587769.github.io/ai-study-guide/shared/js/auto-render.min.js"></script>
+<script src="https://694587769.github.io/ai-study-guide/shared/js/echarts.min.js"></script>
+<script src="https://694587769.github.io/ai-study-guide/assets/charts.js"></script>
 <script>
 // KaTeX auto-render
 document.addEventListener("DOMContentLoaded", function() {
@@ -2259,6 +2425,188 @@ function onScroll() {
 }
 window.addEventListener('scroll', onScroll);
 onScroll();
+
+// ===== Search Widget Logic =====
+(function() {
+  const widget = document.getElementById('custom-search-widget');
+  const iconBtn = widget.querySelector('.search-icon-btn');
+  const input = widget.querySelector('input');
+  const closeBtn = widget.querySelector('.search-close');
+  const resultsContainer = widget.querySelector('.search-results');
+
+  // Collect all text nodes in .main content area
+  function collectTextNodes() {
+    const mainContent = document.querySelector('.main');
+    if (!mainContent) return [];
+    const nodes = [];
+    const walker = document.createTreeWalker(
+      mainContent,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(node) {
+          if (node.parentElement && ['SCRIPT','STYLE','NOSCRIPT','SVG','MATH'].includes(node.parentElement.tagName)) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          if (!node.textContent.trim()) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+    let node;
+    while (node = walker.nextNode()) nodes.push(node);
+    return nodes;
+  }
+
+  let textNodes = collectTextNodes();
+
+  function findBlockParent(node) {
+    const mainContent = document.querySelector('.main');
+    let parent = node.parentElement;
+    while (parent && parent !== mainContent) {
+      const tag = parent.tagName.toLowerCase();
+      if (['h1','h2','h3','h4','h5','h6','p','li','td','th','blockquote','pre','figcaption'].includes(tag)) {
+        return parent;
+      }
+      parent = parent.parentElement;
+    }
+    return node.parentElement;
+  }
+
+  function findSectionHeading(el) {
+    const mainContent = document.querySelector('.main');
+    let current = el;
+    while (current && current !== mainContent) {
+      let prev = current.previousElementSibling;
+      while (prev) {
+        if (['H1','H2','H3','H4'].includes(prev.tagName)) {
+          return prev.textContent.trim();
+        }
+        prev = prev.previousElementSibling;
+      }
+      current = current.parentElement;
+    }
+    return null;
+  }
+
+  let searchTimeout;
+  function performSearch(query) {
+    resultsContainer.innerHTML = '';
+    if (!query || query.length < 1) return;
+
+    const lowerQuery = query.toLowerCase();
+    const results = [];
+    const seenElements = new Set();
+
+    for (const node of textNodes) {
+      const text = node.textContent;
+      const lowerText = text.toLowerCase();
+      const idx = lowerText.indexOf(lowerQuery);
+      if (idx === -1) continue;
+
+      const blockParent = findBlockParent(node);
+      if (seenElements.has(blockParent)) continue;
+      seenElements.add(blockParent);
+
+      const start = Math.max(0, idx - 40);
+      const end = Math.min(text.length, idx + query.length + 60);
+      let snippet = text.substring(start, end);
+      if (start > 0) snippet = '…' + snippet;
+      if (end < text.length) snippet = snippet + '…';
+
+      const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const highlighted = snippet.replace(
+        new RegExp('(' + escapedQuery + ')', 'gi'),
+        '<span class="highlight">$1</span>'
+      );
+
+      results.push({
+        element: blockParent,
+        highlighted: highlighted,
+        section: findSectionHeading(blockParent)
+      });
+
+      if (results.length >= 100) break;
+    }
+
+    if (results.length === 0) {
+      resultsContainer.innerHTML = '<div class="no-results">未找到匹配内容</div>';
+      return;
+    }
+
+    const countDiv = document.createElement('div');
+    countDiv.className = 'result-count';
+    countDiv.textContent = '找到 ' + results.length + ' 条结果';
+    resultsContainer.appendChild(countDiv);
+
+    results.forEach(function(result) {
+      const item = document.createElement('div');
+      item.className = 'search-result-item';
+      item.innerHTML = result.highlighted;
+
+      if (result.section) {
+        const ctx = document.createElement('div');
+        ctx.className = 'result-context';
+        ctx.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" style="flex-shrink:0"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>' + result.section;
+        item.appendChild(ctx);
+      }
+
+      item.addEventListener('click', function() {
+        result.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const origBg = result.element.style.backgroundColor;
+        const origTrans = result.element.style.transition;
+        result.element.style.transition = 'background-color 0.3s';
+        result.element.style.backgroundColor = '#fef9c3';
+        setTimeout(function() {
+          result.element.style.backgroundColor = origBg;
+          result.element.style.transition = origTrans;
+        }, 2000);
+      });
+
+      resultsContainer.appendChild(item);
+    });
+  }
+
+  iconBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    widget.classList.add('expanded');
+    textNodes = collectTextNodes();
+    setTimeout(function() { input.focus(); }, 150);
+  });
+
+  closeBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    widget.classList.remove('expanded');
+    input.value = '';
+    resultsContainer.innerHTML = '';
+  });
+
+  input.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(function() { performSearch(input.value.trim()); }, 250);
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && widget.classList.contains('expanded')) {
+      widget.classList.remove('expanded');
+      input.value = '';
+      resultsContainer.innerHTML = '';
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      widget.classList.add('expanded');
+      textNodes = collectTextNodes();
+      setTimeout(function() { input.focus(); }, 150);
+    }
+  });
+
+  document.addEventListener('click', function(e) {
+    if (widget.classList.contains('expanded') && !widget.contains(e.target)) {
+      widget.classList.remove('expanded');
+      input.value = '';
+      resultsContainer.innerHTML = '';
+    }
+  });
+})();
 </script>
 </body>
 </html>
