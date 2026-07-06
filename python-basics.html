@@ -214,7 +214,53 @@ pre code { background: none; padding: 0; color: inherit; }
 }
 .callout.danger .callout-title { color: var(--danger); }
 
-/* ===== Tables ===== */
+/* ===== Data Tables (enhanced) ===== */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 0 0 16px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.data-table th {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 2px solid var(--accent);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.data-table td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+.data-table tr:nth-child(even) td {
+  background: var(--bg2);
+}
+.data-table tr:hover td {
+  background: #dbeafe;
+}
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+.data-table caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 0;
+  color: var(--ink);
+}
+
+/* ===== Tables (legacy) ===== */
 .table-wrap {
   overflow-x: auto; overflow-y: auto;
   max-height: 600px;
@@ -575,13 +621,24 @@ figcaption {
       </div>
     </div>
 
+    <div class="nav-chapter" data-ch="ch8">
+      <a href="#ch8" class="nav-chapter-toggle">第8章 数据可视化（画图）<span class="chevron">▶</span></a>
+      <div class="nav-sections">
+        <a href="#ch8-1">8.1 matplotlib基础</a>
+        <a href="#ch8-2">8.2 seaborn统计绘图</a>
+        <a href="#ch8-3">8.3 turtle绘图</a>
+        <a href="#ch8-4">8.4 2D图高级技巧</a>
+        <a href="#ch8-5">8.5 3D图（mplot3d）</a>
+      </div>
+    </div>
+
   </nav>
 </aside>
 
 <!-- ===== Main Content ===== -->
 <main class="main" id="mainContent">
 <h1 class="doc-title">Python基础教程</h1>
-<div class="doc-meta">覆盖Python基础、环境安装、基本语法、循环与条件判断、函数、文件处理及电网行业典型案例</div>
+<div class="doc-meta">覆盖Python基础、安装配置、基本语法、循环条件、函数、文件处理、数据可视化及电网行业典型案例</div>
 
 <!-- ========== CHAPTER 1 ========== -->
 <span class="top-anchor" id="ch1"></span>
@@ -610,7 +667,8 @@ figcaption {
 </ul>
 
 <div class="table-wrap">
-<table>
+<table class="data-table">
+<caption>表1-1：Python与其他主流编程语言对比</caption>
 <tr><th>对比维度</th><th>Python</th><th>Java</th><th>C/C++</th></tr>
 <tr><td>学习难度</td><td>低</td><td>中</td><td>高</td></tr>
 <tr><td>开发效率</td><td>高</td><td>中</td><td>低</td></tr>
@@ -637,6 +695,48 @@ figcaption {
 <div class="example-title">电网场景：Python自动化巡检</div>
 <p>某供电公司运维班组每天需要检查辖区内50座变电站的通信状态。传统方式需要逐台登录查看，耗时约2小时。使用Python编写自动化脚本后，只需5分钟即可完成所有站点的批量巡检，并自动生成带时间戳的巡检报告，极大提升了工作效率。</p>
 </div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表1-2：Python主要应用领域及对应库</caption>
+<tr><th>领域</th><th>常用库/工具</th><th>电网应用示例</th></tr>
+<tr><td>数据分析</td><td>NumPy, Pandas</td><td>SCADA历史数据处理、负荷统计分析</td></tr>
+<tr><td>数据可视化</td><td>Matplotlib, Seaborn</td><td>负荷曲线绘制、温度趋势图</td></tr>
+<tr><td>机器学习</td><td>Scikit-learn, XGBoost</td><td>设备故障预测、负荷预测建模</td></tr>
+<tr><td>深度学习</td><td>PyTorch, TensorFlow</td><td>输电线路缺陷图像识别</td></tr>
+<tr><td>自动化运维</td><td>Paramiko, Netmiko</td><td>批量登录网络设备执行巡检命令</td></tr>
+<tr><td>Web开发</td><td>Flask, Django</td><td>设备台账管理系统后端API</td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图1-1：Python在电网中的典型应用场景分布</figcaption>
+<svg width="100%" height="280" viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="200" width="70" height="60" fill="#2563eb" rx="4"/>
+  <rect x="105" y="140" width="70" height="120" fill="#7c3aed" rx="4"/>
+  <rect x="190" y="110" width="70" height="150" fill="#059669" rx="4"/>
+  <rect x="275" y="160" width="70" height="100" fill="#d97706" rx="4"/>
+  <rect x="360" y="120" width="70" height="140" fill="#dc2626" rx="4"/>
+  <rect x="445" y="180" width="70" height="80" fill="#0891b2" rx="4"/>
+  <text x="55" y="230" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">数据</text>
+  <text x="55" y="246" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">分析</text>
+  <text x="140" y="230" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">可视化</text>
+  <text x="225" y="230" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">机器</text>
+  <text x="225" y="246" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">学习</text>
+  <text x="310" y="230" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">自动</text>
+  <text x="310" y="246" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">化</text>
+  <text x="395" y="230" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">深度</text>
+  <text x="395" y="246" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">学习</text>
+  <text x="480" y="230" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">Web</text>
+  <text x="480" y="246" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">开发</text>
+  <text x="55" y="278" text-anchor="middle" fill="#666" font-size="11">30%</text>
+  <text x="140" y="278" text-anchor="middle" fill="#666" font-size="11">50%</text>
+  <text x="225" y="278" text-anchor="middle" fill="#666" font-size="11">60%</text>
+  <text x="310" y="278" text-anchor="middle" fill="#666" font-size="11">40%</text>
+  <text x="395" y="278" text-anchor="middle" fill="#666" font-size="11">55%</text>
+  <text x="480" y="278" text-anchor="middle" fill="#666" font-size="11">35%</text>
+</svg>
+</figure>
 
 <!-- ========== CHAPTER 2 ========== -->
 <span class="top-anchor" id="ch2"></span>
@@ -761,6 +861,51 @@ else:
 
 <p>运行这段代码，将输出变压器的负载率并根据负载率给出对应的运维建议。这个简单的示例展示了Python程序的几个基本要素：变量定义、数学运算、格式化输出和条件判断。</p>
 
+<div class="table-wrap">
+<table class="data-table">
+<caption>表2-1：主流Python开发环境对比</caption>
+<tr><th>开发环境</th><th>特点</th><th>适用场景</th><th>推荐指数</th></tr>
+<tr><td>PyCharm</td><td>功能全面，代码补全、调试强大</td><td>大型项目开发</td><td>★★★★★</td></tr>
+<tr><td>VS Code</td><td>轻量级，插件丰富</td><td>通用开发</td><td>★★★★★</td></tr>
+<tr><td>Jupyter Notebook</td><td>交互式，支持单元格执行</td><td>数据分析、探索性编程</td><td>★★★★☆</td></tr>
+<tr><td>IDLE</td><td>Python自带，简单轻量</td><td>学习入门</td><td>★★☆☆☆</td></tr>
+<tr><td>Sublime Text</td><td>极简，启动快</td><td>快速编辑脚本</td><td>★★★☆☆</td></tr>
+</table>
+</div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表2-2：包管理工具对比</caption>
+<tr><th>工具</th><th>适用场景</th><th>特点</th><th>常用命令</th></tr>
+<tr><td>pip</td><td>通用Python包管理</td><td>轻量，Python官方推荐</td><td><code>pip install</code></td></tr>
+<tr><td>conda</td><td>数据科学环境管理</td><td>可管理非Python依赖，环境隔离</td><td><code>conda install</code></td></tr>
+<tr><td>poetry</td><td>现代项目依赖管理</td><td>依赖锁定，构建发布一体化</td><td><code>poetry add</code></td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图2-1：Python开发环境选择决策树</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="230" y="10" width="140" height="40" fill="#2563eb" rx="6"/>
+  <text x="300" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">Python开发需求</text>
+  <line x1="300" y1="50" x2="120" y2="90" stroke="#666" stroke-width="2"/>
+  <line x1="300" y1="50" x2="300" y2="90" stroke="#666" stroke-width="2"/>
+  <line x1="300" y1="50" x2="480" y2="90" stroke="#666" stroke-width="2"/>
+  <rect x="40" y="90" width="160" height="40" fill="#059669" rx="6"/>
+  <text x="120" y="115" text-anchor="middle" fill="#fff" font-size="12">数据分析/探索</text>
+  <rect x="220" y="90" width="160" height="40" fill="#d97706" rx="6"/>
+  <text x="300" y="115" text-anchor="middle" fill="#fff" font-size="12">大型项目开发</text>
+  <rect x="400" y="90" width="160" height="40" fill="#7c3aed" rx="6"/>
+  <text x="480" y="115" text-anchor="middle" fill="#fff" font-size="12">快速脚本编辑</text>
+  <rect x="40" y="150" width="160" height="35" fill="#0891b2" rx="6"/>
+  <text x="120" y="172" text-anchor="middle" fill="#fff" font-size="11">Jupyter Notebook</text>
+  <rect x="220" y="150" width="160" height="35" fill="#0891b2" rx="6"/>
+  <text x="300" y="172" text-anchor="middle" fill="#fff" font-size="11">PyCharm / VS Code</text>
+  <rect x="400" y="150" width="160" height="35" fill="#0891b2" rx="6"/>
+  <text x="480" y="172" text-anchor="middle" fill="#fff" font-size="11">VS Code / Sublime</text>
+</svg>
+</figure>
+
 <!-- ========== CHAPTER 3 ========== -->
 <span class="top-anchor" id="ch3"></span>
 <h2>第3章 基本语法</h2>
@@ -770,7 +915,8 @@ else:
 <p>Python是动态类型语言，变量不需要声明类型，赋值时自动推断。Python的基本数据类型包括：</p>
 
 <div class="table-wrap">
-<table>
+<table class="data-table">
+<caption>表3-1：Python基本数据类型与电网应用场景</caption>
 <tr><th>数据类型</th><th>说明</th><th>示例</th><th>电网场景</th></tr>
 <tr><td><code>int</code></td><td>整数</td><td><code>voltage = 220</code></td><td>电压等级（kV）、设备编号</td></tr>
 <tr><td><code>float</code></td><td>浮点数</td><td><code>current = 125.5</code></td><td>电流值（A）、功率因数</td></tr>
@@ -835,6 +981,59 @@ if -7 <= deviation <= 7:
     print("电压合格")
 else:
     print("电压越限，需调整")</code></pre>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表3-2：Python常用运算符汇总</caption>
+<tr><th>类别</th><th>运算符</th><th>说明</th><th>示例</th></tr>
+<tr><td rowspan="4">算术</td><td><code>+</code>, <code>-</code></td><td>加减</td><td><code>P + Q</code></td></tr>
+<tr><td><code>*</code>, <code>/</code></td><td>乘除</td><td><code>P / S</code></td></tr>
+<tr><td><code>**</code></td><td>幂运算</td><td><code>P ** 2</code></td></tr>
+<tr><td><code>%</code></td><td>取余</td><td><code>id % 2</code></td></tr>
+<tr><td rowspan="4">比较</td><td><code>==</code>, <code>!=</code></td><td>等于、不等于</td><td><code>status == "运行"</code></td></tr>
+<tr><td><code>&gt;</code>, <code>&lt;</code></td><td>大于、小于</td><td><code>temp &gt; 80</code></td></tr>
+<tr><td><code>&gt;=</code>, <code>&lt;=</code></td><td>大于等于、小于等于</td><td><code>voltage &lt;= 242</code></td></tr>
+<tr><td>链式比较</td><td>同时比较</td><td><code>198 &lt;= v &lt;= 242</code></td></tr>
+<tr><td rowspan="3">逻辑</td><td><code>and</code></td><td>与</td><td><code>temp &gt; 80 and load &gt; 80</code></td></tr>
+<tr><td><code>or</code></td><td>或</td><td><code>load &gt; 80 or temp &gt; 85</code></td></tr>
+<tr><td><code>not</code></td><td>非</td><td><code>not is_online</code></td></tr>
+<tr><td>成员</td><td><code>in</code></td><td>包含检查</td><td><code>"110" in station</code></td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图3-1：Python基本数据类型关系图</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="230" y="10" width="140" height="36" fill="#2563eb" rx="6"/>
+  <text x="300" y="33" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">Python数据类型</text>
+  <line x1="300" y1="46" x2="100" y2="80" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="46" x2="200" y2="80" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="46" x2="300" y2="80" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="46" x2="400" y2="80" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="46" x2="500" y2="80" stroke="#666" stroke-width="1.5"/>
+  <rect x="30" y="80" width="140" height="36" fill="#059669" rx="6"/>
+  <text x="100" y="103" text-anchor="middle" fill="#fff" font-size="12">数值（int/float）</text>
+  <rect x="160" y="80" width="80" height="36" fill="#7c3aed" rx="6"/>
+  <text x="200" y="103" text-anchor="middle" fill="#fff" font-size="12">字符串str</text>
+  <rect x="260" y="80" width="80" height="36" fill="#d97706" rx="6"/>
+  <text x="300" y="103" text-anchor="middle" fill="#fff" font-size="12">布尔bool</text>
+  <rect x="350" y="80" width="100" height="36" fill="#dc2626" rx="6"/>
+  <text x="400" y="103" text-anchor="middle" fill="#fff" font-size="12">列表/元组</text>
+  <rect x="460" y="80" width="80" height="36" fill="#0891b2" rx="6"/>
+  <text x="500" y="103" text-anchor="middle" fill="#fff" font-size="12">字典dict</text>
+  <line x1="100" y1="116" x2="100" y2="140" stroke="#666" stroke-width="1.5"/>
+  <line x1="400" y1="116" x2="400" y2="140" stroke="#666" stroke-width="1.5"/>
+  <line x1="500" y1="116" x2="500" y2="140" stroke="#666" stroke-width="1.5"/>
+  <rect x="40" y="140" width="120" height="30" fill="#166534" rx="5"/>
+  <text x="100" y="160" text-anchor="middle" fill="#fff" font-size="11">整数int</text>
+  <rect x="180" y="140" width="120" height="30" fill="#166534" rx="5"/>
+  <text x="240" y="160" text-anchor="middle" fill="#fff" font-size="11">浮点数float</text>
+  <rect x="340" y="140" width="120" height="30" fill="#991b1b" rx="5"/>
+  <text x="400" y="160" text-anchor="middle" fill="#fff" font-size="11">列表list</text>
+  <rect x="480" y="140" width="40" height="30" fill="#991b1b" rx="5"/>
+  <text x="500" y="160" text-anchor="middle" fill="#fff" font-size="11">...</text>
+</svg>
+</figure>
 
 <h4>3.2.3 逻辑运算符</h4>
 <pre><code># 变压器运行状态综合判断
@@ -1108,6 +1307,54 @@ print(f"最大功率: {max(hourly_power)} kW (第{hourly_power.index(max(hourly_
 <h3>4.4 break与continue</h3>
 <p><code>break</code>用于立即退出循环，<code>continue</code>用于跳过当前迭代进入下一次循环。</p>
 
+<div class="table-wrap">
+<table class="data-table">
+<caption>表4-1：for循环与while循环对比</caption>
+<tr><th>对比维度</th><th>for循环</th><th>while循环</th></tr>
+<tr><td>适用场景</td><td>遍历已知序列（列表、字符串、range）</td><td>条件控制，不确定迭代次数</td></tr>
+<tr><td>语法结构</td><td><code>for 变量 in 序列:</code></td><td><code>while 条件:</code></td></tr>
+<tr><td>终止条件</td><td>序列遍历完毕自动终止</td><td>条件为False时终止</td></tr>
+<tr><td>电网应用</td><td>遍历设备列表、读取CSV行数据</td><td>设备轮询等待、数据采集超时控制</td></tr>
+<tr><td>无限循环风险</td><td>无（序列有限）</td><td>可能造成死循环（需谨慎）</td></tr>
+<tr><td>与else配合</td><td><code>for-else</code>在未break时执行</td><td><code>while-else</code>在条件为False时执行</td></tr>
+</table>
+</div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表4-2：break与continue的区别</caption>
+<tr><th>关键字</th><th>作用</th><th>类比</th><th>代码示例</th></tr>
+<tr><td><code>break</code></td><td>立即退出整个循环</td><td>遇到紧急情况立即撤离</td><td>找到异常后停止搜索</td></tr>
+<tr><td><code>continue</code></td><td>跳过本次循环，进入下一轮</td><td>跳过不合格项继续检查</td><td>跳过检修中设备的温度检查</td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图4-1：循环控制流程示意图</figcaption>
+<svg width="100%" height="240" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+  <rect x="200" y="10" width="200" height="40" fill="#2563eb" rx="6"/>
+  <text x="300" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">循环开始</text>
+  <polygon points="300,50 290,65 310,65" fill="#666"/>
+  <line x1="300" y1="50" x2="300" y2="65" stroke="#666" stroke-width="2"/>
+  <rect x="175" y="65" width="250" height="40" fill="#059669" rx="6"/>
+  <text x="300" y="90" text-anchor="middle" fill="#fff" font-size="12">条件判断</text>
+  <line x1="300" y1="105" x2="300" y2="120" stroke="#666" stroke-width="2"/>
+  <polygon points="300,120 290,115 310,115" fill="#666"/>
+  <rect x="175" y="120" width="250" height="40" fill="#d97706" rx="6"/>
+  <text x="300" y="145" text-anchor="middle" fill="#fff" font-size="12">执行循环体</text>
+  <line x1="175" y1="140" x2="80" y2="140" stroke="#dc2626" stroke-width="2"/>
+  <line x1="80" y1="140" x2="80" y2="80" stroke="#dc2626" stroke-width="2"/>
+  <polygon points="80,80 75,90 85,90" fill="#dc2626"/>
+  <text x="60" y="115" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="bold">continue</text>
+  <line x1="425" y1="140" x2="520" y2="140" stroke="#dc2626" stroke-width="2"/>
+  <polygon points="520,140 510,135 510,145" fill="#dc2626"/>
+  <line x1="520" y1="140" x2="520" y2="45" stroke="#dc2626" stroke-width="2"/>
+  <text x="545" y="95" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="bold">break</text>
+  <rect x="160" y="185" width="280" height="36" fill="#7c3aed" rx="6"/>
+  <text x="300" y="209" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">循环结束（或执行else块）</text>
+</svg>
+</figure>
+
 <pre><code># break：查找第一个异常数据点
 readings = [220.5, 221.0, 219.8, 285.3, 221.5, 220.0]  # 电压读数
 threshold_high = 242  # 上限
@@ -1136,6 +1383,18 @@ for dev in devices:
 <!-- ========== CHAPTER 5 ========== -->
 <span class="top-anchor" id="ch5"></span>
 <h2>第5章 函数</h2>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表5-1：函数参数类型对比</caption>
+<tr><th>参数类型</th><th>语法格式</th><th>说明</th><th>示例</th></tr>
+<tr><td>位置参数</td><td><code>def f(a, b)</code></td><td>按顺序传入，一一对应</td><td><code>calc_line_loss(200, 0.17, 15)</code></td></tr>
+<tr><td>关键字参数</td><td><code>def f(a, b)</code></td><td>指定参数名传入，顺序无关</td><td><code>calc_line_loss(current=200, resistance=0.17)</code></td></tr>
+<tr><td>默认参数</td><td><code>def f(a, b=1)</code></td><td>未传入时使用默认值</td><td><code>check_voltage(228, tolerance=0.07)</code></td></tr>
+<tr><td>可变位置参数</td><td><code>def f(*args)</code></td><td>接收任意数量的位置参数（元组）</td><td><code>average_load(125, 138, 110)</code></td></tr>
+<tr><td>可变关键字参数</td><td><code>def f(**kwargs)</code></td><td>接收任意数量的关键字参数（字典）</td><td><code>create_device(name="主变", status="运行")</code></td></tr>
+</table>
+</div>
 
 <span class="top-anchor" id="ch5-1"></span>
 <h3>5.1 函数定义与调用</h3>
@@ -1309,6 +1568,43 @@ def calc_voltage_drop(i, r, x, cos_phi):
 # pf = calc_power_factor(1000, S)</code></pre>
 </div>
 
+<div class="table-wrap">
+<table class="data-table">
+<caption>表5-2：常用内置函数与math模块函数</caption>
+<tr><th>函数</th><th>所属</th><th>功能</th><th>电网示例</th></tr>
+<tr><td><code>len()</code></td><td>内置</td><td>返回长度</td><td><code>len(load_data)</code> 获取负荷数据点数</td></tr>
+<tr><td><code>max()</code></td><td>内置</td><td>返回最大值</td><td><code>max(currents)</code> 获取最大电流</td></tr>
+<tr><td><code>sum()</code></td><td>内置</td><td>返回总和</td><td><code>sum(hourly_power)</code> 计算日总电量</td></tr>
+<tr><td><code>sorted()</code></td><td>内置</td><td>排序</td><td><code>sorted(devices, key=lambda d: d["load"])</code></td></tr>
+<tr><td><code>math.sqrt()</code></td><td>math</td><td>平方根</td><td><code>sqrt(P**2 + Q**2)</code> 视在功率</td></tr>
+<tr><td><code>math.acos()</code></td><td>math</td><td>反余弦</td><td><code>acos(cos_phi)</code> 功率因数角</td></tr>
+<tr><td><code>math.degrees()</code></td><td>math</td><td>弧度转角度</td><td><code>degrees(phi)</code> 弧度转度数</td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图5-1：函数调用关系示意图</figcaption>
+<svg width="100%" height="220" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+  <rect x="220" y="10" width="160" height="40" fill="#2563eb" rx="6"/>
+  <text x="300" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">主程序 main()</text>
+  <line x1="260" y1="50" x2="80" y2="90" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="50" x2="300" y2="90" stroke="#666" stroke-width="1.5"/>
+  <line x1="340" y1="50" x2="520" y2="90" stroke="#666" stroke-width="1.5"/>
+  <rect x="10" y="90" width="140" height="36" fill="#059669" rx="6"/>
+  <text x="80" y="113" text-anchor="middle" fill="#fff" font-size="12">calc_load_rate()</text>
+  <rect x="230" y="90" width="140" height="36" fill="#059669" rx="6"/>
+  <text x="300" y="113" text-anchor="middle" fill="#fff" font-size="12">check_voltage()</text>
+  <rect x="450" y="90" width="140" height="36" fill="#059669" rx="6"/>
+  <text x="520" y="113" text-anchor="middle" fill="#fff" font-size="12">create_report()</text>
+  <line x1="80" y1="126" x2="80" y2="150" stroke="#666" stroke-width="1.5"/>
+  <line x1="520" y1="126" x2="520" y2="150" stroke="#666" stroke-width="1.5"/>
+  <rect x="10" y="150" width="140" height="36" fill="#d97706" rx="6"/>
+  <text x="80" y="173" text-anchor="middle" fill="#fff" font-size="12">math.sqrt()</text>
+  <rect x="450" y="150" width="140" height="36" fill="#d97706" rx="6"/>
+  <text x="520" y="173" text-anchor="middle" fill="#fff" font-size="12">datetime.now()</text>
+</svg>
+</figure>
+
 <!-- ========== CHAPTER 6 ========== -->
 <span class="top-anchor" id="ch6"></span>
 <h2>第6章 文件处理</h2>
@@ -1340,7 +1636,8 @@ with open("inspection_log.txt", "r", encoding="utf-8") as f:
         print(f"第{line_num}行: {line.strip()}")</code></pre>
 
 <div class="table-wrap">
-<table>
+<table class="data-table">
+<caption>表6-1：Python文件打开模式一览</caption>
 <tr><th>模式</th><th>说明</th><th>电网场景</th></tr>
 <tr><td><code>'r'</code></td><td>只读模式（默认）</td><td>读取SCADA导出的历史数据</td></tr>
 <tr><td><code>'w'</code></td><td>写入模式（覆盖）</td><td>生成新的巡检报告</td></tr>
@@ -1530,6 +1827,38 @@ print("-" * 30)
 for r in results:
     print(f"{r['站名']:<10} {r['数据行数']:>6} {r['状态']:<12}")</code></pre>
 </div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表6-2：常见文件处理异常类型</caption>
+<tr><th>异常类型</th><th>触发场景</th><th>处理建议</th></tr>
+<tr><td><code>FileNotFoundError</code></td><td>文件不存在时尝试读取</td><td>检查文件路径，使用 <code>os.path.exists()</code> 预先判断</td></tr>
+<tr><td><code>PermissionError</code></td><td>没有文件访问权限</td><td>检查文件读写权限，使用管理员权限运行</td></tr>
+<tr><td><code>UnicodeDecodeError</code></td><td>文件编码与读取编码不匹配</td><td>尝试不同编码（utf-8, gbk, latin-1），或使用 <code>chardet</code> 自动检测</td></tr>
+<tr><td><code>IsADirectoryError</code></td><td>尝试打开目录作为文件</td><td>使用 <code>os.path.isfile()</code> 判断是否为文件</td></tr>
+<tr><td><code>IOError</code></td><td>输入输出设备故障</td><td>检查存储设备和网络文件系统连接</td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图6-1：文件异常处理流程</figcaption>
+<svg width="100%" height="180" viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+  <rect x="200" y="10" width="200" height="36" fill="#2563eb" rx="6"/>
+  <text x="300" y="33" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">打开文件 try</text>
+  <line x1="300" y1="46" x2="300" y2="60" stroke="#666" stroke-width="2"/>
+  <polygon points="300,60 290,55 310,55" fill="#666"/>
+  <rect x="30" y="60" width="170" height="36" fill="#059669" rx="6"/>
+  <text x="115" y="84" text-anchor="middle" fill="#fff" font-size="12">成功 → 读取/写入文件</text>
+  <rect x="400" y="60" width="170" height="36" fill="#dc2626" rx="6"/>
+  <text x="485" y="84" text-anchor="middle" fill="#fff" font-size="12">异常 → except处理</text>
+  <line x1="200" y1="78" x2="200" y2="110" stroke="#059669" stroke-width="2"/>
+  <polygon points="200,110 195,100 205,100" fill="#059669"/>
+  <line x1="485" y1="96" x2="485" y2="110" stroke="#dc2626" stroke-width="2"/>
+  <polygon points="485,110 480,100 490,100" fill="#dc2626"/>
+  <rect x="135" y="110" width="330" height="36" fill="#d97706" rx="6"/>
+  <text x="300" y="134" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">finally 块（无论是否异常都会执行）</text>
+</svg>
+</figure>
 
 <!-- ========== CHAPTER 7 ========== -->
 <span class="top-anchor" id="ch7"></span>
@@ -1930,7 +2259,602 @@ print(f"\n202开关状态已更新为: 运行")
 print(manager.export_report())
 </code></pre>
 
+<div class="table-wrap">
+<table class="data-table">
+<caption>表7-1：典型案例知识点汇总</caption>
+<tr><th>案例</th><th>核心知识点</th><th>数据格式</th><th>输出结果</th></tr>
+<tr><td>7.1 变压器温度监测</td><td>列表、字典、函数、条件判断</td><td>列表嵌套字典</td><td>日报报告、状态评估</td></tr>
+<tr><td>7.2 电力负荷统计</td><td>列表操作、数学统计、异常检测</td><td>96点负荷数组</td><td>负荷指标、异常标记</td></tr>
+<tr><td>7.3 巡检数据批量处理</td><td>循环遍历、条件评分、分组统计</td><td>设备字典列表</td><td>风险评级、分组报告</td></tr>
+<tr><td>7.4 设备台账自动化</td><td>面向对象、类设计、CRUD操作</td><td>设备对象列表</td><td>台账报表、统计汇总</td></tr>
+</table>
+</div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表7-2：线路风险评分标准</caption>
+<tr><th>评价维度</th><th>低风险（0分）</th><th>中风险（10-20分）</th><th>高风险（20-30分）</th></tr>
+<tr><td>运行年限</td><td>≤5年</td><td>5-20年</td><td>＞20年</td></tr>
+<tr><td>腐蚀程度</td><td>无</td><td>轻度/中度</td><td>严重</td></tr>
+<tr><td>植被情况</td><td>正常</td><td>—</td><td>需清理</td></tr>
+<tr><td>绝缘子状态</td><td>良好</td><td>一般</td><td>较差</td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图7-1：典型案例技术栈关系图</figcaption>
+<svg width="100%" height="220" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+  <rect x="150" y="10" width="300" height="40" fill="#2563eb" rx="6"/>
+  <text x="300" y="35" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">Python基础技能树</text>
+  <line x1="200" y1="50" x2="80" y2="90" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="50" x2="300" y2="90" stroke="#666" stroke-width="1.5"/>
+  <line x1="400" y1="50" x2="520" y2="90" stroke="#666" stroke-width="1.5"/>
+  <rect x="10" y="90" width="140" height="36" fill="#059669" rx="6"/>
+  <text x="80" y="113" text-anchor="middle" fill="#fff" font-size="12">数据处理</text>
+  <rect x="230" y="90" width="140" height="36" fill="#059669" rx="6"/>
+  <text x="300" y="113" text-anchor="middle" fill="#fff" font-size="12">流程控制</text>
+  <rect x="450" y="90" width="140" height="36" fill="#059669" rx="6"/>
+  <text x="520" y="113" text-anchor="middle" fill="#fff" font-size="12">文件与模块</text>
+  <line x1="80" y1="126" x2="50" y2="155" stroke="#666" stroke-width="1.5"/>
+  <line x1="80" y1="126" x2="110" y2="155" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="126" x2="230" y2="155" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="126" x2="370" y2="155" stroke="#666" stroke-width="1.5"/>
+  <line x1="520" y1="126" x2="490" y2="155" stroke="#666" stroke-width="1.5"/>
+  <line x1="520" y1="126" x2="550" y2="155" stroke="#666" stroke-width="1.5"/>
+  <rect x="10" y="155" width="80" height="36" fill="#d97706" rx="6"/>
+  <text x="50" y="177" text-anchor="middle" fill="#fff" font-size="11">列表/字典</text>
+  <rect x="110" y="155" width="80" height="36" fill="#d97706" rx="6"/>
+  <text x="150" y="177" text-anchor="middle" fill="#fff" font-size="11">统计分析</text>
+  <rect x="210" y="155" width="60" height="36" fill="#d97706" rx="6"/>
+  <text x="240" y="177" text-anchor="middle" fill="#fff" font-size="11">条件</text>
+  <rect x="280" y="155" width="60" height="36" fill="#d97706" rx="6"/>
+  <text x="310" y="177" text-anchor="middle" fill="#fff" font-size="11">循环</text>
+  <rect x="350" y="155" width="60" height="36" fill="#d97706" rx="6"/>
+  <text x="380" y="177" text-anchor="middle" fill="#fff" font-size="11">函数</text>
+  <rect x="420" y="155" width="60" height="36" fill="#d97706" rx="6"/>
+  <text x="450" y="177" text-anchor="middle" fill="#fff" font-size="11">文件IO</text>
+  <rect x="490" y="155" width="100" height="36" fill="#d97706" rx="6"/>
+  <text x="540" y="177" text-anchor="middle" fill="#fff" font-size="11">面向对象</text>
+</svg>
+</figure>
+
 <p>以上四个典型案例综合运用了本教程所学的Python基础知识，涵盖了数据处理、统计分析、文件操作和面向对象编程等核心技能。读者可以根据实际工作需求，在这些案例的基础上进行扩展和定制，逐步提升Python编程能力，更好地服务于电网运维与管理工作。</p>
+
+<!-- ========== CHAPTER 8 ========== -->
+<span class="top-anchor" id="ch8"></span>
+<h2>第8章 数据可视化（画图）</h2>
+
+<p>数据可视化是电网数据分析的重要环节，能够直观展示数据趋势、分布特征和异常模式。Python拥有丰富的数据可视化生态，本章将介绍最常用的三种可视化工具：<strong>Matplotlib</strong>（基础绘图）、<strong>Seaborn</strong>（统计绘图）和<strong>Turtle</strong>（教育绘图），并介绍2D图和3D图的高级技巧。</p>
+
+<span class="top-anchor" id="ch8-1"></span>
+<h3>8.1 matplotlib基础</h3>
+<p>Matplotlib是Python中最经典的基础绘图库，其设计风格参考了MATLAB的绘图语法，提供了细致的图形控制能力。安装命令：<code>pip install matplotlib</code>。</p>
+
+<h4>8.1.1 折线图（Line Plot）</h4>
+<p>折线图最适合展示连续数据的变化趋势，如电网负荷曲线、温度变化曲线等。</p>
+
+<pre><code>import matplotlib.pyplot as plt
+
+# 模拟24小时变压器油温数据（℃）
+hours = list(range(24))
+oil_temp = [55.2, 54.8, 54.3, 53.9, 53.5, 54.0, 56.2, 60.5,
+            65.8, 72.3, 78.5, 82.0, 80.5, 79.2, 83.5, 85.0,
+            82.8, 78.5, 75.0, 72.0, 68.5, 64.0, 60.2, 57.5]
+
+plt.figure(figsize=(10, 5))
+plt.plot(hours, oil_temp, marker='o', linestyle='-', color='#dc2626',
+         linewidth=2, markersize=4, label='油温')
+plt.axhline(y=85, color='orange', linestyle='--', label='告警阈值')
+plt.axhline(y=75, color='yellow', linestyle=':', label='注意阈值')
+plt.xlabel('时间（小时）')
+plt.ylabel('温度（℃）')
+plt.title('变压器油温24小时变化趋势')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>该折线图展示了变压器油温在24小时内的变化趋势。从图中可以看出，油温从早晨8点（第8小时）开始快速上升，在下午15-16点（第15-16小时）达到峰值约85℃，之后随环境温度下降而回落。图中的水平虚线标出了75℃（注意阈值）和85℃（告警阈值），便于运维人员快速判断设备状态。</p>
+</div>
+
+<h4>8.1.2 柱状图（Bar Chart）</h4>
+<p>柱状图适合展示分类数据的对比，如各变电站负荷对比、各电压等级设备数量等。</p>
+
+<pre><code># 各变电站的日最大负荷对比（MW）
+stations = ['城东变', '城南变', '城西变', '城北变', '城中变']
+peak_loads = [185, 220, 158, 195, 240]
+
+plt.figure(figsize=(8, 5))
+bars = plt.bar(stations, peak_loads, color=['#2563eb', '#7c3aed', '#059669',
+                                            '#d97706', '#dc2626'], width=0.6)
+plt.xlabel('变电站')
+plt.ylabel('最大负荷（MW）')
+plt.title('各变电站日最大负荷对比')
+
+# 在柱子上标注数值
+for bar, load in zip(bars, peak_loads):
+    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 2,
+             f'{load}MW', ha='center', fontsize=11)
+
+plt.grid(axis='y', alpha=0.3)
+plt.show()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>柱状图清晰展示了5个变电站的日最大负荷对比。城中变因地处市中心商业区，负荷最高（240MW）；城西变因工业负荷较少，负荷最低（158MW）。运维人员可据此合理分配巡检资源和关注重点。</p>
+</div>
+
+<h4>8.1.3 饼图（Pie Chart）</h4>
+<p>饼图用于展示各类别在整体中的占比，如电网能源结构、负荷类型分布等。</p>
+
+<pre><code># 某地区电网负荷类型分布
+labels = ['工业用电', '居民用电', '商业用电', '农业用电', '其他']
+sizes = [42, 28, 18, 8, 4]
+colors = ['#2563eb', '#059669', '#d97706', '#7c3aed', '#dc2626']
+explode = (0.05, 0, 0, 0, 0)  # 突出显示工业用电
+
+plt.figure(figsize=(8, 6))
+plt.pie(sizes, explode=explode, labels=labels, colors=colors,
+        autopct='%1.1f%%', startangle=90, shadow=True)
+plt.title('某地区电网负荷类型分布')
+plt.axis('equal')  # 确保饼图为正圆形
+plt.show()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>该饼图直观显示了该地区的负荷结构：工业用电占比最大（42%），其次是居民用电（28%）和商业用电（18%）。这种分布信息对电网规划中的负荷预测和电源配置具有重要参考价值。</p>
+</div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表8-1：Matplotlib常用图表类型及适用场景</caption>
+<tr><th>图表类型</th><th>函数</th><th>适用场景</th><th>电网示例</th></tr>
+<tr><td>折线图</td><td><code>plt.plot()</code></td><td>连续数据变化趋势</td><td>负荷曲线、温度变化</td></tr>
+<tr><td>柱状图</td><td><code>plt.bar()</code></td><td>分类数据对比</td><td>各站负荷对比、设备数量统计</td></tr>
+<tr><td>饼图</td><td><code>plt.pie()</code></td><td>占比分布</td><td>负荷类型分布、能源结构</td></tr>
+<tr><td>散点图</td><td><code>plt.scatter()</code></td><td>两变量相关性</td><td>温度与负荷相关性分析</td></tr>
+<tr><td>直方图</td><td><code>plt.hist()</code></td><td>数据分布</td><td>电压偏差分布、负荷频率分布</td></tr>
+<tr><td>箱线图</td><td><code>plt.boxplot()</code></td><td>数据分布与异常值</td><td>设备运行参数异常检测</td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图8-1：matplotlib基础图表类型示意（折线图示例）</figcaption>
+<svg width="100%" height="220" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="180" width="560" height="1" fill="#ccc"/>
+  <rect x="20" y="20" width="1" height="160" fill="#ccc"/>
+  <polyline points="40,160 80,150 120,140 160,130 200,120 240,100 280,80 320,60 360,50 400,45 440,55 480,70 520,90 560,100" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+  <circle cx="40" cy="160" r="3" fill="#dc2626"/>
+  <circle cx="80" cy="150" r="3" fill="#dc2626"/>
+  <circle cx="120" cy="140" r="3" fill="#dc2626"/>
+  <circle cx="160" cy="130" r="3" fill="#dc2626"/>
+  <circle cx="200" cy="120" r="3" fill="#dc2626"/>
+  <circle cx="240" cy="100" r="3" fill="#dc2626"/>
+  <circle cx="280" cy="80" r="3" fill="#dc2626"/>
+  <circle cx="320" cy="60" r="3" fill="#dc2626"/>
+  <circle cx="360" cy="50" r="3" fill="#dc2626"/>
+  <circle cx="400" cy="45" r="3" fill="#dc2626"/>
+  <circle cx="440" cy="55" r="3" fill="#dc2626"/>
+  <circle cx="480" cy="70" r="3" fill="#dc2626"/>
+  <circle cx="520" cy="90" r="3" fill="#dc2626"/>
+  <circle cx="560" cy="100" r="3" fill="#dc2626"/>
+  <line x1="20" y1="40" x2="60" y2="40" stroke="orange" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="65" y="44" fill="orange" font-size="10">阈值</text>
+  <text x="30" y="16" fill="#666" font-size="11">温度(℃)</text>
+  <text x="580" y="198" fill="#666" font-size="11">时间</text>
+</svg>
+</figure>
+
+<span class="top-anchor" id="ch8-2"></span>
+<h3>8.2 seaborn统计绘图</h3>
+<p>Seaborn是基于Matplotlib的高级统计绘图库，提供了更美观的默认样式和更简洁的API，特别适合统计数据的可视化分析。安装命令：<code>pip install seaborn</code>。</p>
+
+<h4>8.2.1 热力图（Heatmap）</h4>
+<p>热力图用颜色深浅表示数据大小，适合展示二维矩阵数据，如设备运行参数的相关性矩阵、负荷时序数据的日周模式等。</p>
+
+<pre><code>import seaborn as sns
+import numpy as np
+
+# 模拟电网负荷相关性矩阵（不同电压等级之间的负荷相关性）
+np.random.seed(42)
+voltage_levels = ['110kV', '220kV', '500kV', '35kV', '10kV']
+n = len(voltage_levels)
+corr_matrix = np.array([
+    [1.0,  0.85, 0.72, 0.91, 0.88],
+    [0.85, 1.0,  0.78, 0.82, 0.79],
+    [0.72, 0.78, 1.0,  0.69, 0.65],
+    [0.91, 0.82, 0.69, 1.0,  0.93],
+    [0.88, 0.79, 0.65, 0.93, 1.0]
+])
+
+plt.figure(figsize=(8, 6))
+sns.heatmap(corr_matrix, annot=True, fmt='.2f', cmap='RdYlBu_r',
+            xticklabels=voltage_levels, yticklabels=voltage_levels,
+            vmin=0.5, vmax=1.0, linewidths=1, cbar_kws={'label': '相关系数'})
+plt.title('各电压等级负荷相关性热力图')
+plt.tight_layout()
+plt.show()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>热力图展示了5个电压等级的负荷相关系数矩阵。颜色越深（偏红）表示相关性越强。可以看出35kV和10kV的负荷相关性最高（0.93），因为它们都主要面向配电网用户；而500kV与其他电压等级的相关性相对较低，因为主网负荷受大工业用户影响更大。这种分析有助于电网调度中的负荷预测建模。</p>
+</div>
+
+<h4>8.2.2 箱线图（Box Plot）</h4>
+<p>箱线图展示数据的分布特征（中位数、四分位数、异常值），适合对比多组数据的分布差异。</p>
+
+<pre><code># 模拟不同季节的变压器油温分布数据
+spring_temps = [62, 65, 68, 70, 72, 69, 71, 66, 64, 67, 73, 70]
+summer_temps = [78, 82, 85, 88, 90, 86, 84, 87, 83, 89, 91, 85]
+autumn_temps = [65, 68, 70, 72, 69, 71, 67, 66, 70, 73, 68, 72]
+winter_temps = [52, 55, 58, 60, 57, 54, 56, 59, 53, 61, 58, 55]
+
+data = [spring_temps, summer_temps, autumn_temps, winter_temps]
+labels = ['春季', '夏季', '秋季', '冬季']
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(data=data, palette='Set2')
+plt.xticks(range(4), labels)
+plt.ylabel('油温（℃）')
+plt.title('不同季节变压器油温分布对比')
+plt.grid(axis='y', alpha=0.3)
+plt.show()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>箱线图清晰展示了不同季节变压器油温分布特征的差异。夏季温度中位数最高（约86℃），且存在多个高温异常点；冬季温度最低（约57℃）。运维人员可根据季节性特点制定差异化的巡检策略，例如夏季增加高温监测频次。</p>
+</div>
+
+<h4>8.2.3 分布图（Distribution Plot）</h4>
+<p>分布图（直方图+核密度估计曲线）展示数据分布形态，如负荷偏差分布、电压偏差分布等。</p>
+
+<pre><code># 模拟某变电站100天的日负荷率数据
+np.random.seed(42)
+load_rates = np.random.normal(75, 8, 100)  # 均值75%，标准差8%
+
+plt.figure(figsize=(8, 5))
+sns.histplot(load_rates, bins=15, kde=True, color='#2563eb', alpha=0.6)
+plt.axvline(x=load_rates.mean(), color='red', linestyle='--',
+            label=f'均值: {load_rates.mean():.1f}%')
+plt.xlabel('日负荷率（%）')
+plt.ylabel('频次')
+plt.title('某变电站日负荷率分布（100天）')
+plt.legend()
+plt.grid(axis='y', alpha=0.3)
+plt.show()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>分布图展示了该变电站日负荷率的整体分布形态，近似正态分布，均值约75%。从图中可以看出，大部分天数负荷率集中在65%-85%之间，低于60%或高于90%的天数较少。这种分布信息对于变电站的容量规划和运行方式安排具有参考价值。</p>
+</div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表8-2：Seaborn常用绘图函数</caption>
+<tr><th>函数</th><th>图表类型</th><th>主要参数</th><th>电网应用</th></tr>
+<tr><td><code>sns.heatmap()</code></td><td>热力图</td><td>annot, cmap, fmt</td><td>负荷相关性、设备参数矩阵</td></tr>
+<tr><td><code>sns.boxplot()</code></td><td>箱线图</td><td>data, palette, orient</td><td>多组数据分布对比</td></tr>
+<tr><td><code>sns.histplot()</code></td><td>直方图+密度曲线</td><td>bins, kde, color</td><td>负荷/电压偏差分布</td></tr>
+<tr><td><code>sns.kdeplot()</code></td><td>核密度估计图</td><td>shade, bw_adjust</td><td>数据分布平滑估计</td></tr>
+<tr><td><code>sns.pairplot()</code></td><td>散布图矩阵</td><td>vars, hue</td><td>多变量关联分析</td></tr>
+<tr><td><code>sns.lineplot()</code></td><td>折线图（误差带）</td><td>ci, estimator</td><td>带置信区间的趋势曲线</td></tr>
+</table>
+</div>
+
+<span class="top-anchor" id="ch8-3"></span>
+<h3>8.3 turtle绘图</h3>
+<p>Turtle（海龟绘图）是Python内置的LOGO语言风格绘图工具，通过控制"海龟"在画布上移动来绘制图形。它简单直观，适合初学者理解编程中的循环、递归和坐标概念，也可用于生成电网拓扑示意图。</p>
+
+<div class="callout warn">
+<div class="callout-title">turtle模块说明</div>
+<p>turtle模块是Python标准库的一部分，无需额外安装。在Jupyter Notebook中需先执行 <code>%matplotlib inline</code> 或使用 <code>turtle.Screen()</code> 的替代方案。以下代码在标准Python环境中可直接运行。</p>
+</div>
+
+<h4>8.3.1 基本图形</h4>
+
+<pre><code>import turtle
+
+# 绘制电网导线截面示意图（圆形+同心圆）
+t = turtle.Turtle()
+t.speed(3)
+
+# 画外圈（导线外径）
+t.penup()
+t.goto(0, -60)
+t.pendown()
+t.circle(60)
+
+# 画内圈（导体）
+t.penup()
+t.goto(0, -30)
+t.pendown()
+t.color('red')
+t.circle(30)
+
+# 画中心点
+t.penup()
+t.goto(0, -5)
+t.pendown()
+t.color('blue')
+t.begin_fill()
+t.circle(5)
+t.end_fill()
+
+t.hideturtle()
+turtle.done()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>上述代码使用turtle绘制了导线截面示意图：外圈表示绝缘层（大圆），红色内圈表示导体层（中圆），蓝色中心表示导线线芯（小圆）。turtle绘图通过坐标定位和基本几何图形组合，可以绘制出电网设备原理示意图。</p>
+</div>
+
+<h4>8.3.2 递归图形（分形树）</h4>
+<p>递归是turtle绘图的经典应用，可用于绘制分形树、科赫雪花等自相似图形，在电网中可用于分析线路拓扑的分形特征。</p>
+
+<pre><code>import turtle
+
+def draw_branch(t, branch_len, angle):
+    """递归绘制分形树枝"""
+    if branch_len < 5:
+        return
+    t.forward(branch_len)
+    t.right(angle)
+    draw_branch(t, branch_len * 0.7, angle)
+    t.left(angle * 2)
+    draw_branch(t, branch_len * 0.7, angle)
+    t.right(angle)
+    t.backward(branch_len)
+
+# 设置
+t = turtle.Turtle()
+t.speed(0)
+t.left(90)
+t.penup()
+t.goto(0, -200)
+t.pendown()
+t.color('green')
+
+# 绘制分形树
+draw_branch(t, 100, 25)
+t.hideturtle()
+turtle.done()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>分形树通过递归调用自身生成自相似的分支结构。每个分支都按照0.7的比例缩短，并左右分叉。这种递归绘图展示了自然界中的分形规律，可类比于电网中辐射状配电网的拓扑结构。递归深度控制着树木的精细程度，深度越大分支越密。</p>
+</div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表8-3：turtle常用绘图命令</caption>
+<tr><th>命令</th><th>功能</th><th>参数说明</th></tr>
+<tr><td><code>forward(d)</code></td><td>向前移动</td><td>d：像素距离</td></tr>
+<tr><td><code>right(a)</code> / <code>left(a)</code></td><td>右转/左转</td><td>a：角度（度）</td></tr>
+<tr><td><code>circle(r)</code></td><td>画圆</td><td>r：半径</td></tr>
+<tr><td><code>penup()</code> / <code>pendown()</code></td><td>抬笔/落笔</td><td>抬笔移动时不画线</td></tr>
+<tr><td><code>goto(x, y)</code></td><td>移动到坐标</td><td>(x, y)：目标坐标</td></tr>
+<tr><td><code>color(c)</code></td><td>设置颜色</td><td>c：颜色名称或RGB值</td></tr>
+<tr><td><code>begin_fill()</code> / <code>end_fill()</code></td><td>填充封闭区域</td><td>用于给图形填色</td></tr>
+<tr><td><code>speed(s)</code></td><td>设置绘图速度</td><td>s：1（最慢）~10（最快）</td></tr>
+</table>
+</div>
+
+<span class="top-anchor" id="ch8-4"></span>
+<h3>8.4 2D图高级技巧</h3>
+<p>掌握Matplotlib的高级技巧可以让图表更加专业美观，满足电网报告和论文发表的要求。</p>
+
+<h4>8.4.1 子图（Subplot）</h4>
+<p>子图可以在同一张画布上绘制多个图表，便于对比分析。</p>
+
+<pre><code># 子图：同时展示负荷曲线的不同维度
+fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+
+hours = list(range(24))
+load = [750, 740, 730, 720, 710, 700, 710, 780, 860, 950, 1020,
+        1080, 1100, 1090, 1070, 1060, 1050, 1040, 1020, 980, 940, 900, 860, 820]
+
+# 子图1：日负荷曲线
+axes[0, 0].plot(hours, load, 'b-o', linewidth=2, markersize=4)
+axes[0, 0].set_title('日负荷曲线')
+axes[0, 0].set_xlabel('时间（小时）')
+axes[0, 0].set_ylabel('负荷（MW）')
+axes[0, 0].grid(True, alpha=0.3)
+
+# 子图2：负荷变化率
+diff = [0] + [load[i] - load[i-1] for i in range(1, len(load))]
+axes[0, 1].bar(hours, diff, color=['#dc2626' if d < 0 else '#059669' for d in diff])
+axes[0, 1].set_title('逐时负荷变化')
+axes[0, 1].set_xlabel('时间（小时）')
+axes[0, 1].set_ylabel('变化量（MW）')
+axes[0, 1].grid(axis='y', alpha=0.3)
+
+# 子图3：负荷分布直方图
+axes[1, 0].hist(load, bins=10, color='#7c3aed', alpha=0.7, edgecolor='white')
+axes[1, 0].set_title('负荷分布')
+axes[1, 0].set_xlabel('负荷（MW）')
+axes[1, 0].set_ylabel('频次')
+
+# 子图4：负荷累计曲线
+cumsum = [sum(load[:i+1]) for i in range(len(load))]
+axes[1, 1].fill_between(hours, cumsum, alpha=0.3, color='#0891b2')
+axes[1, 1].plot(hours, cumsum, 'c-', linewidth=2)
+axes[1, 1].set_title('累计负荷曲线')
+axes[1, 1].set_xlabel('时间（小时）')
+axes[1, 1].set_ylabel('累计电量（MWh）')
+axes[1, 1].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>子图将负荷数据的四个维度同时展示：日负荷曲线（左上）反映了整体变化趋势；逐时负荷变化柱状图（右上）用绿/红色分别标识正负变化；负荷分布直方图（左下）揭示了数据的集中区间；累计负荷曲线（右下）则展示了电量的累积过程。这种多维度呈现方式比单张图表传递的信息量大了数倍。</p>
+</div>
+
+<h4>8.4.2 样式美化</h4>
+<p>Matplotlib提供了丰富的样式配置，包括内置样式表和自定义设置：</p>
+
+<pre><code># 使用内置样式
+plt.style.use('seaborn-v0_8')
+# 或 plt.style.use('ggplot') / 'fivethirtyeight' / 'bmh'
+
+# 自定义样式
+plt.rcParams.update({
+    'font.family': 'sans-serif',
+    'font.size': 11,
+    'axes.titlesize': 14,
+    'axes.labelsize': 12,
+    'lines.linewidth': 2,
+    'figure.dpi': 100,
+    'savefig.dpi': 300,  # 保存图片的分辨率
+    'savefig.bbox_inches': 'tight'
+})</code></pre>
+
+<h4>8.4.3 保存图片</h4>
+<p>使用 <code>savefig()</code> 将图表保存为文件，支持PNG、PDF、SVG等格式：</p>
+
+<pre><code>plt.figure(figsize=(10, 5))
+plt.plot(hours, load, 'b-', linewidth=2)
+plt.title('日负荷曲线')
+plt.xlabel('时间（小时）')
+plt.ylabel('负荷（MW）')
+
+# 保存为高清PNG
+plt.savefig('daily_load_curve.png', dpi=300, bbox_inches='tight')
+# 保存为矢量图PDF（适合论文发表）
+plt.savefig('daily_load_curve.pdf', format='pdf', bbox_inches='tight')
+# 保存为SVG（适合网页展示）
+plt.savefig('daily_load_curve.svg', format='svg', bbox_inches='tight')
+
+print("图片已保存至当前目录")
+plt.show()</code></pre>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表8-4：2D图高级技巧速查表</caption>
+<tr><th>功能</th><th>代码</th><th>效果</th></tr>
+<tr><td>创建子图</td><td><code>plt.subplots(2, 2)</code></td><td>2行2列共4个子图</td></tr>
+<tr><td>调整间距</td><td><code>plt.tight_layout()</code></td><td>自动调整子图间距</td></tr>
+<tr><td>设置样式</td><td><code>plt.style.use('ggplot')</code></td><td>应用内置样式主题</td></tr>
+<tr><td>保存高清图</td><td><code>plt.savefig('f.png', dpi=300)</code></td><td>300DPI高清输出</td></tr>
+<tr><td>双Y轴</td><td><code>ax.twinx()</code></td><td>左右各一个Y轴</td></tr>
+<tr><td>添加注释</td><td><code>plt.annotate()</code></td><td>在指定位置添加文字或箭头标注</td></tr>
+<tr><td>对数坐标</td><td><code>plt.yscale('log')</code></td><td>Y轴对数刻度</td></tr>
+</table>
+</div>
+
+<span class="top-anchor" id="ch8-5"></span>
+<h3>8.5 3D图（mplot3d）</h3>
+<p>Matplotlib的mplot3d工具包支持三维图形的绘制，可用于电网中的三维空间数据展示，如杆塔坐标、雷电定位、三维电场分布等。</p>
+
+<h4>8.5.1 三维曲面（Surface Plot）</h4>
+<pre><code>from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+
+# 模拟变电站周边三维电场强度分布
+x = np.linspace(-50, 50, 30)
+y = np.linspace(-50, 50, 30)
+X, Y = np.meshgrid(x, y)
+# 模拟电场强度（距离变电站越近越强）
+Z = 100 * np.exp(-(X**2 + Y**2) / 500) + np.random.randn(30, 30) * 5
+
+fig = plt.figure(figsize=(10, 7))
+ax = fig.add_subplot(111, projection='3d')
+surf = ax.plot_surface(X, Y, Z, cmap='hot', edgecolor='none', alpha=0.8)
+ax.set_xlabel('X方向（m）')
+ax.set_ylabel('Y方向（m）')
+ax.set_zlabel('电场强度（kV/m）')
+ax.set_title('变电站周边电场强度三维分布')
+fig.colorbar(surf, shrink=0.5, aspect=10, label='kV/m')
+plt.show()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>三维曲面图模拟了变电站周边电场强度的空间分布。曲面中心区域（变电站位置）电场强度最高，向四周逐渐衰减。加入随机噪声以模拟实际测量中的波动。这种三维可视化有助于电磁环境分析和变电站选址规划。</p>
+</div>
+
+<h4>8.5.2 三维散点图（Scatter3D）</h4>
+<pre><code># 模拟输电线路杆塔三维坐标
+np.random.seed(42)
+n_towers = 20
+x_tower = np.linspace(0, 5000, n_towers)      # 线路长度方向（m）
+y_tower = np.random.normal(0, 20, n_towers)   # 横向偏移（m）
+z_tower = np.random.normal(50, 10, n_towers)  # 杆塔高度（m）
+
+fig = plt.figure(figsize=(10, 7))
+ax = fig.add_subplot(111, projection='3d')
+scatter = ax.scatter(x_tower, y_tower, z_tower, c=z_tower, cmap='viridis',
+                     s=50, alpha=0.8)
+ax.set_xlabel('线路长度（m）')
+ax.set_ylabel('横向偏移（m）')
+ax.set_zlabel('杆塔高度（m）')
+ax.set_title('输电线路杆塔三维分布')
+fig.colorbar(scatter, label='高度（m）')
+
+# 连线展示线路走向
+ax.plot(x_tower, y_tower, z_tower, 'gray', alpha=0.4)
+plt.show()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>三维散点图展示了某条输电线路沿线20基杆塔的空间位置分布。散点的颜色代表杆塔高度，灰色连线展示了线路走向。从图中可以看出杆塔高度随地形起伏而变化，这种三维可视化有助于输电线路的设计评审和运维规划。</p>
+</div>
+
+<h4>8.5.3 三维等高线（Contour3D）</h4>
+<pre><code># 模拟配电网电压分布等高线
+x = np.linspace(-100, 100, 50)
+y = np.linspace(-100, 100, 50)
+X, Y = np.meshgrid(x, y)
+# 模拟电压分布（kV），变压器位置在(40, 40)附近压降明显
+Z = 10.5 - 0.5 * np.exp(-((X-40)**2 + (Y-40)**2) / 200) - 0.3 * np.exp(-((X+30)**2 + (Y+30)**2) / 150)
+
+fig = plt.figure(figsize=(10, 7))
+ax = fig.add_subplot(111, projection='3d')
+contour = ax.contour3D(X, Y, Z, 20, cmap='RdYlGn')
+ax.set_xlabel('X方向（m）')
+ax.set_ylabel('Y方向（m）')
+ax.set_zlabel('电压（kV）')
+ax.set_title('配电网电压分布三维等高线')
+fig.colorbar(contour, label='电压（kV）')
+plt.show()</code></pre>
+
+<div class="callout">
+<div class="callout-title">输出说明</div>
+<p>三维等高线图展示了配电网区域内的电压分布情况。图中使用RdYlGn（红-黄-绿）颜色映射，红色区域表示电压偏低，绿色区域表示电压正常。在变压器供电半径较大的末端区域（左上角），由于线路阻抗造成的电压降，出现了明显的电压偏低区域。这种可视化方法可用于配电网无功补偿装置的布点优化。</p>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图8-2：3D可视化在电网中的应用类型示意</figcaption>
+<svg width="100%" height="180" viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="20" width="160" height="140" fill="#f0f0f5" rx="8" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="100" y="95" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">三维曲面</text>
+  <text x="100" y="115" text-anchor="middle" fill="#666" font-size="11">电场/磁场分布</text>
+  <text x="100" y="135" text-anchor="middle" fill="#666" font-size="11">温度场可视化</text>
+  <rect x="220" y="20" width="160" height="140" fill="#f0f0f5" rx="8" stroke="#059669" stroke-width="1.5"/>
+  <text x="300" y="95" text-anchor="middle" fill="#059669" font-size="14" font-weight="bold">三维散点</text>
+  <text x="300" y="115" text-anchor="middle" fill="#666" font-size="11">杆塔坐标定位</text>
+  <text x="300" y="135" text-anchor="middle" fill="#666" font-size="11">巡检无人机航点</text>
+  <rect x="420" y="20" width="160" height="140" fill="#f0f0f5" rx="8" stroke="#d97706" stroke-width="1.5"/>
+  <text x="500" y="95" text-anchor="middle" fill="#d97706" font-size="14" font-weight="bold">三维等高线</text>
+  <text x="500" y="115" text-anchor="middle" fill="#666" font-size="11">电压分布分析</text>
+  <text x="500" y="135" text-anchor="middle" fill="#666" font-size="11">负荷密度热区</text>
+</svg>
+</figure>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表8-5：3D绘图函数总结</caption>
+<tr><th>函数</th><th>图表类型</th><th>适用场景</th><th>电网示例</th></tr>
+<tr><td><code>plot_surface()</code></td><td>三维曲面</td><td>连续空间数据</td><td>电场/磁场/温度场分布</td></tr>
+<tr><td><code>scatter()</code> (3D)</td><td>三维散点</td><td>离散空间点</td><td>杆塔坐标、雷电定位</td></tr>
+<tr><td><code>contour3D()</code></td><td>三维等高线</td><td>等值线空间分布</td><td>电压等高线、负荷密度</td></tr>
+<tr><td><code>plot_wireframe()</code></td><td>三维线框</td><td>结构轮廓展示</td><td>设备三维骨架</td></tr>
+<tr><td><code>bar3d()</code></td><td>三维柱状图</td><td>三维分类对比</td><td>三维负荷对比</td></tr>
+</table>
+</div>
+
+<p>本章介绍了Python数据可视化的主要工具和方法。在实际电网工作中，建议根据数据特点和分析目标选择合适的图表类型：趋势数据用折线图、分类对比用柱状图、占比分析用饼图、相关性分析用热力图、空间数据用3D图。掌握这些可视化技巧，能够帮助电网工程师更高效地进行数据分析、报告编写和决策支持。</p>
 
 </main>
 </div>
