@@ -324,7 +324,7 @@ pre code { background: none; padding: 0; color: inherit; }
   background: var(--bg2);
 }
 .data-table tr:hover td {
-  background: #dbeafe;
+  background: var(--accent-light);
 }
 .data-table tr:last-child td {
   border-bottom: none;
@@ -603,12 +603,6 @@ figcaption {
   }
 }
 
-/* ===== Sakura Petal Canvas ===== */
-#sakura-canvas {
-  position: fixed; top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none; z-index: 1;
-}
 
 /* ===== Chapter Navigation ===== */
 .chapter-content-block {
@@ -675,8 +669,16 @@ body.dark-mode .chapter-nav .nav-btn:hover {
   font-family: 'GeistMono', monospace;
 }
 body.dark-mode .word-count-stats {
-  background: var(--bg2); border-color: var(--rule);
-}
+    background: var(--bg2); border-color: var(--rule);
+  }
+
+  body.dark-mode .data-table tr:hover td {
+    background: #2a3a5c;
+  }
+
+  body.dark-mode tr:hover {
+    background: #2a2a3c;
+  }
 
 /* Sidebar nav active chapter */
 .nav-sections a.nav-active-chapter {
@@ -5438,76 +5440,6 @@ body.dark-mode .dark-toggle-float:hover {
     showChapter: showChapter,
     getCurrentIndex: function() { return currentIndex; }
   };
-})();
-</script>
-
-<script>
-/* ===== Sakura Petal Animation ===== */
-(function() {
-  var canvas = document.createElement("canvas");
-  canvas.id = "sakura-canvas";
-  document.body.appendChild(canvas);
-  var ctx = canvas.getContext("2d");
-  var width = canvas.width = window.innerWidth;
-  var height = canvas.height = window.innerHeight;
-  var petals = [];
-  var maxPetals = 35;
-
-  var colors = [
-    "rgba(255, 222, 233, 0.45)",
-    "rgba(255, 235, 240, 0.35)",
-    "rgba(250, 240, 245, 0.25)"
-  ];
-
-  function Petal() {
-    this.x = Math.random() * width;
-    this.y = -20;
-    this.size = Math.random() * 8 + 3;
-    this.speed = Math.random() * 1.2 + 0.4;
-    this.angle = Math.random() * 360;
-    this.spin = Math.random() < 0.5 ? -1 : 1;
-    this.rotation = Math.random() * 360;
-    this.color = colors[Math.floor(Math.random() * colors.length)];
-    this.swingSpeed = Math.random() * 0.02 + 0.005;
-  }
-
-  Petal.prototype.update = function() {
-    this.y += this.speed;
-    this.x += Math.sin(this.angle) * 0.8;
-    this.angle += this.swingSpeed;
-    this.rotation += this.spin * 0.5;
-    if (this.y > height + 10) { this.y = -10; this.x = Math.random() * width; }
-  };
-
-  Petal.prototype.draw = function() {
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.rotation * Math.PI / 180);
-    ctx.beginPath();
-    ctx.ellipse(0, 0, this.size / 2, this.size, 0, 0, Math.PI * 2);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-    ctx.restore();
-  };
-
-  function init() {
-    petals = [];
-    for (var i = 0; i < maxPetals; i++) petals.push(new Petal());
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-    for (var i = 0; i < petals.length; i++) { petals[i].update(); petals[i].draw(); }
-    requestAnimationFrame(animate);
-  }
-
-  window.addEventListener("resize", function() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  });
-
-  init();
-  animate();
 })();
 </script>
 
