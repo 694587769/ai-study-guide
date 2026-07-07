@@ -603,6 +603,90 @@ figcaption {
     max-height: 40vh;
   }
 }
+
+/* ===== Sakura Petal Canvas ===== */
+#sakura-canvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 1;
+}
+
+/* ===== Chapter Navigation ===== */
+.chapter-content-block {
+  display: none;
+}
+.chapter-content-block.active {
+  display: block;
+}
+
+/* Navigation buttons */
+.chapter-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 60px 0 40px; padding-top: 30px;
+  border-top: 2px solid var(--rule);
+}
+.chapter-nav .nav-btn {
+  padding: 12px 24px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14px; font-weight: 600;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.chapter-nav .nav-btn:hover {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+}
+.chapter-nav .nav-btn.disabled {
+  opacity: 0.35; pointer-events: none;
+}
+.chapter-nav .nav-label {
+  font-size: 12px; color: var(--muted); display: block;
+}
+.chapter-nav .nav-title {
+  font-size: 14px; font-weight: 600;
+}
+body.dark-mode .chapter-nav { border-top-color: var(--rule); }
+body.dark-mode .chapter-nav .nav-btn {
+  background: var(--surface); border-color: var(--rule); color: var(--ink);
+}
+body.dark-mode .chapter-nav .nav-btn:hover {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+}
+
+/* Word Count Stats */
+.word-count-stats {
+  margin: 16px 0 0; padding: 20px 24px;
+  background: var(--bg2); border-radius: var(--radius);
+  border: 1px solid var(--rule);
+}
+.word-count-stats .stats-title {
+  font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 12px;
+}
+.word-count-stats .stats-row {
+  display: flex; justify-content: space-between;
+  font-size: 13px; color: var(--muted); margin-bottom: 8px;
+}
+.word-count-stats .stats-row:last-child {
+  margin-bottom: 0; font-weight: 600; color: var(--accent);
+}
+.word-count-stats .stats-row span:last-child {
+  font-family: 'GeistMono', monospace;
+}
+body.dark-mode .word-count-stats {
+  background: var(--bg2); border-color: var(--rule);
+}
+
+/* Sidebar nav active chapter */
+.nav-sections a.nav-active-chapter {
+  color: var(--accent) !important;
+  background: var(--accent-light) !important;
+  border-left-color: var(--accent) !important;
+  font-weight: 600 !important;
+}
+
 </style>
 </head>
 <body>
@@ -2781,22 +2865,9 @@ public class DeviceManager {
 const navLinks = document.querySelectorAll('.nav-sections a');
 const sections = document.querySelectorAll('.top-anchor');
 
-function onScroll() {
-  let current = '';
-  sections.forEach(sec => {
-    const top = sec.getBoundingClientRect().top;
-    if (top <= 60) current = sec.id;
-  });
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === '#' + current) {
-      link.classList.add('active');
-      const chapter = link.closest('.nav-chapter');
-      if (chapter) chapter.classList.add('open');
-    }
-  });
-}
-window.addEventListener('scroll', onScroll);
+// onScroll disabled - single chapter mode
+function onScroll() { return; }
+// window.addEventListener('scroll', onScroll);
 
 // Sidebar chapter toggle
 document.querySelectorAll('.nav-chapter-toggle').forEach(toggle => {
@@ -2993,8 +3064,8 @@ document.querySelectorAll('.nav-chapter-toggle').forEach(toggle => {
 .dark-toggle-float {
   position: fixed;
   right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 200px;
+  transform: none;
   z-index: 9999;
   width: 44px;
   height: 44px;
@@ -3064,5 +3135,273 @@ body.dark-mode .dark-toggle-float:hover {
 })();
 </script>
 
+<script>
+/* ===== Chapter Navigation System ===== */
+(function() {
+  var main = document.querySelector(".main");
+  if (!main) return;
+
+  var allH2s = Array.from(main.querySelectorAll("h2"));
+  if (allH2s.length === 0) return;
+
+  var chapters = [];
+  allH2s.forEach(function(h2) {
+    var prev = h2.previousElementSibling;
+    var chId = "";
+    if (prev && prev.classList.contains("top-anchor")) {
+      chId = prev.id;
+    }
+    if (chId && /^ch\d+$/.test(chId)) {
+      chapters.push({ id: chId, h2: h2, title: h2.textContent });
+    }
+  });
+
+  if (chapters.length === 0) return;
+
+  var chapterBlocks = [];
+  for (var i = 0; i < chapters.length; i++) {
+    var block = document.createElement("div");
+    block.className = "chapter-content-block";
+    block.dataset.ch = chapters[i].id;
+
+    var el = chapters[i].h2.previousElementSibling;
+    if (!el) el = chapters[i].h2;
+    var endEl = (i < chapters.length - 1) ? chapters[i + 1].h2.previousElementSibling : null;
+    if (!endEl) endEl = main.lastElementChild;
+
+    var nodes = [];
+    var n = el;
+    while (n) {
+      nodes.push(n);
+      if (n === endEl) break;
+      n = n.nextElementSibling;
+    }
+
+    nodes.forEach(function(node) { block.appendChild(node); });
+    chapterBlocks.push(block);
+  }
+
+  // Insert blocks in order
+  for (var j = chapterBlocks.length - 1; j >= 0; j--) {
+    main.insertBefore(chapterBlocks[j], main.firstChild);
+  }
+
+  var currentIndex = 0;
+  chapterBlocks[0].classList.add("active");
+
+  function countWords(block) {
+    var text = block.textContent || "";
+    var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+    var english = text.replace(/[\u4e00-\u9fa5]/g, " ").split(/\s+/).filter(function(w) { return w.length > 0; }).length;
+    return chinese + english;
+  }
+
+  function readingTime(words) {
+    return Math.max(1, Math.round(words / 300));
+  }
+
+  var chapterWords = chapterBlocks.map(function(b) { return countWords(b); });
+  var totalWords = chapterWords.reduce(function(a, b) { return a + b; }, 0);
+  var totalTime = readingTime(totalWords);
+
+  function buildNavHTML() {
+    var prevTitle = currentIndex > 0 ? chapters[currentIndex - 1].title : "—";
+    var nextTitle = currentIndex < chapters.length - 1 ? chapters[currentIndex + 1].title : "—";
+    var prevDisabled = currentIndex === 0 ? " disabled" : "";
+    var nextDisabled = currentIndex === chapters.length - 1 ? " disabled" : "";
+    return "<div class=\"chapter-nav\">" +
+      "<a class=\"nav-btn prev-chapter" + prevDisabled + "\"><span class=\"nav-label\">← 上一章</span><span class=\"nav-title\">" + prevTitle + "</span></a>" +
+      "<a class=\"nav-btn next-chapter" + nextDisabled + "\"><span class=\"nav-label\">下一章 →</span><span class=\"nav-title\">" + nextTitle + "</span></a>" +
+      "</div>";
+  }
+
+  function buildStatsHTML() {
+    var cw = chapterWords[currentIndex];
+    var ct = readingTime(cw);
+    return "<div class=\"word-count-stats\">" +
+      "<div class=\"stats-title\">📊 统计信息</div>" +
+      "<div class=\"stats-row\"><span>本章字数</span><span>" + cw + " 字</span></div>" +
+      "<div class=\"stats-row\"><span>本章预计阅读</span><span>" + ct + " 分钟</span></div>" +
+      "<div class=\"stats-row\"><span>全文字数</span><span>" + totalWords + " 字</span></div>" +
+      "<div class=\"stats-row\"><span>全文预计阅读</span><span>" + totalTime + " 分钟</span></div>" +
+      "</div>";
+  }
+
+  // Insert nav + stats
+  var navContainer = document.createElement("div");
+  navContainer.className = "chapter-nav-container";
+  navContainer.innerHTML = buildStatsHTML() + buildNavHTML();
+  main.appendChild(navContainer);
+
+  function showChapter(index) {
+    if (index < 0 || index >= chapterBlocks.length) return;
+    currentIndex = index;
+    chapterBlocks.forEach(function(b, i) {
+      b.classList.toggle("active", i === index);
+    });
+
+    // Update nav + stats
+    var cnt = main.querySelector(".chapter-nav-container");
+    if (cnt) {
+      cnt.innerHTML = buildStatsHTML() + buildNavHTML();
+    }
+
+    // Update sidebar
+    document.querySelectorAll(".nav-sections a").forEach(function(a) {
+      a.classList.remove("nav-active-chapter");
+    });
+    var sidebarLink = document.querySelector(".nav-sections a[href=\"#" + chapters[index].id + "\"]");
+    if (sidebarLink) {
+      sidebarLink.classList.add("nav-active-chapter");
+      var chapterToggle = sidebarLink.closest(".nav-chapter");
+      if (chapterToggle) chapterToggle.classList.add("open");
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Resize charts after switch
+    setTimeout(function() {
+      if (typeof resizeAllCharts === "function") resizeAllCharts();
+    }, 300);
+  }
+
+  // Sidebar clicks
+  document.querySelectorAll(".nav-sections a[href^=\"#ch\"]").forEach(function(link) {
+    link.addEventListener("click", function(e) {
+      e.preventDefault();
+      var href = this.getAttribute("href").substring(1);
+      var idx = chapters.findIndex(function(c) { return c.id === href; });
+      if (idx >= 0) showChapter(idx);
+    });
+  });
+
+  // Nav button clicks
+  main.addEventListener("click", function(e) {
+    if (e.target.closest(".prev-chapter")) {
+      e.preventDefault();
+      if (currentIndex > 0) showChapter(currentIndex - 1);
+    }
+    if (e.target.closest(".next-chapter")) {
+      e.preventDefault();
+      if (currentIndex < chapters.length - 1) showChapter(currentIndex + 1);
+    }
+  });
+
+  // Hash handling
+  function checkHash() {
+    var hash = location.hash;
+    if (hash && /^#ch\d+$/.test(hash)) {
+      var id = hash.substring(1);
+      var idx = chapters.findIndex(function(c) { return c.id === id; });
+      if (idx >= 0) setTimeout(function() { showChapter(idx); }, 50);
+    }
+  }
+  window.addEventListener("hashchange", checkHash);
+  checkHash();
+
+  window._chapterSystem = {
+    chapters: chapters,
+    chapterBlocks: chapterBlocks,
+    showChapter: showChapter,
+    getCurrentIndex: function() { return currentIndex; }
+  };
+})();
+</script>
+
+<script>
+/* ===== Sakura Petal Animation ===== */
+(function() {
+  var canvas = document.createElement("canvas");
+  canvas.id = "sakura-canvas";
+  document.body.appendChild(canvas);
+  var ctx = canvas.getContext("2d");
+  var width = canvas.width = window.innerWidth;
+  var height = canvas.height = window.innerHeight;
+  var petals = [];
+  var maxPetals = 35;
+
+  var colors = [
+    "rgba(255, 222, 233, 0.45)",
+    "rgba(255, 235, 240, 0.35)",
+    "rgba(250, 240, 245, 0.25)"
+  ];
+
+  function Petal() {
+    this.x = Math.random() * width;
+    this.y = -20;
+    this.size = Math.random() * 8 + 3;
+    this.speed = Math.random() * 1.2 + 0.4;
+    this.angle = Math.random() * 360;
+    this.spin = Math.random() < 0.5 ? -1 : 1;
+    this.rotation = Math.random() * 360;
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+    this.swingSpeed = Math.random() * 0.02 + 0.005;
+  }
+
+  Petal.prototype.update = function() {
+    this.y += this.speed;
+    this.x += Math.sin(this.angle) * 0.8;
+    this.angle += this.swingSpeed;
+    this.rotation += this.spin * 0.5;
+    if (this.y > height + 10) { this.y = -10; this.x = Math.random() * width; }
+  };
+
+  Petal.prototype.draw = function() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation * Math.PI / 180);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, this.size / 2, this.size, 0, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.restore();
+  };
+
+  function init() {
+    petals = [];
+    for (var i = 0; i < maxPetals; i++) petals.push(new Petal());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    for (var i = 0; i < petals.length; i++) { petals[i].update(); petals[i].draw(); }
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener("resize", function() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+
+  init();
+  animate();
+})();
+</script>
+
+<script>
+/* ===== Search: jump to chapter on result click ===== */
+(function() {
+  document.addEventListener("click", function(e) {
+    var item = e.target.closest(".search-result-item");
+    if (!item) return;
+    setTimeout(function() {
+      if (!window._chapterSystem) return;
+      var blocks = window._chapterSystem.chapterBlocks;
+      var highlighted = document.querySelector("[style*=\"background-color: #fef9c3\"]");
+      if (highlighted) {
+        for (var i = 0; i < blocks.length; i++) {
+          if (blocks[i].contains(highlighted) && !blocks[i].classList.contains("active")) {
+            window._chapterSystem.showChapter(i);
+            setTimeout(function() {
+              highlighted.scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 150);
+            return;
+          }
+        }
+      }
+    }, 250);
+  }, true);
+})();
+</script>
 </body>
 </html>
