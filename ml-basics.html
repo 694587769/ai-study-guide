@@ -5135,17 +5135,43 @@ onScroll();
         item.appendChild(ctx);
       }
 
+      // Store the result element reference directly on the DOM element
+      item._resultElement = result.element;
       item.addEventListener('click', function() {
-        result.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        const origBg = result.element.style.backgroundColor;
-        const origTrans = result.element.style.transition;
-        result.element.style.transition = 'background-color 0.3s';
-        result.element.style.backgroundColor = '#fef9c3';
-        setTimeout(function() {
-          result.element.style.backgroundColor = origBg;
-          result.element.style.transition = origTrans;
-        }, 2000);
+        var el = result.element;
+        // Check if element is inside a hidden chapter-content-block
+        if (window._chapterSystem) {
+          var blocks = window._chapterSystem.chapterBlocks;
+          for (var i = 0; i < blocks.length; i++) {
+            if (blocks[i].contains(el) && !blocks[i].classList.contains('active')) {
+              // Show the chapter first, then scroll
+              (function(idx, targetEl) {
+                window._chapterSystem.showChapter(idx);
+                // Wait for DOM update + display to take effect
+                setTimeout(function() {
+                  targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  highlightElement(targetEl);
+                }, 200);
+              })(i, el);
+              return;
+            }
+          }
+        }
+        // Element is in the visible chapter, just scroll
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        highlightElement(el);
       });
+
+      function highlightElement(el) {
+        var origBg = el.style.backgroundColor;
+        var origTrans = el.style.transition;
+        el.style.transition = 'background-color 0.3s';
+        el.style.backgroundColor = '#fef9c3';
+        setTimeout(function() {
+          el.style.backgroundColor = origBg;
+          el.style.transition = origTrans;
+        }, 2000);
+      }
 
       resultsContainer.appendChild(item);
     });
@@ -5443,30 +5469,6 @@ body.dark-mode .dark-toggle-float:hover {
 })();
 </script>
 
-<script>
-/* ===== Search: jump to chapter on result click ===== */
-(function() {
-  document.addEventListener("click", function(e) {
-    var item = e.target.closest(".search-result-item");
-    if (!item) return;
-    setTimeout(function() {
-      if (!window._chapterSystem) return;
-      var blocks = window._chapterSystem.chapterBlocks;
-      var highlighted = document.querySelector("[style*=\"background-color: #fef9c3\"]");
-      if (highlighted) {
-        for (var i = 0; i < blocks.length; i++) {
-          if (blocks[i].contains(highlighted) && !blocks[i].classList.contains("active")) {
-            window._chapterSystem.showChapter(i);
-            setTimeout(function() {
-              highlighted.scrollIntoView({ behavior: "smooth", block: "center" });
-            }, 150);
-            return;
-          }
-        }
-      }
-    }, 250);
-  }, true);
-})();
-</script>
+
 </body>
 </html>
