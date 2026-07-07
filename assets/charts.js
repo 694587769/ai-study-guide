@@ -9,6 +9,20 @@
   var success = style.getPropertyValue('--success').trim();
   var danger = style.getPropertyValue('--danger').trim();
 
+  // 根据容器宽度自适应图表字体大小
+  function chartFontSize(containerId, baseSize) {
+    var el = document.getElementById(containerId);
+    var w = el ? el.clientWidth : 600;
+    var scaled = baseSize * (w / 650);
+    return Math.max(9, Math.min(baseSize, Math.round(scaled)));
+  }
+
+  function resizeAllCharts() {
+    [chart1, chart2, chart3, chart4, chart5, chart6, chart7, chart8, chart9, chart10].forEach(function(c) {
+      if (c && !c.isDisposed()) c.resize();
+    });
+  }
+
   // ===== Chart 1: Confusion Matrix =====
   var chart1 = echarts.init(document.getElementById('chart-confusion'), null, { renderer: 'svg' });
   function cmColor(v) {
@@ -51,7 +65,7 @@
           var labels = { 'FN': 'FN=15', 'TP': 'TP=65', 'TN': 'TN=70', 'FP': 'FP=10' };
           return labels[p.value[3]];
         },
-        fontSize: 14, fontWeight: 'bold', color: ink
+        fontSize: chartFontSize('chart-confusion', 14), fontWeight: 'bold', color: ink
       },
       itemStyle: {
         borderWidth: 2,
@@ -328,12 +342,12 @@
     xAxis: {
       type: 'category', data: ['Token 0\n"电网"', 'Token 1\n"调度"', 'Token 2\n"优化"', 'Token 3\n"系统"'],
       axisLine: { lineStyle: { color: muted } },
-      axisLabel: { color: ink, fontWeight: 'bold', fontSize: 11 }
+      axisLabel: { color: ink, fontWeight: 'bold', fontSize: chartFontSize('chart-attention-heatmap', 11) }
     },
     yAxis: {
       type: 'category', data: ['Token 0\n"电网"', 'Token 1\n"调度"', 'Token 2\n"优化"', 'Token 3\n"系统"'],
       axisLine: { lineStyle: { color: muted } },
-      axisLabel: { color: ink, fontWeight: 'bold', fontSize: 11 }
+      axisLabel: { color: ink, fontWeight: 'bold', fontSize: chartFontSize('chart-attention-heatmap', 11) }
     },
     visualMap: { min: 0, max: 1, show: true, bottom: 0, left: 'center', orient: 'horizontal', inRange: { color: ['#f0f0f5', accent] }, text: ['强关注', '弱关注'] },
     series: [{
@@ -341,7 +355,7 @@
       label: {
         show: true,
         formatter: function(p) { return p.value[2].toFixed(2); },
-        fontSize: 13, fontWeight: 'bold', color: ink
+        fontSize: chartFontSize('chart-attention-heatmap', 13), fontWeight: 'bold', color: ink
       },
       itemStyle: { borderWidth: 2, borderColor: '#ffffff' }
     }]
