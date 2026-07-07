@@ -26,6 +26,84 @@
   --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05);
   --sidebar-w: 280px;
 }
+/* ===== Dark Mode ===== */
+body.dark-mode {
+  --bg: #1a1a2e;
+  --bg2: #222240;
+  --surface: #252540;
+  --ink: #e0e0f0;
+  --muted: #9999aa;
+  --rule: #333355;
+  --accent: #6090ff;
+  --accent2: #9d6eff;
+  --accent-light: #1a2a44;
+  --accent2-light: #2a1a44;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+}
+body.dark-mode .sidebar {
+  background: var(--surface);
+  border-right-color: var(--rule);
+}
+body.dark-mode .nav-chapter-toggle:hover {
+  background: var(--bg2);
+}
+body.dark-mode .content-section {
+  background: var(--surface);
+  border-color: var(--rule);
+}
+body.dark-mode pre {
+  background: var(--bg2);
+  border-color: var(--rule);
+}
+body.dark-mode code {
+  background: var(--bg2);
+}
+body.dark-mode table th {
+  background: var(--bg2);
+}
+body.dark-mode table td, body.dark-mode table th {
+  border-color: var(--rule);
+}
+body.dark-mode blockquote {
+  background: var(--bg2);
+  border-left-color: var(--accent);
+}
+body.dark-mode .example-box {
+  background: var(--bg2);
+  border-color: var(--rule);
+}
+body.dark-mode .formula-block {
+  background: var(--bg2);
+  border-color: var(--rule);
+}
+body.dark-mode .chart-figure {
+  background: var(--surface);
+  border-color: var(--rule);
+}
+body.dark-mode .search-overlay {
+  background: rgba(0,0,0,0.7);
+}
+body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--rule);
+}
+body.dark-mode .top-anchor {
+  color: var(--muted);
+}
+body.dark-mode hr {
+  border-color: var(--rule);
+}
+body.dark-mode .toc a {
+  color: var(--muted);
+}
+body.dark-mode .toc a:hover {
+  color: var(--accent);
+}
+
 
 /* ===== Fonts ===== */
 @font-face { font-family: 'WorkSans'; src: url('https://694587769.github.io/ai-study-guide/shared/fonts/WorkSans-Regular.ttf') format('truetype'); font-weight: 400; }
@@ -2608,5 +2686,82 @@ onScroll();
   });
 })();
 </script>
+
+<style>
+/* ===== Dark Mode Toggle (floating) ===== */
+.dark-toggle-float {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9999;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  box-shadow: var(--shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  font-family: inherit;
+}
+.dark-toggle-float:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  transform: translateY(-50%) scale(1.08);
+}
+.dark-toggle-float:active {
+  transform: translateY(-50%) scale(0.95);
+}
+body.dark-mode .dark-toggle-float {
+  background: var(--surface);
+  border-color: var(--rule);
+  color: var(--warning);
+}
+body.dark-mode .dark-toggle-float:hover {
+  background: var(--warning);
+  color: #1a1a2e;
+  border-color: var(--warning);
+}
+@media (max-width: 768px) {
+  .dark-toggle-float {
+    right: 10px;
+    width: 40px;
+    height: 40px;
+  }
+}
+</style>
+<button id="dark-toggle-float" class="dark-toggle-float" title="切换夜间模式">☽</button>
+<script>
+(function() {
+  var isDark = false;
+  var btn = document.getElementById('dark-toggle-float');
+  function apply() {
+    if (isDark) {
+      document.body.classList.add('dark-mode');
+      btn.innerHTML = '☀';
+      btn.title = '切换日间模式';
+    } else {
+      document.body.classList.remove('dark-mode');
+      btn.innerHTML = '☽';
+      btn.title = '切换夜间模式';
+    }
+  }
+  btn.addEventListener('click', function() {
+    isDark = !isDark;
+    apply();
+  });
+  // 默认暖色调
+  apply();
+})();
+</script>
+
 </body>
 </html>
