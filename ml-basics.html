@@ -557,6 +557,7 @@ figcaption {
         <a href="#ch1-2">1.2 机器学习的分类</a>
         <a href="#ch1-3">1.3 核心概念</a>
         <a href="#ch1-4">1.4 机器学习在电网中的应用全景</a>
+        <a href="#ch1-5">1.5 机器学习项目流程</a>
       </div>
     </div>
 
@@ -567,6 +568,7 @@ figcaption {
         <a href="#ch2-2">2.2 数据清洗</a>
         <a href="#ch2-3">2.3 特征工程</a>
         <a href="#ch2-4">2.4 数据划分与交叉验证</a>
+        <a href="#ch2-5">2.5 数据可视化与探索性分析</a>
       </div>
     </div>
 
@@ -843,6 +845,61 @@ figcaption {
   <text x="320" y="225" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">数据基础：SCADA | PMU | 智能电表 | 气象 | 巡检</text>
   <rect x="160" y="250" width="320" height="40" fill="#2563eb" rx="6"/>
   <text x="320" y="275" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">技术栈：Python | Scikit-learn | PyTorch | XGBoost</text>
+</svg>
+</figure>
+
+<span class="top-anchor" id="ch1-5"></span>
+<h3>1.5 机器学习项目流程</h3>
+
+<p>一个完整的机器学习项目并非简单的"调包+训练"，而是遵循一套系统化的工程流程。理解并严格执行这一流程，是确保项目成功的关键。以下是标准的机器学习项目流程，分为七个阶段：</p>
+
+<h4>1.5.1 问题定义</h4>
+<p>问题定义是机器学习项目的第一步，也是最容易被忽视的一步。在这一阶段，需要明确：业务目标是什么（如"降低变压器故障率"而不是"提高分类准确率"）、这是分类问题还是回归问题、是否有可用的历史数据、评判成功的标准是什么。例如，电网项目中"预测未来24小时电力负荷"是一个典型的回归问题，评判标准是RMSE和MAPE。</p>
+
+<h4>1.5.2 数据收集</h4>
+<p>数据收集阶段需要从各种数据源获取原始数据。电网项目的数据来源包括：SCADA系统（实时遥测遥信数据）、PMU（相量测量单元高频数据）、智能电表（用户用电数据）、设备在线监测装置（DGA、局放数据）、气象数据（温度、湿度、风速等）、巡检记录（文本和图像数据）。数据收集时需要注意数据的完整性、时效性和准确性。</p>
+
+<h4>1.5.3 数据预处理</h4>
+<p>数据预处理是机器学习中最耗时的环节，通常占项目总时间的60%-80%。主要包括：缺失值处理（删除、填充均值/中位数/众数、使用模型预测填充）、异常值检测与处理（3σ原则、IQR方法、孤立森林）、数据标准化/归一化、类别特征编码（One-Hot Encoding、Label Encoding）、文本数据向量化等。对于电网数据，还需要特别注意：时间戳对齐（不同数据源的时间分辨率可能不同）、量纲统一（电流A、电压kV、功率MW等单位的统一）、数据质量校验（如三相电流之和是否为零等物理约束）。</p>
+
+<h4>1.5.4 特征工程</h4>
+<p>特征工程是决定模型性能上限的关键步骤。主要包括：特征构造（从原始数据中创造新特征，如从时间戳提取"小时"、"星期几"、"是否为节假日"等）、特征选择（过滤法、包装法、嵌入法，剔除冗余和无关特征）、特征变换（对数变换、Box-Cox变换处理偏态分布）、特征交互（组合两个或多个特征创造交互特征）。在电网领域，典型的特征工程包括：从日期时间构造"峰谷平时段"特征、从电压电流计算"功率因数"特征、从连续监测数据构造"变化率"和"滑动平均"特征。</p>
+
+<h4>1.5.5 模型选择</h4>
+<p>模型选择需要综合考虑：问题类型（回归/分类/聚类/降维）、数据规模（小样本适合SVM、逻辑回归，大样本适合XGBoost、深度学习）、可解释性要求（需要解释模型决策时优先选择线性回归、决策树）、计算资源限制、实时性要求。常用的选型策略是：先使用简单模型（如线性回归、逻辑回归）建立基线，再逐步尝试更复杂的模型（随机森林、XGBoost、深度学习），通过交叉验证对比性能。</p>
+
+<h4>1.5.6 训练与调优</h4>
+<p>模型训练与超参数调优是迭代优化的过程。关键步骤包括：划分训练集、验证集和测试集（常用比例7:2:1或6:2:2）、使用交叉验证评估模型稳定性、通过网格搜索或随机搜索优化超参数、使用学习曲线诊断过拟合/欠拟合。重要原则：测试集只在最终评估时使用一次，绝对不能用于调参过程中的模型选择。</p>
+
+<h4>1.5.7 评估与部署</h4>
+<p>模型评估需要从多个维度全面衡量：回归指标（RMSE、MAE、R²、MAPE）、分类指标（准确率、精确率、召回率、F1、AUC-ROC）、业务指标（实际业务收益、误报率、漏报率）。模型部署是将训练好的模型集成到生产系统中，包括：模型序列化（pickle、joblib）、模型服务化（Flask/FastAPI REST API）、模型监控（预测分布漂移检测、性能退化预警）、模型更新（定期重训练、在线学习）。</p>
+
+<figure class="chart-figure">
+<figcaption>图1-5：机器学习项目完整流程</figcaption>
+<svg width="100%" height="360" viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg">
+  <rect x="220" y="10" width="200" height="36" fill="#2563eb" rx="6"/>
+  <text x="320" y="34" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">1. 问题定义</text>
+  <polygon points="320,46 310,56 330,56" fill="#666"/>
+  <rect x="220" y="58" width="200" height="36" fill="#059669" rx="6"/>
+  <text x="320" y="82" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">2. 数据收集</text>
+  <polygon points="320,94 310,104 330,104" fill="#666"/>
+  <rect x="220" y="106" width="200" height="36" fill="#7c3aed" rx="6"/>
+  <text x="320" y="130" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">3. 数据预处理</text>
+  <polygon points="320,142 310,152 330,152" fill="#666"/>
+  <rect x="220" y="154" width="200" height="36" fill="#d97706" rx="6"/>
+  <text x="320" y="178" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">4. 特征工程</text>
+  <polygon points="320,190 310,200 330,200" fill="#666"/>
+  <rect x="220" y="202" width="200" height="36" fill="#dc2626" rx="6"/>
+  <text x="320" y="226" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">5. 模型选择</text>
+  <polygon points="320,238 310,248 330,248" fill="#666"/>
+  <rect x="220" y="250" width="200" height="36" fill="#0891b2" rx="6"/>
+  <text x="320" y="274" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">6. 训练与调优</text>
+  <polygon points="320,286 310,296 330,296" fill="#666"/>
+  <rect x="220" y="298" width="200" height="36" fill="#1a1a2e" rx="6"/>
+  <text x="320" y="322" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">7. 评估与部署</text>
+  <path d="M440,316 Q500,280 440,130 Q500,90 440,34" fill="none" stroke="#666" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="530" y="180" fill="#666" font-size="11">迭代优化</text>
+  <polygon points="430,180 440,170 440,190" fill="#666"/>
 </svg>
 </figure>
 
@@ -1357,6 +1414,120 @@ print(f"验证集: {len(val)} 条 ({val['timestamp'].min().date()} ~ {val['times
 print(f"测试集: {len(test)} 条 ({test['timestamp'].min().date()} ~ {test['timestamp'].max().date()})")</code></pre>
 </div>
 
+<span class="top-anchor" id="ch2-5"></span>
+<h3>2.5 数据可视化与探索性数据分析</h3>
+
+<p>探索性数据分析（Exploratory Data Analysis, EDA）是数据预处理中不可或缺的环节。在开始建模之前，通过可视化手段深入理解数据的分布、关系和异常模式，能够为后续的特征工程和模型选择提供重要指导。EDA的核心目标包括：发现数据的基本统计特征、识别变量间的相关关系、检测异常值和数据质量问题、验证业务假设。</p>
+
+<h4>2.5.1 单变量分布分析</h4>
+<p>单变量分析关注每个特征的分布特征。对于连续变量，使用<strong>直方图（histogram）</strong>和<strong>核密度估计（KDE）</strong>查看数据分布形态（是否正态、有无偏态、有无多峰）；对于离散/类别变量，使用<strong>柱状图（bar plot）</strong>或<strong>计数图（count plot）</strong>查看各类别的频数分布。在电网数据中，典型的分布特征包括：负荷数据通常呈现双峰分布（白天和夜间）、电压数据近似正态分布、故障数据呈现严重的类别不平衡。</p>
+
+<h4>2.5.2 多变量关系分析</h4>
+<p>多变量分析探索特征之间以及特征与目标变量之间的关系。常用工具包括：<strong>散点图矩阵（scatter matrix / pairplot）</strong>——同时展示所有特征两两之间的散点图和对角线上的分布直方图；<strong>相关性热力图（correlation heatmap）</strong>——使用颜色矩阵展示特征间的相关系数，快速识别强相关特征（可能冗余）和与目标变量相关的特征；<strong>箱线图（box plot）</strong>和小提琴图（violin plot）——按类别分组展示特征分布，识别不同类别间的差异。</p>
+
+<h4>2.5.3 电网数据EDA实践</h4>
+<p>在电网数据分析中，EDA有着独特的应用场景：负荷曲线可视化——按小时、日、月、季节聚合负荷数据，绘制负荷曲线，识别负荷的周期性规律；电压分布分析——按变电站或馈线分组，使用箱线图比较不同区域的电压质量；设备状态时间序列可视化——将设备的多维监测数据（温度、振动、电流等）绘制在同一时间轴上，观察异常时刻各参数的变化模式；地理信息可视化——结合GIS数据，在地图上展示设备分布、负荷密度等空间信息。</p>
+
+<div class="example-box">
+<div class="example-title">EDA实战：电网数据探索性分析</div>
+<p><strong>分析目标：</strong>使用matplotlib和seaborn对模拟的电网负荷数据进行探索性分析，包括单变量分布分析、多变量关系分析和相关性分析，为后续建模提供数据洞察。</p>
+
+<pre><code># ===== 导入EDA所需库 =====
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import pandas as pd
+
+# 设置中文字体和绘图风格
+plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'DejaVu Sans']
+plt.rcParams['axes.unicode_minus'] = False
+sns.set_style("whitegrid")
+sns.set_palette("Set2")
+
+# ===== 模拟电网综合数据 =====
+np.random.seed(42)
+n = 500
+df = pd.DataFrame({
+    'temperature': 25 + 10 * np.random.randn(n),         # 环境温度（℃）
+    'humidity': 60 + 15 * np.random.randn(n),             # 湿度（%）
+    'wind_speed': 3 + 2 * np.random.randn(n),             # 风速（m/s）
+    'load_mw': 500 + 150 * np.random.randn(n),            # 电力负荷（MW）
+    'voltage_kv': 10.5 + 0.3 * np.random.randn(n),        # 母线电压（kV）
+    'power_factor': 0.85 + 0.1 * np.random.randn(n),      # 功率因数
+    'hour': np.random.choice(range(24), n),                # 小时（0-23）
+    'season': np.random.choice(['春', '夏', '秋', '冬'], n),  # 季节
+})
+
+# ===== 1. 单变量分布分析：直方图 + KDE =====
+fig, axes = plt.subplots(2, 3, figsize=(15, 8))
+features = ['temperature', 'humidity', 'wind_speed', 'load_mw', 'voltage_kv', 'power_factor']
+for ax, feat in zip(axes.flat, features):
+    ax.hist(df[feat], bins=30, density=True, alpha=0.6, color='#2563eb', edgecolor='white')
+    # 叠加核密度估计曲线
+    df[feat].plot(kind='kde', ax=ax, color='#dc2626', linewidth=2)
+    ax.set_title(f'{feat} 分布', fontsize=12)
+    ax.set_xlabel(''); ax.set_ylabel('密度')
+plt.tight_layout()
+plt.show()
+# 输出：6个子图，每个特征一个直方图+KDE曲线，展示数据分布形态
+
+# ===== 2. 散点图矩阵：多变量关系一览 =====
+# 使用Seaborn的pairplot同时展示所有数值变量两两关系
+sns.pairplot(df[['temperature', 'humidity', 'wind_speed', 'load_mw']], 
+             diag_kind='kde', plot_kws={'alpha': 0.5, 's': 20},
+             corner=True)  # corner=True只显示下三角，避免重复
+plt.suptitle('散点图矩阵：特征间关系一览', y=1.02, fontsize=14)
+plt.show()
+# 输出：4x4散点图矩阵，对角线为KDE分布，下三角为散点图
+
+# ===== 3. 相关性热力图 =====
+plt.figure(figsize=(10, 8))
+# 计算相关系数矩阵（仅数值列）
+corr_matrix = df[features].corr()
+# 绘制热力图
+sns.heatmap(corr_matrix, annot=True, fmt='.2f', cmap='RdBu_r',
+            center=0, vmin=-1, vmax=1, square=True,
+            linewidths=0.5, cbar_kws={'shrink': 0.8})
+plt.title('特征相关性热力图', fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.show()
+# 输出：颜色矩阵，红色=正相关，蓝色=负相关，数值为皮尔逊相关系数
+
+# ===== 4. 按季节分组箱线图：分析负荷的季节性差异 =====
+plt.figure(figsize=(10, 6))
+sns.boxplot(x='season', y='load_mw', data=df, 
+            order=['春', '夏', '秋', '冬'],
+            palette='Set2', width=0.6)
+plt.title('不同季节的电力负荷分布', fontsize=14, fontweight='bold')
+plt.xlabel('季节'); plt.ylabel('负荷 (MW)')
+plt.grid(alpha=0.3, axis='y')
+plt.show()
+# 输出：4个箱线图，展示每个季节负荷的中位数、四分位数和异常值
+
+# ===== 5. 按小时聚合的负荷曲线：日负荷模式 =====
+plt.figure(figsize=(12, 5))
+hourly_load = df.groupby('hour')['load_mw'].agg(['mean', 'std'])
+plt.plot(hourly_load.index, hourly_load['mean'], 'o-', 
+         color='#2563eb', linewidth=2, markersize=6, label='平均负荷')
+# 添加标准差阴影区间
+plt.fill_between(hourly_load.index, 
+                 hourly_load['mean'] - hourly_load['std'],
+                 hourly_load['mean'] + hourly_load['std'],
+                 alpha=0.2, color='#2563eb', label='±1标准差')
+plt.xlabel('小时'); plt.ylabel('负荷 (MW)')
+plt.title('日负荷曲线（24小时模式）', fontsize=14, fontweight='bold')
+plt.xticks(range(0, 24, 2))
+plt.legend(); plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+# 输出：24小时负荷折线图，带标准差阴影，展示日负荷变化规律</code></pre>
+</div>
+
+<div class="callout">
+<div class="callout-title">EDA最佳实践</div>
+<p>进行EDA时，建议遵循以下原则：<strong>先整体后局部</strong>——先看数据整体概览（shape、info、describe），再深入分析每个特征；<strong>可视化优先</strong>——图表比表格更直观，一张好的图表胜过千言万语；<strong>带着问题探索</strong>——根据业务知识提出假设，用数据验证；<strong>记录发现</strong>——EDA过程中的发现和洞察应及时记录，作为后续特征工程的依据。常用工具链：pandas（数据处理）+ matplotlib（基础绘图）+ seaborn（统计可视化）+ plotly（交互式可视化）。</p>
+</div>
+
 <!-- ========== CHAPTER 3 ========== -->
 <span class="top-anchor" id="ch3"></span>
 <h2>第3章 监督学习——回归算法</h2>
@@ -1371,90 +1542,148 @@ print(f"测试集: {len(test)} 条 ({test['timestamp'].min().date()} ~ {test['ti
 <h4>3.1.2 正则化：Ridge与Lasso</h4>
 <p>当特征数量较多或特征间存在共线性时，普通最小二乘法容易过拟合。正则化通过在损失函数中添加惩罚项来控制模型复杂度。<strong>Ridge回归（L2正则化）</strong>添加权重平方和惩罚：Loss = RSS + α * Σw<sub>i</sub>²，使权重趋近于0但不为0。<strong>Lasso回归（L1正则化）</strong>添加权重绝对值之和惩罚：Loss = RSS + α * Σ|w<sub>i</sub>|，可以实现特征选择（将不重要特征的权重压缩为0）。</p>
 
+<figure class="chart-figure">
+<figcaption>流程图：线性回归算法流程</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <text x="300" y="22" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">线性回归算法流程</text>
+  <rect x="200" y="35" width="200" height="30" fill="#2563eb" rx="5"/>
+  <text x="300" y="55" text-anchor="middle" fill="#fff" font-size="12">输入：特征矩阵X 和目标y</text>
+  <polygon points="300,65 290,75 310,75" fill="#666"/>
+  <rect x="200" y="77" width="200" height="30" fill="#059669" rx="5"/>
+  <text x="300" y="97" text-anchor="middle" fill="#fff" font-size="12">最小化残差平方和RSS</text>
+  <polygon points="300,107 290,117 310,117" fill="#666"/>
+  <rect x="200" y="119" width="200" height="30" fill="#7c3aed" rx="5"/>
+  <text x="300" y="139" text-anchor="middle" fill="#fff" font-size="12">输出：最优权重w和截距b</text>
+  <text x="300" y="185" text-anchor="middle" fill="#666" font-size="11">w = (XᵀX)⁻¹Xᵀy（解析解）或 梯度下降迭代求解</text>
+</svg>
+</figure>
+
+
 <div class="example-box">
 <div class="example-title">案例：电力负荷与气象因素的线性回归分析</div>
 <p><strong>案例背景：</strong>电力负荷受温度、湿度、风速、是否工作日等多种因素影响，线性回归可用于量化各因素对负荷的线性影响程度，为调度决策提供参考。</p>
 <p><strong>数据说明：</strong>模拟200条负荷预测样本，包含4个特征：temperature（温度，℃）、humidity（湿度，%）、wind_speed（风速，m/s）、is_workday（是否工作日，0/1），目标变量load（电力负荷，MW）。</p>
 <p><strong>分析目标：</strong>使用普通线性回归、Ridge回归（L2正则化）和Lasso回归（L1正则化）三种模型进行负荷预测，通过RMSE、MAE和R²对比模型性能，并分析各特征系数以理解影响因素。</p>
 
-<pre><code>import numpy as np
+<pre><code># 导入numpy库，用于数值计算和数组操作
+import numpy as np
+# 导入pandas库，用于数据处理和DataFrame数据结构
 import pandas as pd
+# 导入matplotlib.pyplot库，用于数据可视化
 import matplotlib.pyplot as plt
+# 从sklearn.linear_model导入三个线性回归模型：普通线性回归、Ridge、Lasso
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
+# 导入train_test_split用于随机划分训练集和测试集
 from sklearn.model_selection import train_test_split
+# 导入常用回归评估指标：均方误差、R²得分、平均绝对误差
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 
-# 设置中文字体（避免乱码）
+# 设置中文字体，防止matplotlib绘图时中文显示乱码
+# 添加SimHei、Microsoft YaHei、DejaVu Sans确保不同系统都能正常显示
 plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'DejaVu Sans']
+# 设置负号正常显示，解决中文环境下负号显示为方块的问题
 plt.rcParams['axes.unicode_minus'] = False
 
 # ===== 模拟电网负荷预测数据 =====
+# 设置随机种子，保证每次运行结果可复现
 np.random.seed(42)
+# 样本数量：共200条记录
 n_samples = 200
-# 特征：温度（℃）、湿度（%）、风速（m/s）、是否工作日
+# 生成温度数据：均值25℃，标准差15℃的正态分布
 temperature = 25 + 15 * np.random.randn(n_samples)
+# 生成湿度数据：均值60%，标准差20%的正态分布
 humidity = 60 + 20 * np.random.randn(n_samples)
+# 生成风速数据：均值3m/s，标准差2m/s的正态分布
 wind_speed = 3 + 2 * np.random.randn(n_samples)
+# 生成是否工作日：随机选择0（休息日）或1（工作日）
 is_workday = np.random.choice([0, 1], n_samples)
 
-# 目标变量：电力负荷（MW），与特征有线性关系
+# 目标变量：电力负荷（MW），构造真实的线性关系 + 随机噪声
+# 温度每升高1℃，负荷增加8MW；湿度越高负荷越低；风速越高负荷越高；工作日比休息日多80MW
 load = (500 + 8 * temperature - 2 * humidity + 5 * wind_speed 
         + 80 * is_workday + 30 * np.random.randn(n_samples))
 
-# 构建DataFrame
+# 将数据放入pandas DataFrame，方便后续操作
 df = pd.DataFrame({
     'temperature': temperature, 'humidity': humidity,
     'wind_speed': wind_speed, 'is_workday': is_workday, 'load': load
 })
+# 分离特征矩阵X（所有列除了目标变量load）
 X = df.drop('load', axis=1)
+# 分离目标变量y（仅load列）
 y = df['load']
 
-# 划分训练集和测试集
+# 按比例划分训练集和测试集：70%训练，30%测试
+# random_state=42保证划分结果可复现
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-# ===== 模型1：普通线性回归 =====
+# ===== 模型1：普通线性回归（无正则化） =====
+# 创建普通线性回归模型对象，使用默认参数
 lr = LinearRegression()
+# 使用训练数据拟合模型，学习特征权重和截距
 lr.fit(X_train, y_train)
+# 使用训练好的模型在测试集上预测
 y_pred_lr = lr.predict(X_test)
 
-# ===== 模型2：Ridge回归（L2正则化） =====
+# ===== 模型2：Ridge回归（带L2正则化） =====
+# alpha=1.0是正则化强度，越大正则化越强
 ridge = Ridge(alpha=1.0)
+# 拟合Ridge回归模型
 ridge.fit(X_train, y_train)
+# 在测试集上预测
 y_pred_ridge = ridge.predict(X_test)
 
-# ===== 模型3：Lasso回归（L1正则化） =====
+# ===== 模型3：Lasso回归（带L1正则化） =====
+# alpha=1.0正则化强度，可以自动将不重要特征的权重压缩为0
 lasso = Lasso(alpha=1.0)
+# 拟合Lasso回归模型
 lasso.fit(X_train, y_train)
+# 在测试集上预测
 y_pred_lasso = lasso.predict(X_test)
 
-# ===== 模型评估 =====
+# ===== 模型评估：打印三种模型在测试集上的评估指标 =====
 print("=" * 50)
 print("负荷预测模型评估结果")
 print("=" * 50)
+# 遍历三种模型，分别计算并打印RMSE、MAE、R²
 for name, y_pred in [("线性回归", y_pred_lr), ("Ridge", y_pred_ridge), ("Lasso", y_pred_lasso)]:
+    # 计算均方误差MSE
     mse = mean_squared_error(y_test, y_pred)
+    # 计算均方根误差RMSE，单位与目标变量一致（MW）
     rmse = np.sqrt(mse)
+    # 计算平均绝对误差MAE，对异常值比MSE鲁棒
     mae = mean_absolute_error(y_test, y_pred)
+    # 计算R²得分，衡量模型解释方差的比例，1代表完美预测
     r2 = r2_score(y_test, y_pred)
+    # 格式化打印结果
     print(f"{name}: RMSE={rmse:.2f} MW, MAE={mae:.2f} MW, R²={r2:.4f}")
 
-# 输出特征系数
+# 打印普通线性回归学到的各特征系数，帮助理解特征对目标的影响
 print("\n线性回归特征系数：")
 for name, coef in zip(X.columns, lr.coef_):
     print(f"  {name}: {coef:.2f}")
 
 # ===== 可视化：预测值 vs 真实值 =====
+# 创建1行3列的子图布局，设置整体尺寸
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+# 遍历三种模型，分别绘制散点图
 for ax, (name, y_pred) in zip(axes, [("线性回归", y_pred_lr), ("Ridge", y_pred_ridge), ("Lasso", y_pred_lasso)]):
+    # 绘制散点图：x=真实值 y=预测值，设置透明度和边缘颜色
     ax.scatter(y_test, y_pred, alpha=0.6, edgecolors='k', linewidth=0.5)
+    # 绘制理想预测线y=x，红色虚线，线宽2
     ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
+    # 设置x轴标签
     ax.set_xlabel('真实负荷 (MW)')
+    # 设置y轴标签
     ax.set_ylabel('预测负荷 (MW)')
+    # 设置子图标题
     ax.set_title(name)
+# 自动调整子图间距，避免重叠
 plt.tight_layout()
+# 显示图像
 plt.show()
-# 输出结果应为：三个子图分别展示线性回归、Ridge、Lasso的预测值vs真实值散点图
-# 红色虚线代表理想预测线（y=x），散点越接近该线说明预测越准确</code></pre>
+# 输出结果说明：三个子图分别展示三种模型的预测值vs真实值散点图
+# 红色虚线代表理想预测线y=x，散点越接近该线说明预测越准确</code></pre>
 </div>
 
 <div class="callout">
@@ -1520,65 +1749,109 @@ print(f"预测: 负载率80%时，油温约为 {model.predict([[80]])[0]:.1f}℃
 <h4>3.2.2 随机森林与特征重要性</h4>
 <p>随机森林通过自助采样（Bootstrap）和随机特征选择来构建多样化的决策树集合。特征重要性衡量每个特征对预测的贡献程度，通常基于特征在所有树中减少的不纯度总和来计算。在电网设备诊断中，特征重要性分析可以帮助识别影响设备状态的关键因素。</p>
 
+<figure class="chart-figure">
+<figcaption>流程图：决策树回归算法流程</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <text x="300" y="22" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">决策树回归算法流程</text>
+  <rect x="200" y="35" width="200" height="30" fill="#2563eb" rx="5"/>
+  <text x="300" y="55" text-anchor="middle" fill="#fff" font-size="12">输入：训练数据 全部样本</text>
+  <polygon points="300,65 290,75 310,75" fill="#666"/>
+  <rect x="200" y="77" width="200" height="30" fill="#059669" rx="5"/>
+  <text x="300" y="97" text-anchor="middle" fill="#fff" font-size="12">选择最优特征和划分点</text>
+  <polygon points="200,92 190,100 190,84" fill="#666"/>
+  <rect x="50" y="77" width="130" height="30" fill="#d97706" rx="5"/>
+  <text x="115" y="97" text-anchor="middle" fill="#fff" font-size="11">左子节点：是</text>
+  <polygon points="400,92 410,100 410,84" fill="#666"/>
+  <rect x="420" y="77" width="130" height="30" fill="#d97706" rx="5"/>
+  <text x="485" y="97" text-anchor="middle" fill="#fff" font-size="11">右子节点：否</text>
+  <polygon points="300,107 290,117 310,117" fill="#666"/>
+  <rect x="200" y="119" width="200" height="30" fill="#dc2626" rx="5"/>
+  <text x="300" y="139" text-anchor="middle" fill="#fff" font-size="12">递归直到满足停止条件</text>
+  <polygon points="300,149 290,159 310,159" fill="#666"/>
+  <rect x="200" y="161" width="200" height="30" fill="#7c3aed" rx="5"/>
+  <text x="300" y="181" text-anchor="middle" fill="#fff" font-size="12">输出：叶节点均值=预测值</text>
+</svg>
+</figure>
+
+
 <div class="example-box">
 <div class="example-title">案例：基于随机森林的变压器油温预测</div>
 <p><strong>案例背景：</strong>某220kV变电站主变压器油温受环境温度、负载率、冷却效率、油位、分接头位置等多种因素影响，呈现复杂的非线性关系，需要使用非线性模型进行准确预测。</p>
 <p><strong>数据说明：</strong>模拟300条变压器运行记录，包含5个特征：ambient_temp（环境温度，℃）、load_rate（负载率，0-1）、cooling_efficiency（冷却效率，0-1）、oil_level（油位，0-1）、tap_position（分接头位置，1-5），目标变量为变压器油温（℃）。</p>
 <p><strong>分析目标：</strong>使用决策树回归和随机森林回归建模，通过特征重要性分析明确影响油温的关键因素，为运维人员提供优化冷却策略的数据支撑。</p>
 
-<pre><code>from sklearn.tree import DecisionTreeRegressor
+<pre><code># 导入决策树回归模型
+from sklearn.tree import DecisionTreeRegressor
+# 导入随机森林回归模型（集成学习）
 from sklearn.ensemble import RandomForestRegressor
+# 导入seaborn库，用于高级统计可视化
 import seaborn as sns
 
 # 模拟变压器温度预测数据
+# 设置随机种子，保证结果可复现
 np.random.seed(42)
+# 样本数量：300条变压器运行记录
 n = 300
+# 创建特征DataFrame，包含5个特征
 X = pd.DataFrame({
-    'ambient_temp': 25 + 10 * np.random.randn(n),      # 环境温度
-    'load_rate': 0.6 + 0.25 * np.random.randn(n),       # 负载率
-    'cooling_efficiency': 0.85 + 0.1 * np.random.randn(n),  # 冷却效率
-    'oil_level': 0.9 + 0.08 * np.random.randn(n),       # 油位
-    'tap_position': np.random.choice([1, 2, 3, 4, 5], n),  # 分接头位置
+    'ambient_temp': 25 + 10 * np.random.randn(n),      # 环境温度（℃），均值25
+    'load_rate': 0.6 + 0.25 * np.random.randn(n),       # 负载率（0-1），均值0.6
+    'cooling_efficiency': 0.85 + 0.1 * np.random.randn(n),  # 冷却效率（0-1），均值0.85
+    'oil_level': 0.9 + 0.08 * np.random.randn(n),       # 油位（0-1），均值0.9
+    'tap_position': np.random.choice([1, 2, 3, 4, 5], n),  # 分接头位置（1-5档）
 })
-# 目标变量：变压器油温（非线性关系）
+# 目标变量：变压器油温，构造非线性关系
 y = (45 + 15 * X['ambient_temp']/35 + 30 * X['load_rate'] 
      - 10 * X['cooling_efficiency'] + 5 * np.random.randn(n))
 
+# 划分训练集（70%）和测试集（30%）
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # ===== 决策树回归 =====
+# 创建决策树回归器，限制最大深度为5防止过拟合
 dt = DecisionTreeRegressor(max_depth=5, random_state=42)
+# 在训练集上拟合决策树模型
 dt.fit(X_train, y_train)
+# 在测试集上进行预测
 y_pred_dt = dt.predict(X_test)
 
 # ===== 随机森林回归 =====
+# 创建随机森林回归器，100棵树，每棵树最大深度10
 rf = RandomForestRegressor(n_estimators=100, max_depth=10, random_state=42)
+# 在训练集上拟合随机森林模型（集成学习，并行训练多棵决策树）
 rf.fit(X_train, y_train)
+# 在测试集上进行预测（多棵树预测结果取平均）
 y_pred_rf = rf.predict(X_test)
 
-# 评估对比
+# 评估对比：计算两种模型的RMSE和R²
 print("决策树回归: RMSE={:.2f}, R²={:.4f}".format(
     np.sqrt(mean_squared_error(y_test, y_pred_dt)), r2_score(y_test, y_pred_dt)))
 print("随机森林回归: RMSE={:.2f}, R²={:.4f}".format(
     np.sqrt(mean_squared_error(y_test, y_pred_rf)), r2_score(y_test, y_pred_rf)))
 
-# 特征重要性分析
+# 特征重要性分析：提取随机森林学到的特征重要性
 feature_importance = pd.DataFrame({
-    'feature': X.columns,
-    'importance': rf.feature_importances_
-}).sort_values('importance', ascending=False)
+    'feature': X.columns,  # 特征名称
+    'importance': rf.feature_importances_  # 特征重要性值
+}).sort_values('importance', ascending=False)  # 按重要性降序排列
 print("\n随机森林特征重要性：")
 print(feature_importance)
 
-# 可视化特征重要性
+# 可视化特征重要性：绘制水平柱状图
 plt.figure(figsize=(8, 5))
+# 使用barh绘制水平柱状图，颜色为蓝色
 plt.barh(feature_importance['feature'], feature_importance['importance'], color='#2563eb')
+# 设置x轴标签
 plt.xlabel('特征重要性')
+# 设置图表标题
 plt.title('变压器温度预测——特征重要性排序')
+# 翻转y轴，使最重要的特征显示在顶部
 plt.gca().invert_yaxis()
+# 自动调整布局
 plt.tight_layout()
+# 显示图像
 plt.show()
-# 输出结果应为：负载率通常是最重要的特征，其次是环境温度和冷却效率</code></pre>
+# 输出结果说明：负载率通常是最重要的特征，其次是环境温度和冷却效率</code></pre>
 </div>
 
 <div class="table-wrap">
@@ -1632,6 +1905,30 @@ plt.show()
 <h4>3.3.1 XGBoost / LightGBM原理</h4>
 <p>XGBoost（eXtreme Gradient Boosting）在传统GBDT基础上引入了正则化项、二阶泰勒展开近似、列采样等技术，有效防止过拟合并加速训练。LightGBM进一步优化了训练效率，采用基于直方图的算法和Leaf-wise生长策略，在大规模数据集上训练速度更快。</p>
 
+<figure class="chart-figure">
+<figcaption>流程图：梯度提升树（XGBoost/LightGBM）算法流程</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <text x="300" y="22" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">梯度提升树算法流程</text>
+  <rect x="200" y="35" width="200" height="30" fill="#2563eb" rx="5"/>
+  <text x="300" y="55" text-anchor="middle" fill="#fff" font-size="12">初始化：F₀(x)= 均值</text>
+  <polygon points="300,65 290,75 310,75" fill="#666"/>
+  <rect x="100" y="77" width="160" height="30" fill="#059669" rx="5"/>
+  <text x="180" y="97" text-anchor="middle" fill="#fff" font-size="11">计算负梯度（残差）</text>
+  <polygon points="260,92 270,92 265,100" fill="#666"/>
+  <rect x="340" y="77" width="160" height="30" fill="#7c3aed" rx="5"/>
+  <text x="420" y="97" text-anchor="middle" fill="#fff" font-size="11">拟合新树到残差</text>
+  <polygon points="420,107 410,117 430,117" fill="#666"/>
+  <rect x="200" y="119" width="200" height="30" fill="#d97706" rx="5"/>
+  <text x="300" y="139" text-anchor="middle" fill="#fff" font-size="12">更新：F=F+η×新树  M轮后?</text>
+  <polygon points="100,134 90,134 120,80" fill="#666"/>
+  <text x="70" y="127" fill="#dc2626" font-size="10">否：继续</text>
+  <polygon points="300,149 290,159 310,159" fill="#666"/>
+  <rect x="200" y="161" width="200" height="30" fill="#dc2626" rx="5"/>
+  <text x="300" y="181" text-anchor="middle" fill="#fff" font-size="12">输出：最终预测值</text>
+</svg>
+</figure>
+
+
 <div class="example-box">
 <div class="example-title">案例：基于XGBoost/LightGBM的配电网网损预测</div>
 <p><strong>案例背景：</strong>配电网网损是衡量电网运行经济性的重要指标，受线路电流、线路长度、电阻率、功率因数、环境温度等多因素非线性影响，需要高精度预测模型来支撑降损决策。</p>
@@ -1641,107 +1938,105 @@ plt.show()
 <pre><code># 注意：运行前需要安装 pip install xgboost lightgbm
 # 以下代码为完整示例，展示XGBoost和LightGBM在网损预测中的应用
 
+# 导入NumPy用于数值计算
 import numpy as np
+# 导入Pandas用于数据处理
 import pandas as pd
+# 导入训练/测试集划分工具
 from sklearn.model_selection import train_test_split
+# 导入回归评估指标：R²得分和均方误差
 from sklearn.metrics import r2_score, mean_squared_error
 
-# 模拟网损数据
+# 模拟网损数据：生成500条配电网线路运行数据
 np.random.seed(42)
+# 样本数量：500条线路记录
 n = 500
+# 创建特征DataFrame，包含5个特征
 df = pd.DataFrame({
-    'line_current': 200 + 100 * np.random.randn(n),      # 线路电流(A)
-    'line_length': 10 + 15 * np.random.rand(n),            # 线路长度(km)
-    'resistance': 0.1 + 0.05 * np.random.rand(n),          # 单位电阻(Ω/km)
-    'power_factor': 0.85 + 0.1 * np.random.randn(n),       # 功率因数
-    'ambient_temp': 25 + 10 * np.random.randn(n),          # 环境温度
+    'line_current': 200 + 100 * np.random.randn(n),      # 线路电流(A)，均值200
+    'line_length': 10 + 15 * np.random.rand(n),            # 线路长度(km)，范围10-25
+    'resistance': 0.1 + 0.05 * np.random.rand(n),          # 单位电阻(Ω/km)，范围0.1-0.15
+    'power_factor': 0.85 + 0.1 * np.random.randn(n),       # 功率因数，均值0.85
+    'ambient_temp': 25 + 10 * np.random.randn(n),          # 环境温度(℃)，均值25
 })
+# 网损计算公式：根据物理公式生成目标变量
 # 网损 = 3 * I² * R * L * (1 + 温度修正系数) / 功率因数修正
 df['line_loss'] = (3 * df['line_current']**2 * df['resistance'] 
                    * df['line_length'] * (1 + 0.004 * (df['ambient_temp'] - 20))
                    / df['power_factor']**2 / 1000 + 20 * np.random.randn(n))
 
+# 分离特征矩阵X（5个特征列）和目标变量y（网损列）
 X = df.drop('line_loss', axis=1)
 y = df['line_loss']
+# 划分训练集和测试集（7:3比例）
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # ===== XGBoost回归 =====
 try:
+    # 导入XGBoost回归器（需要提前安装xgboost包）
     from xgboost import XGBRegressor
+    # 创建XGBoost模型：100棵树，最大深度6，学习率0.1
+    # subsample=0.8：每棵树随机采样80%的训练数据，防止过拟合
+    # colsample_bytree=0.8：每棵树随机选择80%的特征，增加多样性
     xgb = XGBRegressor(n_estimators=100, max_depth=6, learning_rate=0.1, 
                        subsample=0.8, colsample_bytree=0.8, random_state=42)
+    # 在训练集上拟合XGBoost模型（梯度提升，逐步修正残差）
     xgb.fit(X_train, y_train)
+    # 在测试集上进行预测
     y_pred_xgb = xgb.predict(X_test)
+    # 打印XGBoost的RMSE和R²评估结果
     print("XGBoost: RMSE={:.2f} kW, R²={:.4f}".format(
         np.sqrt(mean_squared_error(y_test, y_pred_xgb)), r2_score(y_test, y_pred_xgb)))
 except ImportError:
+    # 如果XGBoost未安装，提示用户安装
     print("XGBoost未安装，请运行: pip install xgboost")
 
 # ===== LightGBM回归 =====
 try:
+    # 导入LightGBM回归器（需要提前安装lightgbm包）
     from lightgbm import LGBMRegressor
+    # 创建LightGBM模型，参数与XGBoost相同以便公平对比
+    # verbose=-1：关闭训练过程中的日志输出，保持输出整洁
     lgb = LGBMRegressor(n_estimators=100, max_depth=6, learning_rate=0.1,
                         subsample=0.8, colsample_bytree=0.8, random_state=42, verbose=-1)
+    # 在训练集上拟合LightGBM模型（Leaf-wise生长策略，训练更快）
     lgb.fit(X_train, y_train)
+    # 在测试集上进行预测
     y_pred_lgb = lgb.predict(X_test)
+    # 打印LightGBM的RMSE和R²评估结果
     print("LightGBM: RMSE={:.2f} kW, R²={:.4f}".format(
         np.sqrt(mean_squared_error(y_test, y_pred_lgb)), r2_score(y_test, y_pred_lgb)))
 except ImportError:
+    # 如果LightGBM未安装，提示用户安装
     print("LightGBM未安装，请运行: pip install lightgbm")
 
 # ===== 特征重要性可视化 =====
 try:
+    # 导入matplotlib用于绘图
     import matplotlib.pyplot as plt
+    # 创建1行2列的子图，并排展示两种模型的特征重要性
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+    # 导入XGBoost自带的特征重要性绘图函数
     from xgboost import plot_importance
+    # 绘制XGBoost特征重要性（基于gain，即信息增益贡献）
     plot_importance(xgb, ax=axes[0], title='XGBoost特征重要性', importance_type='gain')
     axes[0].set_xlabel('F-score')
-    # LightGBM特征重要性
+    # LightGBM特征重要性：提取并排序
     importance_lgb = pd.DataFrame({
         'feature': X.columns, 'importance': lgb.feature_importances_
     }).sort_values('importance')
+    # 绘制LightGBM特征重要性水平柱状图（紫色）
     axes[1].barh(importance_lgb['feature'], importance_lgb['importance'], color='#7c3aed')
     axes[1].set_title('LightGBM特征重要性')
+    # 自动调整布局，避免子图重叠
     plt.tight_layout()
+    # 显示图像
     plt.show()
 except:
+    # 如果绘图失败则跳过（如无GUI环境）
     pass
-# 输出结果应为：线路电流I²通常是最重要的特征，其次是线路长度和电阻</code></pre>
+# 输出结果说明：线路电流I²通常是最重要的特征，其次是线路长度和电阻</code></pre>
 </div>
-
-<div class="table-wrap">
-<table class="data-table">
-<caption>表3-3：XGBoost与LightGBM对比</caption>
-<tr><th>对比维度</th><th>XGBoost</th><th>LightGBM</th><th>CatBoost</th></tr>
-<tr><td>树生长策略</td><td>Level-wise（按层</td><td>Leaf-wise（按叶</td><td>Symmetric trees</td></tr>
-<tr><td>类别特征处理</td><td>需手动编码</td><td>原生支持</td><td>原生支持（最优）</td></tr>
-<tr><td>训练速度</td><td>较快</td><td>非常快</td><td>中等</td></tr>
-<tr><td>内存占用</td><td>中等</td><td>低</td><td>中等</td></tr>
-<tr><td>GPU支持</td><td>支持</td><td>支持</td><td>支持</td></tr>
-<tr><td>电网推荐场景</td><td>中小数据集、高精度要求</td><td>大数据集、快速迭代</td><td>类别特征多、自动调参</td></tr>
-</table>
-</div>
-
-<figure class="chart-figure">
-<figcaption>图3-3：梯度提升迭代过程示意图</figcaption>
-<svg width="100%" height="240" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
-  <text x="300" y="25" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">梯度提升迭代过程</text>
-  <rect x="20" y="50" width="120" height="40" fill="#059669" rx="6"/>
-  <text x="80" y="75" text-anchor="middle" fill="#fff" font-size="12">初始预测：均值</text>
-  <polygon points="150,70 165,60 165,80" fill="#666"/>
-  <rect x="170" y="50" width="120" height="40" fill="#7c3aed" rx="6"/>
-  <text x="230" y="75" text-anchor="middle" fill="#fff" font-size="12">树1：拟合残差</text>
-  <polygon points="300,70 315,60 315,80" fill="#666"/>
-  <rect x="320" y="50" width="120" height="40" fill="#d97706" rx="6"/>
-  <text x="380" y="75" text-anchor="middle" fill="#fff" font-size="12">树2：拟合残差</text>
-  <polygon points="450,70 465,60 465,80" fill="#666"/>
-  <rect x="470" y="50" width="110" height="40" fill="#dc2626" rx="6"/>
-  <text x="525" y="75" text-anchor="middle" fill="#fff" font-size="12">... 树N</text>
-  <rect x="150" y="130" width="300" height="40" fill="#2563eb" rx="6"/>
-  <text x="300" y="155" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">最终预测 = 基础预测 + η × Σ(树预测)</text>
-  <text x="300" y="200" text-anchor="middle" fill="#666" font-size="12">学习率η控制每棵树对最终预测的贡献</text>
-</svg>
-</figure>
 
 <span class="top-anchor" id="ch3-4"></span>
 <h3>3.4 支持向量回归SVR</h3>
@@ -1750,60 +2045,103 @@ except:
 <h4>3.4.1 SVR原理与核函数</h4>
 <p>SVR的核心思想是：在特征空间中寻找一个超平面，使得超平面与数据点之间的偏差不超过ε，同时使超平面尽可能平坦（权重向量范数最小）。通过引入核函数（如RBF核、多项式核），SVR可以处理非线性回归问题。RBF核是最常用的核函数：K(x, x') = exp(-γ·||x - x'||²)。</p>
 
+<figure class="chart-figure">
+<figcaption>流程图：支持向量回归(SVR)算法流程</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <text x="300" y="22" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">SVR算法流程</text>
+  <rect x="200" y="35" width="200" height="30" fill="#2563eb" rx="5"/>
+  <text x="300" y="55" text-anchor="middle" fill="#fff" font-size="12">输入：特征X 目标y 核函数</text>
+  <polygon points="300,65 290,75 310,75" fill="#666"/>
+  <rect x="200" y="77" width="200" height="30" fill="#059669" rx="5"/>
+  <text x="300" y="97" text-anchor="middle" fill="#fff" font-size="12">内核映射到高维空间</text>
+  <polygon points="300,107 290,117 310,117" fill="#666"/>
+  <rect x="200" y="119" width="200" height="30" fill="#7c3aed" rx="5"/>
+  <text x="300" y="139" text-anchor="middle" fill="#fff" font-size="12">寻找ε-不敏感管道</text>
+  <polygon points="300,149 290,159 310,159" fill="#666"/>
+  <rect x="200" y="161" width="200" height="30" fill="#dc2626" rx="5"/>
+  <text x="300" y="181" text-anchor="middle" fill="#fff" font-size="12">输出：支持向量+回归超平面</text>
+</svg>
+</figure>
+
 <div class="example-box">
 <div class="example-title">案例：基于SVR的变电站母线电压预测</div>
 <p><strong>案例背景：</strong>变电站10kV母线电压受负荷和无功功率波动影响，呈现非线性变化特征。SVR（支持向量回归）在小样本非线性回归任务中具有良好的泛化能力。</p>
 <p><strong>数据说明：</strong>模拟200条母线电压监测数据，包含2个特征：load_mw（负荷，MW）、reactive_power（无功功率，Mvar），目标变量voltage（母线电压，kV），电压与负荷呈非线性关系。</p>
 <p><strong>分析目标：</strong>使用SVR的三种核函数（线性核、多项式核、RBF核）进行电压预测，对比不同核函数的预测精度，为电压无功自动控制（AVC）系统提供参考。</p>
 
-<pre><code>from sklearn.svm import SVR
+<pre><code># 导入支持向量回归(SVR)模型
+from sklearn.svm import SVR
+# 导入标准化器，SVR对特征缩放非常敏感，必须标准化
 from sklearn.preprocessing import StandardScaler
 
 # 模拟电压预测数据：负荷、无功功率预测母线电压
 np.random.seed(42)
+# 样本数量：200条监测记录
 n = 200
+# 生成负荷数据：均值50MW，标准差30MW的正态分布
 load_mw = 50 + 30 * np.random.randn(n)          # 负荷(MW)
+# 生成无功功率数据：均值10Mvar，标准差8Mvar
 reactive_power = 10 + 8 * np.random.randn(n)     # 无功功率(Mvar)
-# 电压与负荷和无功呈非线性关系
+# 电压与负荷和无功呈非线性关系，包含二次项（负荷平方项）
 voltage = (10.5 - 0.02 * load_mw - 0.03 * reactive_power 
            - 0.0005 * load_mw**2 + 0.5 * np.random.randn(n))
 
+# 将两个特征列合并为特征矩阵X
 X = np.column_stack([load_mw, reactive_power])
+# 目标变量y为母线电压
 y = voltage
 
-# SVR对特征缩放敏感，需要先标准化
-scaler_X = StandardScaler()
-scaler_y = StandardScaler()
+# SVR对特征缩放敏感，需要先标准化（使特征均值为0，标准差为1）
+scaler_X = StandardScaler()  # 特征标准化器
+scaler_y = StandardScaler()  # 目标变量标准化器
+# 对特征X进行标准化：fit_transform计算均值和标准差并转换
 X_scaled = scaler_X.fit_transform(X)
+# 对目标变量y进行标准化，reshape为列向量后再ravel展平
 y_scaled = scaler_y.fit_transform(y.reshape(-1, 1)).ravel()
 
+# 划分训练集（70%）和测试集（30%）
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_scaled, test_size=0.3, random_state=42)
 
 # ===== 不同核函数的SVR对比 =====
+# 对比三种核函数：线性核、多项式核、RBF核（高斯核）
 kernels = ['linear', 'poly', 'rbf']
 for kernel in kernels:
+    # 创建SVR模型，C=1.0控制正则化强度，epsilon=0.1控制不敏感管道宽度
     svr = SVR(kernel=kernel, C=1.0, epsilon=0.1)
+    # 在训练集上拟合SVR模型
     svr.fit(X_train, y_train)
+    # 在测试集上进行预测
     y_pred = svr.predict(X_test)
-    # 反标准化
+    # 反标准化：将预测值和真实值转换回原始量纲
     y_pred_orig = scaler_y.inverse_transform(y_pred.reshape(-1, 1)).ravel()
     y_test_orig = scaler_y.inverse_transform(y_test.reshape(-1, 1)).ravel()
+    # 计算均方根误差RMSE（单位kV）
     rmse = np.sqrt(mean_squared_error(y_test_orig, y_pred_orig))
+    # 计算R²得分
     r2 = r2_score(y_test_orig, y_pred_orig)
+    # 打印每种核函数的评估结果
     print(f"SVR(kernel={kernel}): RMSE={rmse:.3f} kV, R²={r2:.4f}")
 
-# 可视化
+# 可视化：三种核函数SVR预测效果对比
+# 创建1行3列的子图
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 for ax, kernel in zip(axes, kernels):
+    # 训练SVR模型
     svr = SVR(kernel=kernel, C=1.0, epsilon=0.1).fit(X_train, y_train)
+    # 预测并反标准化
     y_pred = scaler_y.inverse_transform(svr.predict(X_test).reshape(-1, 1)).ravel()
     y_test_orig = scaler_y.inverse_transform(y_test.reshape(-1, 1)).ravel()
+    # 绘制散点图：真实值 vs 预测值
     ax.scatter(y_test_orig, y_pred, alpha=0.6)
+    # 绘制理想预测线y=x，红色虚线
     ax.plot([y_test_orig.min(), y_test_orig.max()], [y_test_orig.min(), y_test_orig.max()], 'r--')
+    # 设置坐标轴标签
     ax.set_xlabel('真实电压(kV)'); ax.set_ylabel('预测电压(kV)')
+    # 设置子图标题
     ax.set_title(f'SVR - {kernel}核')
+# 自动调整布局
 plt.tight_layout(); plt.show()
-# 输出结果应为：三个子图分别展示不同核函数SVR的预测效果，RBF核通常表现最好</code></pre>
+# 输出结果说明：三个子图分别展示不同核函数SVR的预测效果，RBF核通常表现最好</code></pre>
 </div>
 
 <div class="callout">
@@ -1855,177 +2193,242 @@ plt.tight_layout(); plt.show()
 <h4>4.1.1 Sigmoid函数与决策边界</h4>
 <p>Sigmoid函数（也称Logistic函数）的数学形式为：σ(z) = 1 / (1 + e<sup>-z</sup>)，其中z = w<sup>T</sup>x + b。当z > 0时，σ(z) > 0.5，预测为正类；当z < 0时，σ(z) < 0.5，预测为负类。决策边界是σ(z) = 0.5的超平面，即w<sup>T</sup>x + b = 0。</p>
 
+<figure class="chart-figure">
+<figcaption>流程图：逻辑回归算法流程</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <text x="300" y="22" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">逻辑回归分类算法流程</text>
+  <rect x="200" y="35" width="200" height="30" fill="#2563eb" rx="5"/>
+  <text x="300" y="55" text-anchor="middle" fill="#fff" font-size="12">输入：特征X 标签y(0/1)</text>
+  <polygon points="300,65 290,75 310,75" fill="#666"/>
+  <rect x="200" y="77" width="200" height="30" fill="#059669" rx="5"/>
+  <text x="300" y="97" text-anchor="middle" fill="#fff" font-size="12">线性组合：z=wᵀx+b</text>
+  <polygon points="300,107 290,117 310,117" fill="#666"/>
+  <rect x="200" y="119" width="200" height="30" fill="#7c3aed" rx="5"/>
+  <text x="300" y="139" text-anchor="middle" fill="#fff" font-size="12">Sigmoid：P=1/(1+e⁻ᶻ)</text>
+  <polygon points="300,149 290,159 310,159" fill="#666"/>
+  <rect x="200" y="161" width="200" height="30" fill="#dc2626" rx="5"/>
+  <text x="300" y="181" text-anchor="middle" fill="#fff" font-size="12">输出：P>0.5→正类 否则→负类</text>
+</svg>
+</figure>
+
+
 <div class="example-box">
 <div class="example-title">案例：基于逻辑回归的变压器过热故障二分类诊断</div>
 <p><strong>案例背景：</strong>变压器过热是常见故障类型之一，通过油中溶解气体分析（DGA）数据可以判断变压器是否存在过热故障。逻辑回归提供了可解释的概率输出，适合作为故障诊断的基线模型。</p>
 <p><strong>数据说明：</strong>模拟500条变压器DGA检测记录，包含4个特征：H2（氢气含量，ppm）、C2H2（乙炔含量，ppm）、Total_HC（总烃含量，ppm）、oil_temp（油温，℃），标签为0（正常）和1（故障），基于DGA阈值规则生成。</p>
 <p><strong>分析目标：</strong>使用逻辑回归进行二分类故障诊断，通过混淆矩阵、分类报告和ROC曲线全面评估模型性能，为变压器状态检修提供决策支持。</p>
 
-<pre><code>from sklearn.linear_model import LogisticRegression
+<pre><code># 导入逻辑回归分类器（虽然名字有"回归"，但实际是分类算法）
+from sklearn.linear_model import LogisticRegression
+# 导入分类评估指标：分类报告、混淆矩阵、ROC曲线、AUC面积
 from sklearn.metrics import classification_report, confusion_matrix, roc_curve, auc
+# 导入seaborn用于高级可视化（热力图等）
 import seaborn as sns
 
 # 模拟变压器故障二分类数据
 np.random.seed(42)
+# 样本数量：500条DGA检测记录
 n = 500
 # 特征：H2含量、C2H2含量、总烃含量、油温
 X = pd.DataFrame({
-    'H2': 50 + 100 * np.random.randn(n),
-    'C2H2': 2 + 5 * np.random.randn(n),
-    'Total_HC': 100 + 150 * np.random.randn(n),
-    'oil_temp': 70 + 15 * np.random.randn(n),
+    'H2': 50 + 100 * np.random.randn(n),       # 氢气含量（ppm），均值50
+    'C2H2': 2 + 5 * np.random.randn(n),         # 乙炔含量（ppm），均值2
+    'Total_HC': 100 + 150 * np.random.randn(n),  # 总烃含量（ppm），均值100
+    'oil_temp': 70 + 15 * np.random.randn(n),    # 油温（℃），均值70
 })
-# 标签：0=正常，1=故障（基于DGA阈值规则）
+# 标签：0=正常，1=故障（基于DGA阈值规则生成）
+# 当乙炔>5或总烃>300或油温>85且H2>100时判定为故障
 y = (((X['C2H2'] > 5) | (X['Total_HC'] > 300) | (X['oil_temp'] > 85)) 
      & (X['H2'] > 100)).astype(int)
 
+# 按比例划分训练集和测试集，stratify=y保持类别比例一致
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
 
 # ===== 逻辑回归模型 =====
+# 创建逻辑回归分类器，max_iter=1000确保充分收敛
 lr = LogisticRegression(max_iter=1000, random_state=42)
+# 在训练集上拟合逻辑回归模型（通过Sigmoid函数学习决策边界）
 lr.fit(X_train, y_train)
+# 预测类别标签（0或1）
 y_pred = lr.predict(X_test)
-y_prob = lr.predict_proba(X_test)[:, 1]  # 获取正类概率
+# 获取正类（故障）的预测概率，用于绘制ROC曲线
+y_prob = lr.predict_proba(X_test)[:, 1]  # 取第二列（正类概率）
 
-# 分类报告
+# 打印分类报告：包含精确率、召回率、F1分数等指标
 print("分类报告：")
 print(classification_report(y_test, y_pred, target_names=['正常', '故障']))
 
-# 混淆矩阵
+# 计算混淆矩阵：[[TN, FP], [FN, TP]]
 cm = confusion_matrix(y_test, y_pred)
 print("\n混淆矩阵：")
 print(cm)
 
 # ===== 可视化：混淆矩阵热力图 =====
 plt.figure(figsize=(6, 5))
+# 使用seaborn绘制热力图，annot=True显示数值，fmt='d'整数格式
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
             xticklabels=['正常', '故障'], yticklabels=['正常', '故障'])
+# 设置坐标轴标签
 plt.xlabel('预测标签'); plt.ylabel('真实标签')
+# 设置图表标题
 plt.title('变压器故障诊断——混淆矩阵')
+# 显示图像
 plt.show()
 
 # ===== 可视化：ROC曲线 =====
+# 计算假阳性率(FPR)和真阳性率(TPR)在不同阈值下的值
 fpr, tpr, thresholds = roc_curve(y_test, y_prob)
+# 计算ROC曲线下面积AUC，越接近1性能越好
 roc_auc = auc(fpr, tpr)
 
 plt.figure(figsize=(6, 5))
+# 绘制ROC曲线，蓝色实线，线宽2
 plt.plot(fpr, tpr, color='#2563eb', lw=2, label=f'ROC曲线 (AUC = {roc_auc:.3f})')
+# 绘制随机分类器参考线（对角线），黑色虚线
 plt.plot([0, 1], [0, 1], 'k--', lw=1, label='随机分类器')
+# 设置坐标轴范围
 plt.xlim([0.0, 1.0]); plt.ylim([0.0, 1.05])
+# 设置坐标轴标签
 plt.xlabel('假阳性率 (FPR)'); plt.ylabel('真阳性率 (TPR)')
+# 设置图表标题
 plt.title('变压器故障诊断——ROC曲线')
+# 添加图例，显示在右下角
 plt.legend(loc='lower right'); plt.grid(alpha=0.3)
+# 显示图像
 plt.show()
-# 输出结果应为：ROC曲线越靠近左上角，模型性能越好；AUC值越接近1越好</code></pre>
+# 输出结果说明：ROC曲线越靠近左上角，模型性能越好；AUC值越接近1越好</code></pre>
 </div>
 
-<div class="table-wrap">
-<table class="data-table">
-<caption>表4-1：分类评估指标详解</caption>
-<tr><th>指标</th><th>公式</th><th>含义</th><th>电网场景解读</th></tr>
-<tr><td>准确率</td><td>(TP+TN)/(TP+TN+FP+FN)</td><td>预测正确的比例</td><td>不适合不平衡数据</td></tr>
-<tr><td>精确率</td><td>TP/(TP+FP)</td><td>预测为正类中真正为正的比例</td><td>故障诊断的误报率控制</td></tr>
-<tr><td>召回率</td><td>TP/(TP+FN)</td><td>真正为正类中被正确识别的比例</td><td>故障诊断的漏报率控制</td></tr>
-<tr><td>F1分数</td><td>2×P×R/(P+R)</td><td>精确率和召回率的调和平均</td><td>综合评估故障诊断性能</td></tr>
-<tr><td>AUC-ROC</td><td>ROC曲线下面积</td><td>模型区分正负类的能力</td><td>0.9以上为优秀</td></tr>
-</table>
+<div class="callout">
+<div class="callout-title">逻辑回归vs线性回归</div>
+<p>虽然逻辑回归名称中包含"回归"，但它本质上是一个分类算法。关键区别在于：线性回归的预测输出是连续的数值，而逻辑回归的输出是[0,1]之间的概率值。逻辑回归使用Sigmoid函数将线性输出映射为概率，并使用交叉熵损失函数（而非均方误差）进行优化。</p>
 </div>
-
-<figure class="chart-figure">
-<figcaption>图4-1：Sigmoid函数与决策边界</figcaption>
-<svg width="100%" height="280" viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
-  <text x="300" y="25" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">Sigmoid函数 σ(z) = 1/(1+e⁻ᶻ)</text>
-  <line x1="50" y1="220" x2="550" y2="220" stroke="#666" stroke-width="1.5"/>
-  <line x1="50" y1="220" x2="50" y2="50" stroke="#666" stroke-width="1.5"/>
-  <path d="M50,215 Q150,210 200,180 Q250,145 300,110 Q350,75 400,60 Q450,52 550,48" fill="none" stroke="#2563eb" stroke-width="2.5"/>
-  <line x1="300" y1="220" x2="300" y2="50" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="6,4"/>
-  <text x="310" y="55" fill="#dc2626" font-size="11">决策边界 z=0</text>
-  <text x="520" y="55" fill="#059669" font-size="11">正类 P>0.5</text>
-  <text x="100" y="210" fill="#d97706" font-size="11">负类 P<0.5</text>
-  <line x1="50" y1="110" x2="550" y2="110" stroke="#999" stroke-width="0.5" stroke-dasharray="2,4"/>
-  <text x="40" y="113" text-anchor="end" fill="#999" font-size="10">0.5</text>
-  <line x1="50" y1="50" x2="550" y2="50" stroke="#999" stroke-width="0.5" stroke-dasharray="2,4"/>
-  <text x="40" y="53" text-anchor="end" fill="#999" font-size="10">1.0</text>
-</svg>
-</figure>
 
 <span class="top-anchor" id="ch4-2"></span>
 <h3>4.2 决策树与随机森林分类</h3>
-<p>决策树分类使用基尼系数（Gini Impurity）或信息增益（Information Gain）作为划分准则，选择最优特征进行节点分裂。随机森林分类通过集成多棵决策树并投票来做出最终预测，显著提高了分类精度和鲁棒性。</p>
+<p>决策树分类器与回归树类似，但使用基尼系数（Gini Impurity）或信息增益（Information Gain）作为分裂准则，叶节点输出类别标签而非连续值。随机森林分类通过集成多棵决策树的投票结果，显著提升分类的准确性和鲁棒性。</p>
 
 <h4>4.2.1 基尼系数与信息增益</h4>
 <p>基尼系数衡量节点的不纯度：Gini = 1 - Σp<sub>k</sub>²，其中p<sub>k</sub>是第k类的样本比例。信息增益基于熵：Entropy = -Σp<sub>k</sub>·log₂(p<sub>k</sub>)。两种准则都倾向于选择使划分后子节点最"纯"的特征。</p>
 
+<figure class="chart-figure">
+<figcaption>流程图：随机森林分类算法流程</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <text x="300" y="22" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">随机森林分类算法流程</text>
+  <rect x="200" y="35" width="200" height="30" fill="#2563eb" rx="5"/>
+  <text x="300" y="55" text-anchor="middle" fill="#fff" font-size="12">输入：训练数据 全部样本</text>
+  <polygon points="300,65 290,75 310,75" fill="#666"/>
+  <rect x="40" y="77" width="130" height="30" fill="#059669" rx="5"/>
+  <text x="105" y="97" text-anchor="middle" fill="#fff" font-size="11">Bootstrap采样1</text>
+  <rect x="180" y="77" width="130" height="30" fill="#059669" rx="5"/>
+  <text x="245" y="97" text-anchor="middle" fill="#fff" font-size="11">Bootstrap采样2</text>
+  <rect x="320" y="77" width="130" height="30" fill="#059669" rx="5"/>
+  <text x="385" y="97" text-anchor="middle" fill="#fff" font-size="11">... 采样N</text>
+  <polygon points="105,107 95,117 115,117" fill="#666"/>
+  <polygon points="245,107 235,117 255,117" fill="#666"/>
+  <polygon points="385,107 375,117 395,117" fill="#666"/>
+  <rect x="40" y="119" width="130" height="30" fill="#7c3aed" rx="5"/>
+  <text x="105" y="139" text-anchor="middle" fill="#fff" font-size="11">树1（随机特征）</text>
+  <rect x="180" y="119" width="130" height="30" fill="#7c3aed" rx="5"/>
+  <text x="245" y="139" text-anchor="middle" fill="#fff" font-size="11">树2（随机特征）</text>
+  <rect x="320" y="119" width="130" height="30" fill="#7c3aed" rx="5"/>
+  <text x="385" y="139" text-anchor="middle" fill="#fff" font-size="11">树N（随机特征）</text>
+  <polygon points="105,149 95,159 115,159" fill="#666"/>
+  <polygon points="245,149 235,159 255,159" fill="#666"/>
+  <polygon points="385,149 375,159 395,159" fill="#666"/>
+  <rect x="200" y="161" width="200" height="30" fill="#dc2626" rx="5"/>
+  <text x="300" y="181" text-anchor="middle" fill="#fff" font-size="12">输出：多数投票→最终分类</text>
+</svg>
+</figure>
+
 <div class="example-box">
 <div class="example-title">案例：基于随机森林的变压器多状态分类诊断</div>
-<p><strong>案例背景：</strong>变压器可能同时存在多种故障类型（过热、放电、受潮等），需要进行多分类诊断以指导针对性检修。随机森林通过集成多棵决策树，能有效处理多分类问题并提供特征重要性分析。</p>
-<p><strong>数据说明：</strong>模拟600条变压器DGA检测记录，包含6个特征：H2、CH4、C2H2、C2H4、C2H6（五种特征气体含量，ppm）和oil_temp（油温，℃），标签为四类：正常、过热故障、放电故障、受潮故障。</p>
-<p><strong>分析目标：</strong>使用决策树和随机森林进行多分类故障诊断，对比两类模型的分类精度，通过混淆矩阵和特征重要性分析综合评估诊断效果。</p>
+<p><strong>案例背景：</strong>变压器故障诊断是电网运维的核心任务之一。通过分析油中溶解气体（DGA）数据，可以判断变压器是否存在故障以及故障类型。随机森林作为一种集成学习算法，能够自动评估特征重要性，在多分类任务中表现优异。</p>
+<p><strong>数据说明：</strong>模拟600条变压器DGA检测数据，包含6个特征：H2（氢气）、CH4（甲烷）、C2H2（乙炔）、C2H4（乙烯）、C2H6（乙烷）、oil_temp（油温），标签为4种状态：正常、过热故障、放电故障、受潮故障。</p>
+<p><strong>分析目标：</strong>使用决策树和随机森林进行多分类诊断，对比两者的分类性能，分析各特征气体对故障诊断的重要性。</p>
 
-<pre><code>from sklearn.tree import DecisionTreeClassifier, plot_tree
+<pre><code># 导入决策树分类器和决策树可视化工具
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+# 导入随机森林分类器（集成学习）
 from sklearn.ensemble import RandomForestClassifier
 
 # 模拟设备状态多分类数据：正常、过热、放电、受潮
 np.random.seed(42)
+# 样本数量：600条DGA检测记录
 n = 600
+# 创建特征DataFrame，包含6个特征（5种特征气体+油温）
 X_cls = pd.DataFrame({
-    'H2': 30 + 80 * np.random.randn(n),
-    'CH4': 10 + 30 * np.random.randn(n),
-    'C2H2': 1 + 4 * np.random.randn(n),
-    'C2H4': 20 + 40 * np.random.randn(n),
-    'C2H6': 8 + 20 * np.random.randn(n),
-    'oil_temp': 65 + 15 * np.random.randn(n),
+    'H2': 30 + 80 * np.random.randn(n),       # 氢气（ppm），均值30
+    'CH4': 10 + 30 * np.random.randn(n),       # 甲烷（ppm），均值10
+    'C2H2': 1 + 4 * np.random.randn(n),        # 乙炔（ppm），均值1
+    'C2H4': 20 + 40 * np.random.randn(n),      # 乙烯（ppm），均值20
+    'C2H6': 8 + 20 * np.random.randn(n),       # 乙烷（ppm），均值8
+    'oil_temp': 65 + 15 * np.random.randn(n),   # 油温（℃），均值65
 })
 
-# 生成多分类标签（基于DGA规则）
+# 生成多分类标签（基于DGA规则判定故障类型）
+# 不同故障类型有不同的气体特征模式
 def classify_dga(row):
     if row['C2H2'] > 5 and row['H2'] > 100:
-        return '放电故障'
+        return '放电故障'  # 乙炔高+氢气高=放电特征
     elif row['C2H4'] > 60 and row['oil_temp'] > 80:
-        return '过热故障'
+        return '过热故障'  # 乙烯高+油温高=过热特征
     elif row['H2'] > 150 and row['CH4'] < 30:
-        return '受潮故障'
+        return '受潮故障'  # 氢气极高+甲烷低=受潮特征
     else:
-        return '正常'
+        return '正常'  # 不符合任何故障规则，判定为正常
 
+# 应用分类函数，生成标签
 y_cls = X_cls.apply(classify_dga, axis=1)
+# 打印各类别样本数量，查看类别分布
 print("类别分布：")
 print(pd.Series(y_cls).value_counts())
 
+# 划分训练集和测试集，stratify保持类别分布一致
 X_train, X_test, y_train, y_test = train_test_split(X_cls, y_cls, test_size=0.3, random_state=42, stratify=y_cls)
 
 # ===== 决策树分类 =====
+# 创建决策树分类器，限制最大深度5防止过拟合
 dt_clf = DecisionTreeClassifier(max_depth=5, random_state=42)
+# 在训练集上拟合决策树模型
 dt_clf.fit(X_train, y_train)
+# 在测试集上进行预测
 y_pred_dt = dt_clf.predict(X_test)
 
 # ===== 随机森林分类 =====
+# 创建随机森林分类器，100棵树，每棵树最大深度10
 rf_clf = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
+# 在训练集上拟合随机森林模型（集成学习，多棵树投票）
 rf_clf.fit(X_train, y_train)
+# 在测试集上进行预测
 y_pred_rf = rf_clf.predict(X_test)
 
-# 分类报告对比
-print("\n决策树分类报告：")
+# 分类报告对比：打印两种模型的精确率、召回率、F1分数
+print("\\n决策树分类报告：")
 print(classification_report(y_test, y_pred_dt))
-print("\n随机森林分类报告：")
+print("\\n随机森林分类报告：")
 print(classification_report(y_test, y_pred_rf))
 
-# 混淆矩阵可视化
+# 混淆矩阵可视化：并排展示两种模型的混淆矩阵
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 for ax, (name, y_pred) in zip(axes, [("决策树", y_pred_dt), ("随机森林", y_pred_rf)]):
+    # 计算混淆矩阵
     cm = confusion_matrix(y_test, y_pred)
+    # 绘制热力图，显示数值
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax,
                 xticklabels=sorted(set(y_cls)), yticklabels=sorted(set(y_cls)))
     ax.set_xlabel('预测'); ax.set_ylabel('真实')
     ax.set_title(f'{name} —— 混淆矩阵')
+# 自动调整布局
 plt.tight_layout(); plt.show()
 
-# 随机森林特征重要性
+# 随机森林特征重要性：分析哪些特征对分类贡献最大
 importance = pd.DataFrame({
     'feature': X_cls.columns, 'importance': rf_clf.feature_importances_
-}).sort_values('importance', ascending=False)
-print("\n随机森林特征重要性：")
-print(importance)</code></pre>
+}).sort_values('importance', ascending=False)  # 按重要性降序排列
+print("\\n随机森林特征重要性排序：")
+print(importance)
+# 输出结果说明：C2H2（乙炔）和H2（氢气）通常是放电故障的关键特征</code></pre>
 </div>
 
 <div class="callout warn">
@@ -2077,51 +2480,70 @@ print(importance)</code></pre>
 <p><strong>数据说明：</strong>模拟500条用户用电数据，包含250条正常用户和250条窃电用户记录，特征包括：monthly_consumption（月用电量，kWh）、power_factor（功率因数）、load_variation（负荷波动率）、night_ratio（夜间用电比例），标签为0（正常）和1（窃电）。</p>
 <p><strong>分析目标：</strong>使用SVM的三种核函数（线性核、RBF核、多项式核）进行窃电检测，对比不同核函数的分类性能，通过ROC曲线评估模型区分能力。</p>
 
-<pre><code>from sklearn.svm import SVC
+<pre><code># 导入SVC（支持向量机分类器）
+from sklearn.svm import SVC
 
-# 模拟窃电检测数据
+# 模拟窃电检测数据：正常用户与窃电用户对比
 np.random.seed(42)
+# 总样本数：500条（250正常 + 250窃电）
 n = 500
-# 正常用户特征
+# 正常用户特征：用电量正常、功率因数高、波动率低、夜间用电比例高
 normal_users = pd.DataFrame({
-    'monthly_consumption': 300 + 100 * np.random.randn(n//2),    # 月用电量(kWh)
-    'power_factor': 0.9 + 0.08 * np.random.randn(n//2),          # 功率因数
-    'load_variation': 0.15 + 0.1 * np.random.randn(n//2),        # 负荷波动率
-    'night_ratio': 0.3 + 0.1 * np.random.randn(n//2),            # 夜间用电比
+    'monthly_consumption': 300 + 100 * np.random.randn(n//2),    # 月用电量(kWh)，均值300
+    'power_factor': 0.9 + 0.08 * np.random.randn(n//2),          # 功率因数，均值0.9
+    'load_variation': 0.15 + 0.1 * np.random.randn(n//2),        # 负荷波动率，均值0.15
+    'night_ratio': 0.3 + 0.1 * np.random.randn(n//2),            # 夜间用电比，均值0.3
 })
-# 窃电用户特征（用电量偏低、功率因数异常、波动率大）
+# 窃电用户特征：用电量偏低、功率因数异常、波动率大、夜间用电比例低
 theft_users = pd.DataFrame({
-    'monthly_consumption': 100 + 80 * np.random.randn(n//2),
-    'power_factor': 0.5 + 0.2 * np.random.randn(n//2),
-    'load_variation': 0.4 + 0.2 * np.random.randn(n//2),
-    'night_ratio': 0.1 + 0.15 * np.random.randn(n//2),
+    'monthly_consumption': 100 + 80 * np.random.randn(n//2),     # 月用电量(kWh)，均值100（偏低）
+    'power_factor': 0.5 + 0.2 * np.random.randn(n//2),           # 功率因数，均值0.5（异常低）
+    'load_variation': 0.4 + 0.2 * np.random.randn(n//2),         # 负荷波动率，均值0.4（偏高）
+    'night_ratio': 0.1 + 0.15 * np.random.randn(n//2),           # 夜间用电比，均值0.1（偏低）
 })
+# 合并正常用户和窃电用户数据
 X = pd.concat([normal_users, theft_users], ignore_index=True)
+# 创建标签：0=正常用户，1=窃电用户
 y = np.array([0] * (n//2) + [1] * (n//2))  # 0=正常，1=窃电
 
+# 划分训练集和测试集，stratify=y保持类别比例一致
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
 
-# 标准化（SVM对特征尺度敏感）
+# 标准化：SVM对特征尺度非常敏感，必须标准化到均值为0、标准差为1
 scaler = StandardScaler()
+# 对训练集进行fit_transform（计算均值/标准差并转换）
 X_train_scaled = scaler.fit_transform(X_train)
+# 对测试集仅进行transform（使用训练集的均值/标准差，避免数据泄露）
 X_test_scaled = scaler.transform(X_test)
 
 # ===== 不同核函数SVM对比 =====
+# 对比三种核函数：线性核、RBF核（高斯核）、多项式核
 for kernel in ['linear', 'rbf', 'poly']:
+    # 创建SVM分类器，C=1.0控制正则化（越小越平滑），gamma='scale'自动调整核宽度
+    # probability=True使模型可以输出概率（用于ROC曲线）
     svm = SVC(kernel=kernel, C=1.0, gamma='scale', random_state=42, probability=True)
+    # 在标准化后的训练集上拟合SVM模型
     svm.fit(X_train_scaled, y_train)
+    # 在测试集上进行预测
     y_pred = svm.predict(X_test_scaled)
+    # 打印每种核函数的评估结果
     print(f"SVM(kernel={kernel}):")
     print(f"  准确率: {svm.score(X_test_scaled, y_test):.4f}")
+    # 打印详细分类报告：精确率、召回率、F1分数
     print(classification_report(y_test, y_pred, target_names=['正常', '窃电'], zero_division=0))
 
-# 使用RBF核SVM绘制ROC曲线
+# 使用RBF核SVM绘制ROC曲线（RBF核是最通用的非线性核）
 svm_rbf = SVC(kernel='rbf', C=1.0, gamma='scale', random_state=42, probability=True)
+# 在训练集上拟合RBF-SVM模型
 svm_rbf.fit(X_train_scaled, y_train)
+# 获取正类（窃电）的预测概率
 y_prob_svm = svm_rbf.predict_proba(X_test_scaled)[:, 1]
 
+# 计算ROC曲线的假阳性率和真阳性率
 fpr_svm, tpr_svm, _ = roc_curve(y_test, y_prob_svm)
+# 计算AUC（ROC曲线下面积），越接近1性能越好
 auc_svm = auc(fpr_svm, tpr_svm)
+# 打印AUC值
 print(f"\nSVM(RBF核) AUC: {auc_svm:.4f}")</code></pre>
 </div>
 
@@ -2172,58 +2594,82 @@ print(f"\nSVM(RBF核) AUC: {auc_svm:.4f}")</code></pre>
 <p><strong>数据说明：</strong>模拟400条变压器检测记录，包含4个特征：H2（氢气含量）、C2H2（乙炔含量）、Total_HC（总烃含量）、vibration（振动幅值），标签为三类故障：过热故障、放电故障、机械故障，每类约133条。</p>
 <p><strong>分析目标：</strong>使用KNN进行三分类故障识别，对比不同K值（3、5、7）和距离度量（欧氏距离、曼哈顿距离）的分类准确率，通过K值选择曲线确定最优参数。</p>
 
-<pre><code>from sklearn.neighbors import KNeighborsClassifier
+<pre><code># 导入K近邻分类器
+from sklearn.neighbors import KNeighborsClassifier
 
-# 模拟故障类型识别数据
+# 模拟故障类型识别数据：三类变压器故障
 np.random.seed(42)
+# 总样本数：400条（三类约各133条）
 n = 400
-# 三类故障：过热故障、放电故障、机械故障
+# 定义三类故障的中心点（特征均值）
+# 不同故障类型有不同的特征气体模式和振动特征
 centers = {
-    '过热': [80, 50, 100, 30],
-    '放电': [120, 10, 60, 15],
-    '机械': [60, 30, 80, 45]
+    '过热': [80, 50, 100, 30],    # 过热故障特征中心
+    '放电': [120, 10, 60, 15],     # 放电故障特征中心
+    '机械': [60, 30, 80, 45]       # 机械故障特征中心
 }
 data_list = []
+# 遍历每种故障类型，生成围绕中心点的正态分布样本
 for fault_type, center in centers.items():
+    # 生成约133个样本，每个样本4个特征，围绕中心点随机分布
     samples = np.random.randn(n//3, 4) * np.array([20, 10, 30, 10]) + center
     for s in samples:
         data_list.append({'H2': s[0], 'C2H2': s[1], 'Total_HC': s[2], 'vibration': s[3], 'fault': fault_type})
 
+# 将列表转换为DataFrame
 df_fault = pd.DataFrame(data_list)
+# 分离特征矩阵X（4个特征列）
 X = df_fault.drop('fault', axis=1)
+# 分离标签y（故障类型）
 y = df_fault['fault']
 
-# 标准化（KNN对特征尺度敏感）
+# 标准化：KNN基于距离计算，不同特征量纲不同会影响距离，必须标准化
 scaler = StandardScaler()
+# 对特征进行标准化（均值为0，标准差为1）
 X_scaled = scaler.fit_transform(X)
+# 划分训练集和测试集，stratify保持类别分布一致
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.3, random_state=42, stratify=y)
 
 # ===== 不同K值和距离度量的KNN对比 =====
+# 对比三种K值（3, 5, 7）和两种距离度量（欧氏距离、曼哈顿距离）
 for k in [3, 5, 7]:
     for metric in ['euclidean', 'manhattan']:
+        # 创建KNN分类器：n_neighbors=K个邻居，metric=距离度量方式
         knn = KNeighborsClassifier(n_neighbors=k, metric=metric)
+        # 在训练集上"拟合"KNN（实际上KNN只是存储训练数据，不进行学习）
         knn.fit(X_train, y_train)
+        # 计算在测试集上的准确率
         accuracy = knn.score(X_test, y_test)
+        # 打印每种参数组合的准确率
         print(f"KNN(K={k}, metric={metric}): 准确率={accuracy:.4f}")
 
-# 最优K值搜索
+# 最优K值搜索：遍历K=1到20，找到最优K值
 k_values = range(1, 21)
 accuracies = []
 for k in k_values:
+    # 使用默认参数（欧氏距离）创建KNN分类器
     knn = KNeighborsClassifier(n_neighbors=k)
     knn.fit(X_train, y_train)
+    # 记录该K值下的测试准确率
     accuracies.append(knn.score(X_test, y_test))
 
-# 可视化K值选择
+# 可视化K值选择：绘制K值-准确率曲线
 plt.figure(figsize=(8, 4))
+# 绘制折线图，标记数据点
 plt.plot(k_values, accuracies, 'o-', color='#2563eb', markersize=6)
+# 设置坐标轴标签
 plt.xlabel('K值'); plt.ylabel('准确率')
+# 设置图表标题
 plt.title('KNN——K值选择曲线')
+# 添加网格
 plt.grid(alpha=0.3)
+# 在最优K值处画红色虚线标注
 plt.axvline(x=k_values[accuracies.index(max(accuracies))], color='red', linestyle='--', alpha=0.5)
+# 显示图像
 plt.show()
-# 输出结果应为：准确率先随K增大而提升，后趋于稳定或下降
+# 输出结果说明：准确率先随K增大而提升，后趋于稳定或下降
 
+# 打印最优K值和对应的准确率
 print(f"\n最优K值: {k_values[accuracies.index(max(accuracies))]}, 准确率: {max(accuracies):.4f}")</code></pre>
 </div>
 
@@ -2283,196 +2729,143 @@ print(f"\n最优K值: {k_values[accuracies.index(max(accuracies))]}, 准确率: 
 <h4>5.1.2 肘部法则与轮廓系数</h4>
 <p>选择最优K值是无监督学习中的关键问题。<strong>肘部法则（Elbow Method）</strong>通过绘制K值与簇内误差平方和（SSE）的关系曲线，找到"肘部"拐点作为最优K值。<strong>轮廓系数（Silhouette Score）</strong>衡量样本与自身簇和其他簇的相似度差异，取值范围[-1,1]，越接近1表示聚类效果越好。</p>
 
+<figure class="chart-figure">
+<figcaption>流程图：K-Means聚类算法流程</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <text x="300" y="22" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">K-Means聚类算法流程</text>
+  <rect x="200" y="35" width="200" height="30" fill="#2563eb" rx="5"/>
+  <text x="300" y="55" text-anchor="middle" fill="#fff" font-size="12">输入：数据X 聚类数K</text>
+  <polygon points="300,65 290,75 310,75" fill="#666"/>
+  <rect x="200" y="77" width="200" height="30" fill="#059669" rx="5"/>
+  <text x="300" y="97" text-anchor="middle" fill="#fff" font-size="12">随机初始化K个中心(K++)</text>
+  <polygon points="300,107 290,117 310,117" fill="#666"/>
+  <rect x="200" y="119" width="200" height="30" fill="#7c3aed" rx="5"/>
+  <text x="300" y="139" text-anchor="middle" fill="#fff" font-size="12">分配样本→重新计算中心</text>
+  <polygon points="170,134 180,134 175,126" fill="#666"/>
+  <text x="150" y="128" fill="#dc2626" font-size="10">中心变化→迭代</text>
+  <polygon points="300,149 290,159 310,159" fill="#666"/>
+  <rect x="200" y="161" width="200" height="30" fill="#dc2626" rx="5"/>
+  <text x="300" y="181" text-anchor="middle" fill="#fff" font-size="12">输出：K个簇+聚类标签</text>
+</svg>
+</figure>
+
+
 <div class="example-box">
 <div class="example-title">案例：基于K-Means的用户用电行为聚类分析</div>
 <p><strong>案例背景：</strong>电力公司需要对用户进行精细化分类，以便制定差异化的需求响应策略和电价套餐。用户用电行为由其用电量、用电时段分布等特征决定。</p>
 <p><strong>数据说明：</strong>模拟300条用户用电数据，包含4个特征：daily_consumption（日用电量，kWh）、peak_ratio（峰时用电比例）、valley_ratio（谷时用电比例）、power_factor（功率因数），数据中隐含三类用户模式（居民、商业、工业），各100条。</p>
 <p><strong>分析目标：</strong>使用K-Means聚类算法对用户进行分群，通过肘部法则和轮廓系数确定最优K值，使用PCA降维可视化聚类结果，为差异化营销和服务提供数据支撑。</p>
 
-<pre><code>from sklearn.cluster import KMeans
+<pre><code># 导入K-Means聚类算法
+from sklearn.cluster import KMeans
+# 导入轮廓系数，用于评估聚类质量
 from sklearn.metrics import silhouette_score
+# 导入标准化器，K-Means对特征尺度敏感
 from sklearn.preprocessing import StandardScaler
 
 # 模拟用户用电行为数据：日用电量、峰时用电比、谷时用电比、功率因数
 np.random.seed(42)
+# 总用户数：300户（三类各100户）
 n_users = 300
-# 三类用户：居民用户、商业用户、工业用户
+# 居民用户：用电量低，峰时用电比低，谷时用电比高
 residential = pd.DataFrame({
-    'daily_consumption': 8 + 5 * np.random.randn(n_users//3),     # 日用电量(kWh)
-    'peak_ratio': 0.3 + 0.1 * np.random.randn(n_users//3),         # 峰时用电比例
-    'valley_ratio': 0.4 + 0.15 * np.random.randn(n_users//3),      # 谷时用电比例
-    'power_factor': 0.85 + 0.1 * np.random.randn(n_users//3),      # 功率因数
+    'daily_consumption': 8 + 5 * np.random.randn(n_users//3),     # 日用电量(kWh)，均值8
+    'peak_ratio': 0.3 + 0.1 * np.random.randn(n_users//3),         # 峰时用电比例，均值0.3
+    'valley_ratio': 0.4 + 0.15 * np.random.randn(n_users//3),      # 谷时用电比例，均值0.4
+    'power_factor': 0.85 + 0.1 * np.random.randn(n_users//3),      # 功率因数，均值0.85
 })
+# 商业用户：用电量中等，峰时用电比高，谷时用电比低
 commercial = pd.DataFrame({
-    'daily_consumption': 30 + 15 * np.random.randn(n_users//3),
-    'peak_ratio': 0.5 + 0.1 * np.random.randn(n_users//3),
-    'valley_ratio': 0.2 + 0.1 * np.random.randn(n_users//3),
-    'power_factor': 0.88 + 0.08 * np.random.randn(n_users//3),
+    'daily_consumption': 30 + 15 * np.random.randn(n_users//3),    # 日用电量(kWh)，均值30
+    'peak_ratio': 0.5 + 0.1 * np.random.randn(n_users//3),          # 峰时用电比例，均值0.5
+    'valley_ratio': 0.2 + 0.1 * np.random.randn(n_users//3),        # 谷时用电比例，均值0.2
+    'power_factor': 0.88 + 0.08 * np.random.randn(n_users//3),      # 功率因数，均值0.88
 })
+# 工业用户：用电量大，功率因数高，全天用电较均匀
 industrial = pd.DataFrame({
-    'daily_consumption': 150 + 60 * np.random.randn(n_users//3),
-    'peak_ratio': 0.35 + 0.08 * np.random.randn(n_users//3),
-    'valley_ratio': 0.35 + 0.1 * np.random.randn(n_users//3),
-    'power_factor': 0.92 + 0.05 * np.random.randn(n_users//3),
+    'daily_consumption': 150 + 60 * np.random.randn(n_users//3),    # 日用电量(kWh)，均值150
+    'peak_ratio': 0.35 + 0.08 * np.random.randn(n_users//3),         # 峰时用电比例，均值0.35
+    'valley_ratio': 0.35 + 0.1 * np.random.randn(n_users//3),        # 谷时用电比例，均值0.35
+    'power_factor': 0.92 + 0.05 * np.random.randn(n_users//3),       # 功率因数，均值0.92
 })
 
+# 合并三类用户数据
 X_users = pd.concat([residential, commercial, industrial], ignore_index=True)
+# 标准化：K-Means基于距离，特征尺度不同会影响聚类结果
 X_scaled = StandardScaler().fit_transform(X_users)
 
 # ===== 肘部法则：寻找最优K值 =====
+# 记录不同K值下的SSE（簇内误差平方和）和轮廓系数
 sse = []
 silhouette_scores = []
+# 测试K=2到10的聚类效果
 K_range = range(2, 11)
 for k in K_range:
+    # 创建K-Means模型，init='k-means++'使用改进的初始化策略
+    # n_init=10表示运行10次选最优结果
     kmeans = KMeans(n_clusters=k, init='k-means++', random_state=42, n_init=10)
+    # fit_predict同时完成拟合和预测，返回每个样本的簇标签
     labels = kmeans.fit_predict(X_scaled)
+    # 记录SSE（inertia_属性存储簇内误差平方和）
     sse.append(kmeans.inertia_)
+    # 计算轮廓系数（衡量聚类质量）
     silhouette_scores.append(silhouette_score(X_scaled, labels))
 
-# 可视化肘部法则和轮廓系数
+# 可视化肘部法则和轮廓系数：并排展示两个指标
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+# 左图：肘部法则 - SSE随K值变化曲线
 axes[0].plot(K_range, sse, 'o-', color='#2563eb', markersize=8)
 axes[0].set_xlabel('K值'); axes[0].set_ylabel('SSE（簇内误差平方和）')
 axes[0].set_title('肘部法则'); axes[0].grid(alpha=0.3)
+# 标注K=3（肘部拐点）的位置
 axes[0].axvline(x=3, color='red', linestyle='--', alpha=0.5)
 
+# 右图：轮廓系数随K值变化曲线
 axes[1].plot(K_range, silhouette_scores, 's-', color='#059669', markersize=8)
 axes[1].set_xlabel('K值'); axes[1].set_ylabel('轮廓系数')
 axes[1].set_title('轮廓系数'); axes[1].grid(alpha=0.3)
+# 标注K=3（轮廓系数最高）的位置
 axes[1].axvline(x=3, color='red', linestyle='--', alpha=0.5)
+# 自动调整布局并显示
 plt.tight_layout(); plt.show()
-# 输出结果应为：肘部法则在K=3处出现拐点，轮廓系数在K=3时最高
+# 输出结果说明：肘部法则在K=3处出现拐点，轮廓系数在K=3时最高
 
 # ===== 使用最优K值进行聚类 =====
+# 用K=3创建最终聚类模型
 kmeans_opt = KMeans(n_clusters=3, init='k-means++', random_state=42, n_init=10)
+# 对数据聚类并获取标签
 labels = kmeans_opt.fit_predict(X_scaled)
+# 打印聚类质量指标
 print(f"轮廓系数(K=3): {silhouette_score(X_scaled, labels):.4f}")
+# 打印每个簇的样本数量分布
 print(f"各簇样本数: {pd.Series(labels).value_counts().to_dict()}")
 
-# ===== 聚类结果可视化（使用PCA降维到2D） =====
+# ===== 聚类结果可视化（使用PCA降维到2D空间） =====
 from sklearn.decomposition import PCA
+# 创建PCA降维器，将4维特征降到2维用于可视化
 pca = PCA(n_components=2)
 X_pca = pca.fit_transform(X_scaled)
 
 plt.figure(figsize=(8, 6))
+# 为三个簇定义三种颜色
 colors = ['#2563eb', '#059669', '#dc2626']
+# 按簇分别绘制散点
 for i in range(3):
     plt.scatter(X_pca[labels == i, 0], X_pca[labels == i, 1], 
                 c=colors[i], alpha=0.6, label=f'簇{i+1}', edgecolors='k', linewidth=0.5)
-plt.scatter(kmeans_opt.cluster_centers_[:, 0], kmeans_opt.cluster_centers_[:, 1][:2] if True else None,
-            marker='X', s=200, c='black', label='聚类中心')
 # 注意：聚类中心在PCA空间中的投影需要特殊处理
+# 将原始空间中的聚类中心投影到PCA降维空间
 centers_pca = pca.transform(kmeans_opt.cluster_centers_)
+# 用黑色X标记聚类中心位置
 plt.scatter(centers_pca[:, 0], centers_pca[:, 1], marker='X', s=200, c='black', label='聚类中心')
+# 设置坐标轴标签（含方差解释率）
 plt.xlabel(f'主成分1 ({pca.explained_variance_ratio_[0]:.1%}方差)')
 plt.ylabel(f'主成分2 ({pca.explained_variance_ratio_[1]:.1%}方差)')
+# 设置图表标题
 plt.title('用户用电行为聚类——PCA降维可视化')
+# 添加图例和网格
 plt.legend(); plt.grid(alpha=0.3); plt.show()
-# 输出结果应为：三个簇在PCA空间中明显分离，聚类中心用黑色X标记</code></pre>
-</div>
-
-<div class="table-wrap">
-<table class="data-table">
-<caption>表5-1：K-Means聚类优缺点</caption>
-<tr><th>优点</th><th>缺点</th><th>电网适用性</th></tr>
-<tr><td>简单高效，时间复杂度O(n)</td><td>需要预先指定K值</td><td>已知用户类别数时适用</td></tr>
-<tr><td>可解释性强，结果直观</td><td>对初始中心敏感</td><td>使用K-Means++改善</td></tr>
-<tr><td>适用于大规模数据</td><td>假设簇为球形</td><td>对非球形簇效果差</td></tr>
-<tr><td>收敛速度快</td><td>对异常值敏感</td><td>需先处理异常值</td></tr>
-</table>
-</div>
-
-<figure class="chart-figure">
-<figcaption>图5-1：K-Means聚类迭代过程</figcaption>
-<svg width="100%" height="220" viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg">
-  <text x="340" y="25" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">K-Means聚类迭代过程</text>
-  <rect x="10" y="50" width="150" height="40" fill="#2563eb" rx="6"/>
-  <text x="85" y="75" text-anchor="middle" fill="#fff" font-size="12">初始化K个中心</text>
-  <polygon points="170,70 185,60 185,80" fill="#666"/>
-  <rect x="190" y="50" width="150" height="40" fill="#059669" rx="6"/>
-  <text x="265" y="75" text-anchor="middle" fill="#fff" font-size="12">分配样本到最近中心</text>
-  <polygon points="350,70 365,60 365,80" fill="#666"/>
-  <rect x="370" y="50" width="150" height="40" fill="#7c3aed" rx="6"/>
-  <text x="445" y="75" text-anchor="middle" fill="#fff" font-size="12">重新计算簇中心</text>
-  <polygon points="530,70 545,60 545,80" fill="#666"/>
-  <rect x="550" y="50" width="120" height="40" fill="#d97706" rx="6"/>
-  <text x="610" y="75" text-anchor="middle" fill="#fff" font-size="12">中心是否变化?</text>
-  <rect x="220" y="130" width="240" height="40" fill="#dc2626" rx="6"/>
-  <text x="340" y="155" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">是 → 继续迭代（回到步骤2）</text>
-  <rect x="220" y="180" width="240" height="30" fill="#059669" rx="6"/>
-  <text x="340" y="200" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">否 → 聚类完成</text>
-</svg>
-</figure>
-
-<span class="top-anchor" id="ch5-2"></span>
-<h3>5.2 DBSCAN聚类</h3>
-<p>DBSCAN（Density-Based Spatial Clustering of Applications with Noise）是一种基于密度的聚类算法，它不需要预先指定簇的数量，能够发现任意形状的簇，并且可以自动识别噪声点。在电网中，DBSCAN特别适用于异常事件检测和离群点发现。</p>
-
-<h4>5.2.1 核心概念</h4>
-<p>DBSCAN基于两个关键参数：<strong>eps（邻域半径）</strong>和<strong>min_samples（最小样本数）</strong>。根据这两个参数，将样本分为三类：核心点（邻域内样本数>=min_samples）、边界点（邻域内样本数<min_samples但属于核心点的邻域）、噪声点（既不是核心点也不是边界点）。</p>
-
-<div class="example-box">
-<div class="example-title">案例：基于DBSCAN的电网异常事件检测</div>
-<p><strong>案例背景：</strong>电网调度中心每天产生大量告警事件，其中绝大多数是正常操作事件，少数异常事件可能是故障前兆。DBSCAN通过密度聚类可自动识别噪声点（异常事件），无需预先指定事件类型数量。</p>
-<p><strong>数据说明：</strong>模拟180个电网事件记录，包含2个事件特征维度，其中160个正常事件聚集在两个密集区域，20个异常事件分散在特征空间中。</p>
-<p><strong>分析目标：</strong>使用DBSCAN进行事件聚类，自动识别正常事件簇和噪声点（异常事件），通过K-距离图辅助选择eps参数，为调度人员提供异常事件筛选能力。</p>
-
-<pre><code>from sklearn.cluster import DBSCAN
-
-# 模拟电网异常事件数据
-np.random.seed(42)
-# 正常事件：聚集在两个区域
-normal_events_1 = np.random.randn(80, 2) * 0.5 + [3, 3]
-normal_events_2 = np.random.randn(80, 2) * 0.5 + [7, 7]
-# 异常事件：分散的离群点
-anomaly_events = np.random.randn(20, 2) * 2 + [5, 5]
-X_events = np.vstack([normal_events_1, normal_events_2, anomaly_events])
-
-# ===== DBSCAN聚类 =====
-dbscan = DBSCAN(eps=0.8, min_samples=5)
-labels_db = dbscan.fit_predict(X_events)
-
-# 统计聚类结果
-n_clusters = len(set(labels_db)) - (1 if -1 in labels_db else 0)
-n_noise = list(labels_db).count(-1)
-print(f"发现的簇数量: {n_clusters}")
-print(f"噪声点数量: {n_noise}")
-print(f"聚类标签分布: {pd.Series(labels_db).value_counts().to_dict()}")
-
-# ===== 可视化DBSCAN聚类结果 =====
-plt.figure(figsize=(8, 6))
-unique_labels = set(labels_db)
-colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
-for label, color in zip(unique_labels, colors):
-    if label == -1:
-        # 噪声点：黑色
-        color = np.array([0, 0, 0, 1])
-        label_name = '噪声点'
-    else:
-        label_name = f'簇{label+1}'
-    mask = labels_db == label
-    plt.scatter(X_events[mask, 0], X_events[mask, 1], 
-                c=[color], label=label_name, edgecolors='k', linewidth=0.5, s=50)
-plt.xlabel('事件特征1'); plt.ylabel('事件特征2')
-plt.title('DBSCAN聚类——电网异常事件检测')
-plt.legend(); plt.grid(alpha=0.3); plt.show()
-# 输出结果应为：两个正常事件簇 + 噪声点（异常事件）被标记为黑色
-
-# ===== eps参数调优 =====
-# 使用K-距离图辅助选择eps
-from sklearn.neighbors import NearestNeighbors
-neighbors = NearestNeighbors(n_neighbors=5)
-neighbors_fit = neighbors.fit(X_events)
-distances, indices = neighbors_fit.kneighbors(X_events)
-distances = np.sort(distances[:, -1])  # 第5近邻的距离
-
-plt.figure(figsize=(8, 4))
-plt.plot(distances)
-plt.xlabel('样本（按距离排序）'); plt.ylabel('第5近邻距离')
-plt.title('K-距离图（辅助选择eps参数）')
-plt.axhline(y=0.8, color='red', linestyle='--', alpha=0.5, label='eps=0.8')
-plt.legend(); plt.grid(alpha=0.3); plt.show()
-# 输出结果应为：K-距离图在eps=0.8处出现拐点，这是合理的eps选择</code></pre>
+# 输出结果说明：三个簇在PCA空间中明显分离，聚类中心用黑色X标记</code></pre>
 </div>
 
 <div class="callout">
@@ -2515,6 +2908,74 @@ plt.legend(); plt.grid(alpha=0.3); plt.show()
 </svg>
 </figure>
 
+<div class="example-box">
+<div class="example-title">案例：基于DBSCAN的电网异常事件检测</div>
+<p><strong>案例背景：</strong>电网运行中会产生大量事件数据，正常事件有规律性，异常事件（如设备故障、线路跳闸）表现出不同特征模式。DBSCAN能自动发现任意形状的簇并识别噪声点。</p>
+<p><strong>数据说明：</strong>模拟420个事件数据点，400个正常事件（围绕原点聚集），20个异常事件（远离原点）。</p>
+<p><strong>分析目标：</strong>使用DBSCAN聚类，对比不同eps参数下的聚类效果，找到最优参数分离正常事件并识别异常事件。</p>
+
+<pre><code># 导入DBSCAN基于密度的聚类算法
+from sklearn.cluster import DBSCAN
+
+# 模拟电网异常事件数据：正常事件+异常事件
+np.random.seed(42)
+# 正常事件数据：400个点，围绕原点聚集，标准差0.5
+normal_events = np.random.randn(400, 2) * 0.5
+# 异常事件数据：20个点，远离原点（偏移量[3,3]），标准差0.3
+anomaly_events = np.random.randn(20, 2) * 0.3 + np.array([3, 3])
+# 垂直堆叠正常事件和异常事件
+X_events = np.vstack([normal_events, anomaly_events])
+
+# 标准化：DBSCAN基于距离，不同特征尺度会影响聚类结果
+scaler = StandardScaler()
+X_events_scaled = scaler.fit_transform(X_events)
+
+# ===== DBSCAN聚类 =====
+# eps=0.3：邻域半径，min_samples=10：核心点所需的最小邻居数
+dbscan = DBSCAN(eps=0.3, min_samples=10)
+# fit_predict：拟合并返回每个样本的簇标签（-1表示噪声点）
+labels_db = dbscan.fit_predict(X_events_scaled)
+
+# 统计噪声点数量（标签为-1的样本即为噪声）
+n_noise = np.sum(labels_db == -1)
+# 计算簇的数量（排除噪声标签-1）
+n_clusters = len(set(labels_db)) - (1 if -1 in labels_db else 0)
+print(f"DBSCAN(eps=0.3, min_samples=10): 发现{n_clusters}个簇, {n_noise}个噪声点")
+
+# 不同eps参数对比：eps影响聚类粒度和噪声检测灵敏度
+for eps in [0.2, 0.3, 0.5]:
+    # 使用不同eps值创建DBSCAN模型
+    dbscan = DBSCAN(eps=eps, min_samples=10)
+    labels = dbscan.fit_predict(X_events_scaled)
+    # 统计噪声点数量
+    n_noise = np.sum(labels == -1)
+    # 统计簇数量
+    n_clusters = len(set(labels)) - (1 if -1 in labels_db else 0)
+    print(f"eps={eps}: 簇数={n_clusters}, 噪声点={n_noise}")
+
+# 可视化聚类结果：对比三种eps参数下的聚类效果
+fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+for ax, eps in zip(axes, [0.2, 0.3, 0.5]):
+    # 用当前eps值进行DBSCAN聚类
+    dbscan = DBSCAN(eps=eps, min_samples=10)
+    labels = dbscan.fit_predict(X_events_scaled)
+    unique_labels = set(labels)
+    # 为每个簇分配不同颜色（彩虹色映射）
+    colors = plt.cm.rainbow(np.linspace(0, 1, len(unique_labels)))
+    for k, col in zip(unique_labels, colors):
+        if k == -1:
+            col = 'black'  # 噪声点统一用黑色标记
+        # 绘制该簇的散点图
+        ax.scatter(X_events_scaled[labels == k, 0], X_events_scaled[labels == k, 1],
+                   c=[col], s=20, alpha=0.6, label=f'{"噪声" if k==-1 else f"簇{k}"}')
+    # 设置子图标题和标签
+    ax.set_title(f'DBSCAN (eps={eps})')
+    ax.set_xlabel('特征1'); ax.set_ylabel('特征2')
+# 自动调整布局
+plt.tight_layout(); plt.show()
+# 输出结果说明：eps=0.2时可能将正常数据也标记为噪声；eps=0.5时可能无法分离异常点</code></pre>
+</div>
+
 <span class="top-anchor" id="ch5-3"></span>
 <h3>5.3 主成分分析PCA</h3>
 <p>主成分分析（Principal Component Analysis, PCA）是最常用的降维方法，它通过线性变换将原始特征空间映射到低维的正交空间，同时最大化保留数据的方差信息。在电网中，PCA常用于多维度设备参数的可视化降维和噪声过滤。</p>
@@ -2522,62 +2983,95 @@ plt.legend(); plt.grid(alpha=0.3); plt.show()
 <h4>5.3.1 降维原理与方差解释率</h4>
 <p>PCA通过计算数据的协方差矩阵的特征值和特征向量，选择前k个最大特征值对应的特征向量（主成分）作为新的坐标轴。每个主成分的方差解释率 = λ<sub>i</sub> / Σλ<sub>j</sub>，表示该主成分保留了原始数据多少比例的信息。通常选择累积方差解释率达到85%-95%的前k个主成分。</p>
 
+<figure class="chart-figure">
+<figcaption>流程图：PCA降维算法流程</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <text x="300" y="22" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">PCA降维算法流程</text>
+  <rect x="200" y="35" width="200" height="30" fill="#2563eb" rx="5"/>
+  <text x="300" y="55" text-anchor="middle" fill="#fff" font-size="12">输入：高维数据X 目标维度k</text>
+  <polygon points="300,65 290,75 310,75" fill="#666"/>
+  <rect x="200" y="77" width="200" height="30" fill="#059669" rx="5"/>
+  <text x="300" y="97" text-anchor="middle" fill="#fff" font-size="12">标准化+计算协方差矩阵</text>
+  <polygon points="300,107 290,117 310,117" fill="#666"/>
+  <rect x="200" y="119" width="200" height="30" fill="#7c3aed" rx="5"/>
+  <text x="300" y="139" text-anchor="middle" fill="#fff" font-size="12">特征值分解+选前k个</text>
+  <polygon points="300,149 290,159 310,159" fill="#666"/>
+  <rect x="200" y="161" width="200" height="30" fill="#dc2626" rx="5"/>
+  <text x="300" y="181" text-anchor="middle" fill="#fff" font-size="12">输出：k维降维数据</text>
+</svg>
+</figure>
+
+
 <div class="example-box">
 <div class="example-title">案例：变压器多维度监测参数PCA降维可视化</div>
 <p><strong>案例背景：</strong>变压器全方位监测系统采集了10个参数（油温、绕组温度、油位、H2、CH4、C2H2、C2H4、C2H6、CO、CO2），高维数据难以直观展示设备运行状态。PCA通过线性降维在保留主要信息的同时将数据映射到低维空间。</p>
 <p><strong>数据说明：</strong>模拟300条变压器监测记录，包含10个相互关联的设备参数（参数1-10），参数间存在线性相关性（如参数2与参数0、1相关，参数3与参数0、1相关）。</p>
 <p><strong>分析目标：</strong>使用PCA进行降维，通过碎石图和累积方差解释率确定最优主成分数量，将10维数据降至2维进行可视化，实现设备状态模式的直观展示。</p>
 
-<pre><code>from sklearn.decomposition import PCA
+<pre><code># 导入PCA主成分分析降维算法
+from sklearn.decomposition import PCA
 
 # 模拟多维度设备参数数据（10个特征）
 np.random.seed(42)
+# 样本数量：300条监测记录
 n = 300
-# 10个相关但非完全相关的设备参数
+# 生成10个独立的基础特征（正态分布）
 X_raw = np.random.randn(n, 10)
-# 加入相关性结构
+# 加入相关性结构：某些特征由其他特征线性组合而成
+# 特征3 = 0.8*特征1 + 0.2*特征2 + 噪声
 X_raw[:, 2] = 0.8 * X_raw[:, 0] + 0.2 * X_raw[:, 1] + np.random.randn(n) * 0.3
+# 特征4 = 0.6*特征1 - 0.4*特征2 + 噪声
 X_raw[:, 3] = 0.6 * X_raw[:, 0] - 0.4 * X_raw[:, 1] + np.random.randn(n) * 0.3
+# 特征6 = 0.7*特征5 + 噪声
 X_raw[:, 5] = 0.7 * X_raw[:, 4] + np.random.randn(n) * 0.4
+# 特征7 = 0.5*特征5 + 0.5*特征6 + 噪声
 X_raw[:, 6] = 0.5 * X_raw[:, 4] + 0.5 * X_raw[:, 5] + np.random.randn(n) * 0.3
+# 创建特征名称列表
 feature_names = [f'参数{i+1}' for i in range(10)]
 
-# 标准化
+# 标准化：PCA对特征尺度敏感，需标准化到均值为0、标准差为1
 X_scaled = StandardScaler().fit_transform(X_raw)
 
 # ===== PCA降维 =====
+# 创建PCA对象，默认保留所有主成分
 pca = PCA()
+# fit_transform：拟合PCA并转换数据到主成分空间
 X_pca = pca.fit_transform(X_scaled)
 
-# 方差解释率
-explained_variance_ratio = pca.explained_variance_ratio_
-cumulative_variance = np.cumsum(explained_variance_ratio)
+# 获取方差解释率：每个主成分解释原始数据方差的比例
+explained_var = pca.explained_variance_ratio_
+# 计算累积方差解释率
+cumulative_var = np.cumsum(explained_var)
+
 print("各主成分方差解释率：")
-for i, (evr, cum) in enumerate(zip(explained_variance_ratio, cumulative_variance)):
-    print(f"  主成分{i+1}: {evr:.4f} (累计: {cum:.4f})")
+# 打印前5个主成分的方差解释率和累积值
+for i in range(5):
+    print(f"  PC{i+1}: {explained_var[i]:.4f} (累计: {cumulative_var[i]:.4f})")
 
-# 选择累积方差>=90%的最小主成分数
-k_90 = np.argmax(cumulative_variance >= 0.90) + 1
-print(f"\n保留{k_90}个主成分即可解释90%以上方差")
+# 可视化：碎石图 + 降维散点图
+fig, axes = plt.subplots(1, 2, figsize=(13, 5))
 
-# ===== 可视化：方差解释率 =====
-fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-# 碎石图
-axes[0].bar(range(1, 11), explained_variance_ratio, color='#2563eb', alpha=0.8)
-axes[0].plot(range(1, 11), cumulative_variance, 'ro-', markersize=6)
-axes[0].axhline(y=0.90, color='green', linestyle='--', alpha=0.5, label='90%阈值')
+# 左图：碎石图 - 各主成分方差解释率柱状图 + 累积方差折线
+axes[0].bar(range(1, 11), explained_var, color='#2563eb', alpha=0.7)
+axes[0].plot(range(1, 11), cumulative_var, 'ro-', markersize=6, label='累积方差')
+# 添加90%方差阈值参考线
+axes[0].axhline(y=0.9, color='red', linestyle='--', alpha=0.5, label='90%阈值')
 axes[0].set_xlabel('主成分'); axes[0].set_ylabel('方差解释率')
-axes[0].set_title('碎石图与累积方差解释率')
-axes[0].legend()
+axes[0].set_title('PCA碎石图'); axes[0].legend(); axes[0].grid(alpha=0.3)
 
-# 前2个主成分的散点图
-axes[1].scatter(X_pca[:, 0], X_pca[:, 1], alpha=0.6, edgecolors='k', linewidth=0.3)
-axes[1].set_xlabel(f'主成分1 ({explained_variance_ratio[0]:.1%})')
-axes[1].set_ylabel(f'主成分2 ({explained_variance_ratio[1]:.1%})')
-axes[1].set_title('PCA降维可视化（前2个主成分）')
-axes[1].grid(alpha=0.3)
+# 右图：前2个主成分的散点图（数据在2D空间的分布）
+axes[1].scatter(X_pca[:, 0], X_pca[:, 1], alpha=0.6, c='#2563eb', edgecolors='k', linewidth=0.3)
+axes[1].set_xlabel(f'PC1 ({explained_var[0]:.1%})')
+axes[1].set_ylabel(f'PC2 ({explained_var[1]:.1%})')
+axes[1].set_title('PCA降维——前2个主成分'); axes[1].grid(alpha=0.3)
+# 自动调整布局
 plt.tight_layout(); plt.show()
-# 输出结果应为：前几个主成分就能解释大部分方差，碎石图呈现"肘部"形状</code></pre>
+
+# 确定保留90%方差所需的主成分数
+n_components = np.argmax(cumulative_var >= 0.9) + 1
+# 打印结果
+print(f"\\n保留90%方差需要 {n_components} 个主成分")
+# 输出结果说明：前几个主成分就能解释大部分方差，碎石图呈现"肘部"形状</code></pre>
 </div>
 
 <div class="callout">
@@ -2630,32 +3124,39 @@ plt.tight_layout(); plt.show()
 <p><strong>数据说明：</strong>模拟530条风机监测数据，包含500条正常记录和30条异常记录，特征包括：temperature（温度，℃）、vibration（振动，mm/s）、current（电流，A）、pressure（油压，MPa）。异常数据在温度、振动和电流上显著偏离正常范围。</p>
 <p><strong>分析目标：</strong>使用孤立森林（contamination=5%）进行异常检测，通过精确率、召回率和F1分数评估检测效果，可视化异常分数分布和正常/异常样本在特征空间中的分布。</p>
 
-<pre><code>from sklearn.ensemble import IsolationForest
+<pre><code># 导入孤立森林异常检测算法
+from sklearn.ensemble import IsolationForest
 
 # 模拟设备监测数据（含异常点）
 np.random.seed(42)
+# 正常样本数：500条
 n_normal = 500
+# 异常样本数：30条（约5.7%）
 n_anomaly = 30
-# 正常数据
+# 正常数据：温度、振动、电流、油压均在正常范围内
 normal_data = pd.DataFrame({
-    'temperature': 65 + 10 * np.random.randn(n_normal),
-    'vibration': 2.0 + 0.5 * np.random.randn(n_normal),
-    'current': 150 + 30 * np.random.randn(n_normal),
-    'pressure': 0.5 + 0.1 * np.random.randn(n_normal),
+    'temperature': 65 + 10 * np.random.randn(n_normal),    # 温度(℃)，均值65
+    'vibration': 2.0 + 0.5 * np.random.randn(n_normal),     # 振动(mm/s)，均值2.0
+    'current': 150 + 30 * np.random.randn(n_normal),         # 电流(A)，均值150
+    'pressure': 0.5 + 0.1 * np.random.randn(n_normal),       # 油压(MPa)，均值0.5
 })
-# 异常数据（偏离正常范围）
+# 异常数据：温度、振动、电流显著偏离正常范围，油压偏低
 anomaly_data = pd.DataFrame({
-    'temperature': 90 + 5 * np.random.randn(n_anomaly),
-    'vibration': 5.0 + 1.5 * np.random.randn(n_anomaly),
-    'current': 250 + 50 * np.random.randn(n_anomaly),
-    'pressure': 0.2 + 0.05 * np.random.randn(n_anomaly),
+    'temperature': 90 + 5 * np.random.randn(n_anomaly),     # 温度(℃)，均值90（异常偏高）
+    'vibration': 5.0 + 1.5 * np.random.randn(n_anomaly),     # 振动(mm/s)，均值5.0（异常偏高）
+    'current': 250 + 50 * np.random.randn(n_anomaly),         # 电流(A)，均值250（异常偏高）
+    'pressure': 0.2 + 0.05 * np.random.randn(n_anomaly),      # 油压(MPa)，均值0.2（异常偏低）
 })
 
+# 合并正常和异常数据
 X_all = pd.concat([normal_data, anomaly_data], ignore_index=True)
+# 真实标签：0=正常，1=异常（仅用于评估孤立森林的检测效果）
 y_true = np.array([0]*n_normal + [1]*n_anomaly)  # 0=正常, 1=异常（仅用于评估）
 
 # ===== 孤立森林异常检测 =====
+# contamination=0.05：预期异常比例约为5%，用于自动确定阈值
 iso_forest = IsolationForest(contamination=0.05, random_state=42)
+# 拟合孤立森林模型（构建多棵随机二叉树）
 iso_forest.fit(X_all)
 # predict返回1表示正常，-1表示异常
 y_pred = iso_forest.predict(X_all)
@@ -2750,6 +3251,31 @@ plt.tight_layout(); plt.show()
 
 <h4>6.1.2 Boosting</h4>
 <p>Boosting的核心思想是：串行训练一系列基学习器，每个新学习器专注于纠正前一个学习器的错误。通过调整样本权重（AdaBoost）或拟合残差（Gradient Boosting），逐步提升模型性能。XGBoost、LightGBM是Boosting的代表性算法。Boosting主要降低<strong>偏差</strong>，适合高偏差、低方差的模型。</p>
+
+<figure class="chart-figure">
+<figcaption>流程图：Bagging与Boosting集成学习流程</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <text x="300" y="22" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">Bagging与Boosting对比</text>
+  <rect x="20" y="40" width="260" height="30" fill="#2563eb" rx="5"/>
+  <text x="150" y="60" text-anchor="middle" fill="#fff" font-size="12">Bagging：并行 Bootstrap采样</text>
+  <rect x="320" y="40" width="260" height="30" fill="#059669" rx="5"/>
+  <text x="450" y="60" text-anchor="middle" fill="#fff" font-size="12">Boosting：串行 逐步修正</text>
+  <polygon points="150,70 140,80 160,80" fill="#666"/>
+  <polygon points="450,70 440,80 460,80" fill="#666"/>
+  <rect x="20" y="82" width="260" height="30" fill="#7c3aed" rx="5"/>
+  <text x="150" y="102" text-anchor="middle" fill="#fff" font-size="11">各模型独立训练 取平均</text>
+  <rect x="320" y="82" width="260" height="30" fill="#7c3aed" rx="5"/>
+  <text x="450" y="102" text-anchor="middle" fill="#fff" font-size="11">后一个模型拟合前一个残差</text>
+  <polygon points="150,112 140,122 160,122" fill="#666"/>
+  <polygon points="450,112 440,122 460,122" fill="#666"/>
+  <rect x="20" y="124" width="260" height="30" fill="#dc2626" rx="5"/>
+  <text x="150" y="144" text-anchor="middle" fill="#fff" font-size="12">主要降低方差</text>
+  <rect x="320" y="124" width="260" height="30" fill="#dc2626" rx="5"/>
+  <text x="450" y="144" text-anchor="middle" fill="#fff" font-size="12">主要降低偏差</text>
+  <text x="300" y="185" text-anchor="middle" fill="#666" font-size="11">典型算法：Bagging→随机森林 | Boosting→XGBoost/LightGBM/AdaBoost</text>
+</svg>
+</figure>
+
 
 <div class="example-box">
 <div class="example-title">案例：Bagging与Boosting集成策略在电网预测中的对比</div>
@@ -2872,6 +3398,31 @@ plt.ylim(0, 1); plt.grid(alpha=0.3, axis='y'); plt.show()
 <h4>6.2.1 多模型融合策略</h4>
 <p>Stacking通常分为两层：第一层（Level 1）包含多个不同类型的基学习器（如随机森林、XGBoost、SVR等），第二层（Level 2）使用元学习器（通常是简单的线性模型或浅层树模型）来组合基学习器的预测。为避免过拟合，通常使用交叉验证来生成基学习器的预测。</p>
 
+<figure class="chart-figure">
+<figcaption>流程图：Stacking集成学习流程</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <text x="300" y="22" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">Stacking堆叠集成流程</text>
+  <rect x="200" y="35" width="200" height="30" fill="#2563eb" rx="5"/>
+  <text x="300" y="55" text-anchor="middle" fill="#fff" font-size="12">输入：训练数据X y</text>
+  <polygon points="300,65 290,75 310,75" fill="#666"/>
+  <rect x="50" y="77" width="150" height="30" fill="#059669" rx="5"/>
+  <text x="125" y="97" text-anchor="middle" fill="#fff" font-size="11">基学习器1(RF)</text>
+  <rect x="225" y="77" width="150" height="30" fill="#7c3aed" rx="5"/>
+  <text x="300" y="97" text-anchor="middle" fill="#fff" font-size="11">基学习器2(XGB)</text>
+  <rect x="400" y="77" width="150" height="30" fill="#d97706" rx="5"/>
+  <text x="475" y="97" text-anchor="middle" fill="#fff" font-size="11">基学习器3(SVR)</text>
+  <polygon points="125,107 115,117 135,117" fill="#666"/>
+  <polygon points="300,107 290,117 310,117" fill="#666"/>
+  <polygon points="475,107 465,117 485,117" fill="#666"/>
+  <rect x="200" y="119" width="200" height="30" fill="#dc2626" rx="5"/>
+  <text x="300" y="139" text-anchor="middle" fill="#fff" font-size="12">元学习器学习组合权重</text>
+  <polygon points="300,149 290,159 310,159" fill="#666"/>
+  <rect x="200" y="161" width="200" height="30" fill="#1a1a2e" rx="5"/>
+  <text x="300" y="181" text-anchor="middle" fill="#fff" font-size="12">输出：最优融合预测结果</text>
+</svg>
+</figure>
+
+
 <div class="example-box">
 <div class="example-title">案例：Stacking多模型融合在电网综合预测中的应用</div>
 <p><strong>案例背景：</strong>不同模型在电网预测任务中各有优劣（随机森林稳健、XGBoost精度高、SVR泛化好），Stacking通过学习最优组合权重来融合多个基学习器的优势，实现"1+1>2"的效果。</p>
@@ -2899,11 +3450,13 @@ base_learners = [
 ]
 
 # ===== Stacking集成 =====
+# 创建Stacking模型：第一层基学习器，第二层元学习器
 stacking = StackingRegressor(
-    estimators=base_learners,
+    estimators=base_learners,  # 基学习器列表
     final_estimator=Ridge(alpha=1.0),  # 元学习器
     cv=5  # 5折交叉验证生成基学习器预测
 )
+# 训练Stacking模型（两阶段：先训练基学习器，再训练元学习器）
 stacking.fit(X_train, y_train)
 
 # ===== 评估 =====
@@ -2972,6 +3525,25 @@ print(f"\nStacking提升幅度: {stack_score - max([r2_score(y_test, m.predict(X
 <h4>6.3.1 GridSearchCV、RandomizedSearchCV与贝叶斯优化</h4>
 <p><strong>网格搜索（GridSearchCV）</strong>穷举搜索所有超参数组合，结果可靠但计算量大。<strong>随机搜索（RandomizedSearchCV）</strong>在超参数空间中随机采样，效率更高但可能错过最优解。<strong>贝叶斯优化</strong>利用先验知识构建代理模型，智能地选择下一个评估点，在有限的迭代次数内找到近似最优解。</p>
 
+<figure class="chart-figure">
+<figcaption>流程图：超参数调优流程</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <text x="300" y="22" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">超参数调优流程</text>
+  <rect x="200" y="35" width="200" height="30" fill="#2563eb" rx="5"/>
+  <text x="300" y="55" text-anchor="middle" fill="#fff" font-size="12">定义参数搜索空间</text>
+  <polygon points="300,65 290,75 310,75" fill="#666"/>
+  <rect x="200" y="77" width="200" height="30" fill="#059669" rx="5"/>
+  <text x="300" y="97" text-anchor="middle" fill="#fff" font-size="12">网格搜索/随机搜索</text>
+  <polygon points="300,107 290,117 310,117" fill="#666"/>
+  <rect x="200" y="119" width="200" height="30" fill="#7c3aed" rx="5"/>
+  <text x="300" y="139" text-anchor="middle" fill="#fff" font-size="12">交叉验证评估每组参数</text>
+  <polygon points="300,149 290,159 310,159" fill="#666"/>
+  <rect x="200" y="161" width="200" height="30" fill="#dc2626" rx="5"/>
+  <text x="300" y="181" text-anchor="middle" fill="#fff" font-size="12">输出：最优超参数组合</text>
+</svg>
+</figure>
+
+
 <div class="example-box">
 <div class="example-title">案例：XGBoost负荷预测模型的超参数调优</div>
 <p><strong>案例背景：</strong>XGBoost模型有多个关键超参数（n_estimators、max_depth、learning_rate、subsample等），默认参数往往不是最优的，需要通过系统化的超参数搜索来提升预测精度。</p>
@@ -2994,7 +3566,8 @@ param_grid = {
 }
 gbr = GradientBoostingRegressor(random_state=42)
 grid_search = GridSearchCV(gbr, param_grid, cv=5, scoring='r2', n_jobs=-1, verbose=0)
-grid_search.fit(X_train, y_train)
+# 执行网格搜索（遍历所有参数组合）
+\grid_search.fit(X_train, y_train)
 print("=" * 50)
 print("网格搜索结果")
 print(f"最优参数: {grid_search.best_params_}")
@@ -3011,7 +3584,8 @@ param_dist = {
 random_search = RandomizedSearchCV(
     gbr, param_dist, n_iter=50, cv=5, scoring='r2', n_jobs=-1, random_state=42, verbose=0
 )
-random_search.fit(X_train, y_train)
+# 执行随机搜索
+andom_search.fit(X_train, y_train)
 print("\n随机搜索结果")
 print(f"最优参数: {random_search.best_params_}")
 print(f"最优R²: {random_search.best_score_:.4f}")

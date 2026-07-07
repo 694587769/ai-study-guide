@@ -650,7 +650,7 @@ figcaption {
 <h3>1.1 SQL简介</h3>
 <p>SQL（Structured Query Language，结构化查询语言）是用于管理和操作关系型数据库的标准语言。1974年由IBM研究员Donald Chamberlin和Raymond Boyce提出，最初称为SEQUEL，后更名为SQL。SQL于1986年被美国国家标准协会（ANSI）采纳为行业标准，1987年成为国际标准化组织（ISO）标准。</p>
 
-<p>关系型数据库的核心概念是"表"（Table），表由行（Row，也称记录或元组）和列（Column，也称字段或属性）组成。多张表之间通过主键（Primary Key）和外键（Foreign Key）建立关联，形成完整的数据模型。SQL提供了一套声明式的语法，用户只需描述"想要什么数据"，而无需关心数据库如何获取这些数据。</p>
+<p>关系型数据库的核心概念是"表"（Table），表由行（Row，也称记录或元组）和列（Column，也称字段或属性）组成。多张表之间通过主键（Primary Key）和外键（Foreign Key）建立关联，共同构成完整的数据模型。SQL提供了一套声明式的语法，用户只需描述"想要什么数据"，数据库系统会自动完成底层的检索优化工作。</p>
 
 <div class="table-wrap">
 <table class="data-table">
@@ -659,8 +659,8 @@ figcaption {
 <tr><td>1974</td><td>IBM提出SEQUEL语言</td><td>SQL语言的原型诞生</td></tr>
 <tr><td>1979</td><td>Oracle发布首个商业SQL数据库</td><td>SQL开始商业化应用</td></tr>
 <tr><td>1986</td><td>ANSI发布SQL-86标准</td><td>SQL成为美国国家标准</td></tr>
-<tr><td>1992</td><td>发布SQL-92（SQL2）标准</td><td>奠定现代SQL语法基础</td></tr>
-<tr><td>1999</td><td>发布SQL:1999（SQL3）标准</td><td>引入递归查询、窗口函数等高级特性</td></tr>
+<tr><td>1992</td><td>发布SQL-92（SQL2)标准</td><td>奠定现代SQL语法基础</td></tr>
+<tr><td>1999</td><td>发布SQL:1999（SQL3)标准</td><td>引入递归查询、窗口函数等高级特性</td></tr>
 <tr><td>2003</td><td>发布SQL:2003标准</td><td>增加XML支持、窗口函数扩展</td></tr>
 <tr><td>2011</td><td>发布SQL:2011标准</td><td>增强时态数据（Temporal Data）支持</td></tr>
 </table>
@@ -721,6 +721,11 @@ figcaption {
 <li><strong>TCL（Transaction Control Language）</strong>：用于管理数据库事务，确保数据一致性和完整性。核心语句有<code>COMMIT</code>、<code>ROLLBACK</code>、<code>SAVEPOINT</code>。</li>
 </ul>
 
+<div class="example-box">
+<div class="example-title">案例：SQL五大功能类别演示</div>
+<p><strong>业务背景：</strong>电网公司需要管理设备台账数据，涉及数据库结构的创建、数据的增删改查、权限控制以及事务管理。</p>
+<p><strong>数据关联：</strong>本案例新建一张名为 power_devices 的设备台账表，包含设备ID、名称、类型、电压等级、所属变电站、安装日期和状态等字段。</p>
+<p><strong>操作思路：</strong>1) 使用DDL创建表结构；2) 使用DML插入测试数据；3) 使用DQL查询运行中的设备；4) 使用DCL授予用户查询权限；5) 使用TCL演示事务控制。</p>
 <pre><code>-- DDL示例：创建电网设备台账表
 CREATE TABLE power_devices (
     device_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -736,7 +741,7 @@ CREATE TABLE power_devices (
 INSERT INTO power_devices (device_name, device_type, voltage_level, station_id, install_date)
 VALUES ('1号主变', '变压器', '220kV', 101, '2018-06-15');
 
--- DQL示例：查询所有运行中的设备
+-- DQL示例：查询所有处于运行状态的设备
 SELECT device_name, device_type, voltage_level
 FROM power_devices
 WHERE status = '运行';
@@ -763,7 +768,7 @@ COMMIT;</code></pre>
 
 <div class="callout warn">
 <div class="callout-title">注意</div>
-<p>DDL语句通常会自动提交事务（隐式提交），因此在执行<code>CREATE TABLE</code>或<code>ALTER TABLE</code>后，当前事务会自动结束。在编写事务脚本时，应尽量避免在事务中间混用DDL语句，以防意外提交。</p>
+<p>DDL语句通常会自动提交事务（隐式提交），因此在执行<code>CREATE TABLE</code>或<code>ALTER TABLE</code>后，当前事务会自动结束。建议在编写事务脚本时，避免在事务中混入DDL语句，以免触发隐式提交导致数据不一致。</p>
 </div>
 
 <span class="top-anchor" id="ch1-3"></span>
@@ -801,7 +806,7 @@ SELECT @@VERSION;</code></pre>
 
 <div class="callout">
 <div class="callout-title">选型建议</div>
-<p>对于电网中小型业务系统，推荐优先使用<strong>MySQL 8.0</strong>或<strong>PostgreSQL</strong>，两者均为开源免费，社区支持完善，功能足以满足绝大多数业务需求。对于省级及以上核心调度系统，可考虑Oracle或达梦等国产数据库以满足高可用和信创要求。</p>
+<p>对于电网中小型业务系统，建议优先使用<strong>MySQL 8.0</strong>或<strong>PostgreSQL</strong>，两者均为开源免费产品，社区支持完善，功能足以满足绝大多数业务需求。对于省级及以上核心调度系统，可考虑Oracle或达梦等国产数据库，以满足高可用和信创要求。</p>
 </div>
 
 <figure class="chart-figure">
@@ -879,7 +884,7 @@ SELECT @@VERSION;</code></pre>
 
 <span class="top-anchor" id="ch2-1"></span>
 <h3>2.1 MySQL安装</h3>
-<p>MySQL是目前电网行业应用最广泛的开源关系型数据库之一。本节介绍MySQL 8.0在Windows和Linux环境下的安装步骤。MySQL 8.0相比5.7版本在性能、安全性和JSON支持方面有显著提升，推荐新项目直接使用8.0及以上版本。</p>
+<p>MySQL是目前电网行业应用最广泛的开源关系型数据库之一。本节介绍MySQL 8.0在Windows和Linux环境下的安装步骤。MySQL 8.0相比5.7版本，在性能、安全性和JSON支持方面均有显著提升，，推荐新项目直接使用8.0及以上版本。</p>
 
 <h4>2.1.1 Windows系统安装</h4>
 <ol>
@@ -917,9 +922,9 @@ SHOW DATABASES;</code></pre>
 
 <figure class="chart-figure">
 <figcaption>图2-1：MySQL安装流程</figcaption>
-<svg width="100%" height="140" viewBox="0 0 640 140" xmlns="http://www.w3.org/2000/svg">
-  <rect x="10" y="45" width="110" height="36" fill="#2563eb" rx="6"/>
-  <text x="65" y="67" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">下载安装包</text>
+<svg width="100%" height="120" viewBox="0 0 780 120" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="35" width="110" height="36" fill="#2563eb" rx="6"/>
+  <text x="65" y="57" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">下载安装包</text>
   <line x1="120" y1="63" x2="160" y2="63" stroke="#666" stroke-width="2" marker-end="url(#arrow2)"/>
   <rect x="160" y="45" width="110" height="36" fill="#7c3aed" rx="6"/>
   <text x="215" y="67" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">运行安装程序</text>
@@ -938,10 +943,10 @@ SHOW DATABASES;</code></pre>
 
 <span class="top-anchor" id="ch2-2"></span>
 <h3>2.2 客户端工具安装</h3>
-<p>数据库客户端工具提供图形化界面，大幅提升SQL编写和数据库管理效率。本节介绍两款常用的MySQL客户端工具：DBeaver和Navicat。</p>
+<p>数据库客户端工具提供图形化界面，可以大幅提升SQL编写和数据库管理的效率。本节介绍两款常用的MySQL客户端工具：DBeaver和Navicat。</p>
 
 <h4>2.2.1 DBeaver（免费开源）</h4>
-<p>DBeaver是一款支持多种数据库的通用数据库管理工具，兼容MySQL、PostgreSQL、Oracle、SQL Server等主流数据库。它提供SQL编辑器、数据浏览、ER图生成、数据导入导出等功能，是电网开发人员常用的免费工具。</p>
+<p>DBeaver是一款支持多种数据库的通用数据库管理工具，，兼容MySQL、PostgreSQL、Oracle、SQL Server等主流数据库。它提供SQL编辑器、数据浏览、ER图生成、数据导入导出等功能，是电网开发人员常用的免费数据库管理工具。</p>
 <pre><code>-- DBeaver中创建新连接步骤：
 -- 1. 点击"新建数据库连接"按钮
 -- 2. 选择MySQL，填写主机（localhost）、端口（3306）、数据库（power_grid_db）
@@ -949,7 +954,7 @@ SHOW DATABASES;</code></pre>
 -- 4. 连接成功后，在导航树中展开数据库，右键选择"SQL编辑器"即可编写SQL</code></pre>
 
 <h4>2.2.2 Navicat（商业软件）</h4>
-<p>Navicat是功能更为强大的商业数据库管理工具，提供更完善的数据建模、数据同步、备份恢复和报表功能。对于需要频繁进行数据库设计、数据迁移和自动化运维的电网DBA，Navicat是高效的工具选择。</p>
+<p>Navicat是一款功能更为强大的商业数据库管理工具，，提供更完善的数据建模、数据同步、备份恢复和报表功能。对于需要频繁进行数据库设计、数据迁移和自动化运维的电网DBA（数据库管理员），，Navicat是高效的工具选择。</p>
 
 <div class="table-wrap">
 <table class="data-table">
@@ -978,6 +983,11 @@ SHOW DATABASES;</code></pre>
 <h3>2.3 创建第一个数据库和表</h3>
 <p>本节以电网设备台账管理为例，演示如何创建数据库、创建表以及插入初始数据。设备台账是电网信息化中最基础的数据模型之一，几乎所有业务系统都需要引用设备信息。</p>
 
+<div class="example-box">
+<div class="example-title">案例：创建电网设备管理数据库</div>
+<p><strong>业务背景：</strong>电网公司需要建立设备台账管理系统，存储变电站和设备的静态信息。</p>
+<p><strong>数据关联：</strong>创建 power_grid_db 数据库，包含 stations（变电站表）和 devices（设备台账表）。devices 表通过 station_id 外键关联 stations 表。</p>
+<p><strong>操作思路：</strong>1) 创建数据库并指定字符集；2) 创建 stations 表存储变电站信息；3) 创建 devices 表存储设备信息，并设置外键约束；4) 插入测试数据供后续练习使用。</p>
 <pre><code>-- 创建数据库
 CREATE DATABASE IF NOT EXISTS power_grid_db
     CHARACTER SET utf8mb4
@@ -1109,7 +1119,7 @@ SELECT COUNT(*) FROM devices;      -- 查看表记录数</code></pre>
 
 <span class="top-anchor" id="ch3-1"></span>
 <h3>3.1 SELECT基本语法</h3>
-<p><code>SELECT</code>是SQL中最核心、使用最频繁的语句，用于从数据库表中检索数据。熟练掌握SELECT的各种用法，是进行所有数据查询和分析的基础。</p>
+<p><code>SELECT</code>是SQL中最核心、使用最频繁的语句，用于从数据库表中检索数据。熟练掌握SELECT的各种用法，是进行所有数据查询和分析工作的基础。</p>
 
 <pre><code>-- 基本语法结构
 SELECT 列名1, 列名2, ...
@@ -1151,8 +1161,8 @@ SELECT device_name, voltage_level, '重要设备' AS 备注 FROM devices;</code>
 
 <figure class="chart-figure">
 <figcaption>图3-1：SELECT语句执行逻辑</figcaption>
-<svg width="100%" height="120" viewBox="0 0 640 120" xmlns="http://www.w3.org/2000/svg">
-  <rect x="20" y="35" width="120" height="40" fill="#2563eb" rx="6"/>
+<svg width="100%" height="100" viewBox="0 0 700 100" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="30" width="120" height="40" fill="#2563eb" rx="6"/>
   <text x="80" y="60" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">FROM 选择表</text>
   <line x1="140" y1="55" x2="180" y2="55" stroke="#666" stroke-width="2" marker-end="url(#arrow3)"/>
   <rect x="180" y="35" width="120" height="40" fill="#059669" rx="6"/>
@@ -1171,6 +1181,11 @@ SELECT device_name, voltage_level, '重要设备' AS 备注 FROM devices;</code>
 <h3>3.2 WHERE条件过滤</h3>
 <p><code>WHERE</code>子句用于指定查询条件，只返回满足条件的记录。掌握各种运算符和条件组合方式，是编写精确查询的关键。</p>
 
+<div class="example-box">
+<div class="example-title">案例：按条件筛选电网设备</div>
+<p><strong>业务背景：</strong>运维人员需要根据不同的条件查询设备信息，如按电压等级、设备类型、安装日期等维度进行精确筛选。</p>
+<p><strong>数据关联：</strong>基于 devices 表（设备台账表），包含 device_id、device_name、device_type、voltage_level、station_id、install_date、status 等字段。</p>
+<p><strong>操作思路：</strong>1) 使用比较运算符进行等值或范围查询；2) 使用 BETWEEN、IN、LIKE 进行区间、列表和模糊匹配；3) 使用 AND、OR、NOT 组合多个条件。</p>
 <pre><code>-- 比较运算符
 SELECT * FROM devices WHERE voltage_level = '220kV';
 SELECT * FROM devices WHERE station_id &lt;&gt; 1;        -- 不等于
@@ -1223,7 +1238,7 @@ WHERE device_type NOT IN ('变压器');</code></pre>
 
 <div class="example-box">
 <div class="example-title">电网场景：定位超期未检修设备</div>
-<p>某供电局要求变压器每3年进行一次大修。通过SQL的日期比较和逻辑组合，可以快速筛选出安装日期超过3年且状态仍为"运行"的变压器，生成待检修设备清单：</p>
+<p>某供电局规定变压器每3年进行一次大修。通过SQL的日期比较和逻辑组合，可以快速筛选出安装日期超过3年且状态仍为"运行"的变压器，生成待检修设备清单：</p>
 <p><code>SELECT device_name, install_date FROM devices WHERE device_type = '变压器' AND install_date &lt;= DATE_SUB(CURDATE(), INTERVAL 3 YEAR) AND status = '运行';</code></p>
 </div>
 
@@ -1231,6 +1246,11 @@ WHERE device_type NOT IN ('变压器');</code></pre>
 <h3>3.3 排序与分页</h3>
 <p>当查询结果包含大量记录时，通常需要按特定顺序排列，并分页展示。排序使用<code>ORDER BY</code>子句，分页使用<code>LIMIT</code>（MySQL/PostgreSQL）或<code>ROWNUM</code>（Oracle）实现。</p>
 
+<div class="example-box">
+<div class="example-title">案例：设备列表排序与分页展示</div>
+<p><strong>业务背景：</strong>设备台账系统前端页面需要按不同字段排序，并支持分页浏览，每页显示固定数量的设备记录。</p>
+<p><strong>数据关联：</strong>基于 devices 表，按安装日期、电压等级等字段进行排序。</p>
+<p><strong>操作思路：</strong>1) 使用 ORDER BY 指定排序字段和方向；2) 使用 LIMIT 和 OFFSET 实现分页；3) 对比不同数据库的分页语法差异。</p>
 <pre><code>-- 单字段升序（ASC可省略）
 SELECT * FROM devices ORDER BY install_date ASC;
 
@@ -1308,25 +1328,32 @@ OFFSET 0 ROWS FETCH NEXT 3 ROWS ONLY;</code></pre>
 <h3>3.4 聚合函数</h3>
 <p>聚合函数对一组值进行计算并返回单个结果，是数据统计分析的核心工具。电网业务中常用的统计操作（如设备总数、平均负荷、最大电流等）都依赖聚合函数实现。</p>
 
-<pre><code>-- COUNT：统计记录数
+<div class="example-box">
+<div class="example-title">案例：设备运行数据统计</div>
+<p><strong>业务背景：</strong>运行管理部门需要统计各类设备的总数、运行中数量、检修中数量等汇总指标，用于日报和月报。</p>
+<p><strong>数据关联：</strong>基于 devices 表，使用 COUNT、MAX、MIN、AVG 等聚合函数进行统计分析。</p>
+<p><strong>操作思路：</strong>1) 使用 COUNT 统计设备总数和类型数；2) 使用 MAX/MIN 获取最新和最旧安装日期；3) 使用条件聚合（CASE WHEN）分组统计各状态设备数量。</p>
+<pre><code>-- COUNT：统计记录总数（包含NULL值行）
 SELECT COUNT(*) AS 设备总数 FROM devices;
+
+-- COUNT(DISTINCT)：统计不重复的设备类型数量
 SELECT COUNT(DISTINCT device_type) AS 设备类型数 FROM devices;
 
--- SUM：求和（如统计某变电站设备数量）
+-- GROUP BY + COUNT：按变电站统计设备数量
 SELECT station_id, COUNT(*) AS 设备数量 FROM devices GROUP BY station_id;
 
--- AVG：平均值
--- 假设有负荷数据表 load_data(peak_load)
+-- AVG：计算平均值（忽略NULL值）
+-- 注意：load_data 表需提前创建，包含 peak_load 字段
 SELECT AVG(peak_load) AS 平均负荷 FROM load_data;
 
--- MAX / MIN：最大/最小值
+-- MAX / MIN：获取最大/最小值
 SELECT MAX(install_date) AS 最新投运, MIN(install_date) AS 最早投运 FROM devices;
 
--- 组合使用
+-- 组合使用聚合函数：条件计数统计各状态设备数量
 SELECT
-    COUNT(*) AS 设备总数,
-    COUNT(CASE WHEN status = '运行' THEN 1 END) AS 运行中,
-    COUNT(CASE WHEN status = '检修' THEN 1 END) AS 检修中
+    COUNT(*) AS 设备总数,                                            -- 所有设备
+    COUNT(CASE WHEN status = '运行' THEN 1 END) AS 运行中,           -- 仅统计运行中
+    COUNT(CASE WHEN status = '检修' THEN 1 END) AS 检修中            -- 仅统计检修中
 FROM devices;</code></pre>
 
 <div class="table-wrap">
@@ -1357,6 +1384,11 @@ FROM devices;</code></pre>
 <h3>3.5 分组查询</h3>
 <p><code>GROUP BY</code>子句将数据按指定列分组，配合聚合函数实现分组统计。<code>HAVING</code>子句用于对分组后的结果进行过滤（类似WHERE，但作用于分组而非单行）。</p>
 
+<div class="example-box">
+<div class="example-title">案例：设备分组统计与过滤</div>
+<p><strong>业务背景：</strong>运维部门需要按设备类型、变电站等维度进行分组统计，并只保留满足特定条件的分组结果。</p>
+<p><strong>数据关联：</strong>基于 devices 表，按 device_type、station_id、voltage_level 等字段分组，配合聚合函数统计。</p>
+<p><strong>操作思路：</strong>1) 使用 GROUP BY 按指定列分组；2) 使用 HAVING 对分组结果进行过滤；3) 组合 WHERE、GROUP BY、HAVING 和 ORDER BY 实现完整的分组统计查询。</p>
 <pre><code>-- 按设备类型分组统计
 SELECT device_type, COUNT(*) AS 数量
 FROM devices
@@ -1402,9 +1434,9 @@ ORDER BY 年份;</code></pre>
 
 <figure class="chart-figure">
 <figcaption>图3-3：GROUP BY执行流程</figcaption>
-<svg width="100%" height="140" viewBox="0 0 640 140" xmlns="http://www.w3.org/2000/svg">
-  <rect x="20" y="45" width="110" height="40" fill="#2563eb" rx="6"/>
-  <text x="75" y="70" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">FROM 选表</text>
+<svg width="100%" height="120" viewBox="0 0 780 120" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="35" width="110" height="40" fill="#2563eb" rx="6"/>
+  <text x="75" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">FROM 选表</text>
   <line x1="130" y1="65" x2="170" y2="65" stroke="#666" stroke-width="2" marker-end="url(#arrow4)"/>
   <rect x="170" y="45" width="110" height="40" fill="#059669" rx="6"/>
   <text x="225" y="70" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">WHERE 过滤</text>
@@ -1441,6 +1473,11 @@ ORDER BY 年份;</code></pre>
 <h3>4.1 表连接基础</h3>
 <p>实际业务中，需要的数据往往分散在多个表中。表连接（JOIN）是关系型数据库的核心特性，通过关联字段将多张表的数据组合在一起查询。掌握INNER JOIN、LEFT JOIN、RIGHT JOIN和FULL JOIN的区别和使用场景，是编写复杂业务查询的基础。</p>
 
+<div class="example-box">
+<div class="example-title">案例：设备与厂家信息关联查询</div>
+<p><strong>业务背景：</strong>运维人员需要查看设备及其生产厂家的详细信息，设备表和厂家表分别存储在不同表中，需要通过JOIN关联查询。</p>
+<p><strong>数据关联：</strong>devices 表的 manufacturer 字段与 manufacturers 表的 mfg_name 字段关联。涉及 INNER JOIN、LEFT JOIN、RIGHT JOIN 和 FULL JOIN（MySQL需用UNION模拟）。</p>
+<p><strong>操作思路：</strong>1) 创建 manufacturers 厂家表并插入数据；2) 使用 INNER JOIN 查询有厂家信息的设备；3) 使用 LEFT JOIN 查询所有设备（含无厂家信息者）；4) 使用 UNION 模拟 FULL JOIN。</p>
 <pre><code>-- 准备示例数据：创建厂家表
 CREATE TABLE manufacturers (
     mfg_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -1522,6 +1559,11 @@ RIGHT JOIN manufacturers m ON d.manufacturer = m.mfg_name;</code></pre>
 <h3>4.2 自连接与子查询</h3>
 <p>自连接（Self Join）是指表与自身进行连接，常用于处理层级关系数据。子查询（Subquery）是嵌套在另一条SQL语句中的查询，可用于WHERE、FROM、SELECT等子句中。</p>
 
+<div class="example-box">
+<div class="example-title">案例：设备层级关系与子查询应用</div>
+<p><strong>业务背景：</strong>电网设备之间存在层级关系（如主变与下属断路器），需要查询设备的上级设备信息，以及通过子查询进行复杂条件过滤。</p>
+<p><strong>数据关联：</strong>devices 表自连接（通过 station_id 关联），stations 表与 devices 表通过 station_id 关联。</p>
+<p><strong>操作思路：</strong>1) 使用自连接查询同一变电站内的上下级设备关系；2) 使用标量子查询在 WHERE 中过滤；3) 使用 EXISTS 判断是否存在匹配记录；4) 使用 FROM 子查询（派生表）进行多层查询。</p>
 <pre><code>-- 自连接示例：假设设备表有parent_id表示上级设备
 -- 查询设备及其上级设备名称
 SELECT d1.device_name AS 设备, d1.device_type,
@@ -1592,7 +1634,14 @@ WHERE d.install_date = (
 <h3>4.3 联合查询</h3>
 <p><code>UNION</code>和<code>UNION ALL</code>用于合并两个或多个SELECT语句的结果集。要求各SELECT语句的列数相同，且对应列的数据类型兼容。UNION会自动去重并排序，UNION ALL保留所有记录（性能更好）。</p>
 
-<pre><code>-- UNION ALL：合并运行设备和检修设备（假设分两张表存储）
+<div class="example-box">
+<div class="example-title">案例：合并多来源设备数据</div>
+<p><strong>业务背景：</strong>电网系统中，运行设备和检修设备可能存储在不同的表中，需要将多个查询结果合并为一个结果集进行统一展示。</p>
+<p><strong>数据关联：</strong>涉及 running_devices（运行设备表）、maintenance_devices（检修设备表）、devices（设备台账表）、manufacturers（厂家表）和 retired_devices（退役设备表）。</p>
+<p><strong>操作思路：</strong>1) 使用 UNION ALL 合并运行和检修设备数据；2) 使用 UNION 合并设备名称和厂家名称（自动去重）；3) 使用 UNION 模拟 MySQL 不支持的 FULL JOIN。</p>
+<pre><code>-- 注意：以下示例假设存在 running_devices 和 maintenance_devices 两张表
+-- 如需运行，请先执行相应的建表语句
+-- UNION ALL：合并运行设备和检修设备（假设分两张表存储）
 SELECT device_id, device_name, device_type, '运行' AS 数据来源
 FROM running_devices
 UNION ALL
@@ -1605,6 +1654,7 @@ UNION
 SELECT mfg_name AS 名称 FROM manufacturers;
 
 -- 使用ORDER BY对合并结果排序（只能放在最后）
+-- 注意：retired_devices 表需提前创建，结构与 devices 表一致
 SELECT device_name, install_date FROM devices WHERE status = '运行'
 UNION ALL
 SELECT device_name, install_date FROM retired_devices
@@ -1632,7 +1682,7 @@ RIGHT JOIN manufacturers m ON d.manufacturer = m.mfg_name;</code></pre>
 
 <div class="callout">
 <div class="callout-title">最佳实践</div>
-<p>在电网数据报表生成中，若确定合并的数据源无重复（如按月份分表存储的历史数据），应优先使用<code>UNION ALL</code>以提升查询性能。只有在需要合并不同来源且可能重复的数据时（如合并两个系统的设备清单），才使用<code>UNION</code>。</p>
+<p>在电网数据报表生成中，若确定合并的各数据源之间不存在重复记录（如按月份分表存储的历史数据），应优先使用<code>UNION ALL</code>以提升查询性能。只有在需要合并不同来源且可能重复的数据时（如合并两个系统的设备清单），才使用<code>UNION</code>。</p>
 </div>
 
 <figure class="chart-figure">
@@ -1667,6 +1717,11 @@ RIGHT JOIN manufacturers m ON d.manufacturer = m.mfg_name;</code></pre>
 <h3>4.4 电网多表关联实战</h3>
 <p>本节综合运用JOIN、子查询和聚合函数，解决电网业务中的实际多表关联问题。假设已有stations（变电站表）、devices（设备表）、manufacturers（厂家表）和inspections（巡检记录表）。</p>
 
+<div class="example-box">
+<div class="example-title">案例：电网多表关联综合查询</div>
+<p><strong>业务背景：</strong>运维部门需要生成设备综合信息报表，涉及设备台账、变电站、厂家和巡检记录四张表的关联查询。</p>
+<p><strong>数据关联：</strong>devices 表通过 station_id 关联 stations 表，通过 manufacturer 关联 manufacturers 表，通过 device_id 关联 inspections 表。</p>
+<p><strong>操作思路：</strong>1) 创建 inspections 巡检记录表并插入数据；2) 使用多表 LEFT JOIN 查询设备完整信息（含最新巡检结果）；3) 使用聚合函数统计各变电站的设备数量、厂家数量和最近巡检日期。</p>
 <pre><code>-- 创建巡检记录表
 CREATE TABLE inspections (
     inspect_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -1687,6 +1742,7 @@ INSERT INTO inspections (device_id, inspect_date, result, inspector) VALUES
 (5, '2024-05-18', '合格', '张三');
 
 -- 实战1：查询所有设备及其所属变电站、厂家、最新巡检结果
+-- 使用 LEFT JOIN 确保即使没有厂家或巡检记录，设备信息也会显示
 SELECT
     d.device_name AS 设备名称,
     d.device_type AS 设备类型,
@@ -1697,29 +1753,30 @@ SELECT
     i.result AS 最新巡检结果,
     i.inspect_date AS 巡检日期
 FROM devices d
-LEFT JOIN stations s ON d.station_id = s.station_id
-LEFT JOIN manufacturers m ON d.manufacturer = m.mfg_name
+LEFT JOIN stations s ON d.station_id = s.station_id              -- 关联变电站表
+LEFT JOIN manufacturers m ON d.manufacturer = m.mfg_name         -- 关联厂家表（通过名称匹配）
 LEFT JOIN (
-    -- 子查询：获取每台设备的最新巡检记录
-    SELECT device_id, result, inspect_date
+    -- 子查询：先按设备分组获取最新巡检日期，再回表获取完整记录
+    SELECT i1.device_id, i1.result, i1.inspect_date
     FROM inspections i1
-    WHERE inspect_date = (
-        SELECT MAX(inspect_date)
-        FROM inspections i2
-        WHERE i2.device_id = i1.device_id
-    )
-) i ON d.device_id = i.device_id;
+    INNER JOIN (
+        SELECT device_id, MAX(inspect_date) AS max_date          -- 每台设备的最新巡检日期
+        FROM inspections
+        GROUP BY device_id
+    ) i2 ON i1.device_id = i2.device_id AND i1.inspect_date = i2.max_date
+) i ON d.device_id = i.device_id;                                -- 关联最新巡检记录
 
 -- 实战2：统计各变电站的设备数量、厂家数量和最新巡检日期
+-- 使用 COUNT(DISTINCT) 避免重复计数
 SELECT
     s.station_name AS 变电站,
-    COUNT(DISTINCT d.device_id) AS 设备数量,
-    COUNT(DISTINCT d.manufacturer) AS 厂家数量,
-    MAX(i.inspect_date) AS 最近巡检日期
+    COUNT(DISTINCT d.device_id) AS 设备数量,                     -- 去重统计设备
+    COUNT(DISTINCT d.manufacturer) AS 厂家数量,                  -- 去重统计厂家
+    MAX(i.inspect_date) AS 最近巡检日期                          -- 最近一次巡检日期
 FROM stations s
-LEFT JOIN devices d ON s.station_id = d.station_id
-LEFT JOIN inspections i ON d.device_id = i.device_id
-GROUP BY s.station_id, s.station_name;</code></pre>
+LEFT JOIN devices d ON s.station_id = d.station_id               -- 关联设备表
+LEFT JOIN inspections i ON d.device_id = i.device_id             -- 关联巡检表
+GROUP BY s.station_id, s.station_name;                           -- 按变电站分组</code></pre>
 
 <div class="table-wrap">
 <table class="data-table">
@@ -1751,33 +1808,40 @@ GROUP BY s.station_id, s.station_name;</code></pre>
 <h3>5.1 插入数据</h3>
 <p><code>INSERT</code>语句用于向表中添加新记录。支持单行插入、多行批量插入以及从其他表查询结果插入（INSERT INTO SELECT）。在电网系统中，批量插入常用于历史数据迁移和SCADA数据入库。</p>
 
-<pre><code>-- 单行插入（指定列）
+<div class="example-box">
+<div class="example-title">案例：设备数据插入与批量导入</div>
+<p><strong>业务背景：</strong>电网设备台账系统需要支持多种数据插入方式，包括单条录入、批量导入、从其他表迁移数据以及处理重复记录。</p>
+<p><strong>数据关联：</strong>基于 devices 表和 manufacturers 表，演示 INSERT 的各种变体用法。</p>
+<p><strong>操作思路：</strong>1) 使用单行 INSERT 添加新设备；2) 使用多行 VALUES 批量插入提升性能；3) 使用 INSERT INTO SELECT 从其他表导入数据；4) 使用 ON DUPLICATE KEY UPDATE 处理重复记录。</p>
+<pre><code>-- 单行插入：指定列名和对应值（推荐方式，列顺序可任意）
 INSERT INTO devices (device_name, device_type, voltage_level, station_id, manufacturer, install_date, status)
 VALUES ('3号主变', '变压器', '110kV', 2, '西门子', '2023-05-10', '运行');
 
--- 单行插入（省略列名，需按表定义顺序提供所有值）
+-- 单行插入：省略列名时，必须按表定义顺序提供所有列的值
+-- AUTO_INCREMENT 列传入 NULL 让数据库自动生成
 INSERT INTO devices VALUES (NULL, '4号主变', '变压器', '220kV', 3, 'ABB', '2023-08-20', '运行');
 
--- 多行批量插入（推荐，性能优于多次单行插入）
+-- 多行批量插入：一条 INSERT 语句插入多行，性能远优于多次单行插入
 INSERT INTO devices (device_name, device_type, voltage_level, station_id, manufacturer, install_date, status) VALUES
 ('301断路器', '断路器', '10kV', 1, '正泰电气', '2020-03-15', '运行'),
 ('302断路器', '断路器', '10kV', 1, '正泰电气', '2020-03-15', '运行'),
 ('303断路器', '断路器', '10kV', 2, '许继电气', '2021-06-20', '运行');
 
--- INSERT INTO SELECT：从其他表导入数据
+-- 注意：devices_archive 表需提前创建，结构与 devices 一致
+-- INSERT INTO SELECT：从查询结果批量导入数据到另一张表
 INSERT INTO devices_archive (device_id, device_name, device_type, retire_date)
-SELECT device_id, device_name, device_type, CURDATE()
+SELECT device_id, device_name, device_type, CURDATE()       -- CURDATE()获取当前日期
 FROM devices
-WHERE status = '退役';
+WHERE status = '退役';                                        -- 仅导入已退役设备
 
--- 插入时忽略重复（MySQL）
+-- INSERT IGNORE：遇到重复键冲突时静默跳过，不报错
 INSERT IGNORE INTO manufacturers (mfg_name, country)
 VALUES ('西门子', '德国');
 
--- 插入时更新重复记录（MySQL）
+-- ON DUPLICATE KEY UPDATE：键冲突时执行更新操作（MySQL特有）
 INSERT INTO manufacturers (mfg_name, country, contact_phone)
 VALUES ('西门子', '德国', '+49-89-636-01')
-ON DUPLICATE KEY UPDATE contact_phone = VALUES(contact_phone);</code></pre>
+ON DUPLICATE KEY UPDATE contact_phone = VALUES(contact_phone);  -- 更新联系电话</code></pre>
 
 <div class="table-wrap">
 <table class="data-table">
@@ -1793,7 +1857,7 @@ ON DUPLICATE KEY UPDATE contact_phone = VALUES(contact_phone);</code></pre>
 
 <div class="callout">
 <div class="callout-title">批量插入优化</div>
-<p>向MySQL批量插入大量数据（如SCADA历史数据迁移）时，建议：1）将多条记录合并为一条INSERT语句（VALUES后多行）；2）在事务中批量提交（每1000-10000条COMMIT一次）；3）临时关闭唯一性检查和自动提交（<code>SET unique_checks=0; SET autocommit=0;</code>）；4）对于空表，可先删除二级索引，导入完成后再重建。</p>
+<p>向MySQL批量插入大量数据（如SCADA历史数据迁移）时，建议：1)将多条记录合并为一条INSERT语句（VALUES后多行）；2)在事务中批量提交（每1000-10000条COMMIT一次）；3)临时关闭唯一性检查和自动提交（<code>SET unique_checks=0; SET autocommit=0;</code>）；4)对于空表，可先删除二级索引，导入完成后再重建。</p>
 </div>
 
 <div class="example-box">
@@ -1828,6 +1892,11 @@ ON DUPLICATE KEY UPDATE contact_phone = VALUES(contact_phone);</code></pre>
 <h3>5.2 更新与删除</h3>
 <p><code>UPDATE</code>用于修改表中已有记录，<code>DELETE</code>用于删除记录，<code>TRUNCATE</code>用于快速清空整张表。这三类操作都具有"破坏性"，在生产环境中务必谨慎执行，建议先使用SELECT验证条件，确认无误后再执行。</p>
 
+<div class="example-box">
+<div class="example-title">案例：设备状态更新与数据清理</div>
+<p><strong>业务背景：</strong>运维人员需要更新设备状态（如转入检修、恢复运行），以及定期清理过期数据（如删除三年以前的巡检记录）。</p>
+<p><strong>数据关联：</strong>涉及 devices 表、stations 表和 inspections 表，演示单表更新、多表关联更新和删除操作。</p>
+<p><strong>操作思路：</strong>1) 使用 UPDATE 修改单条或多条记录；2) 使用多表关联 UPDATE 批量更新；3) 使用 DELETE 删除过期数据；4) 使用 TRUNCATE 快速清空临时表。</p>
 <pre><code>-- UPDATE：修改单条记录
 UPDATE devices SET status = '检修' WHERE device_id = 2;
 
@@ -1937,18 +2006,24 @@ FROM devices WHERE status = '运行';
 
 <div class="example-box">
 <div class="example-title">电网场景：月度电表数据批量导入</div>
-<p>某供电局每月从计量自动化系统导出数十万条电表读数CSV文件，需要导入营销系统数据库。通过LOAD DATA INFILE命令，配合分区表技术，30万条记录可在10秒内完成导入，比逐条INSERT效率提升100倍以上。导入前使用临时表进行数据清洗和校验，确认无误后再通过INSERT INTO SELECT迁移到正式表。</p>
+<p>某供电局每月从计量自动化系统导出数十万条电表读数CSV文件，，需要导入营销系统数据库。。通过LOAD DATA INFILE命令，配合分区表技术，30万条记录可在10秒内完成导入，比逐条INSERT效率提升100倍以上。导入前使用临时表进行数据清洗和校验，确认无误后再通过INSERT INTO SELECT迁移到正式表。</p>
 </div>
 
 <span class="top-anchor" id="ch5-4"></span>
 <h3>5.4 事务控制</h3>
 <p>事务（Transaction）是数据库操作的基本逻辑单元，具有ACID特性：原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）和持久性（Durability）。在电网系统中，设备状态变更、检修工单处理、电费结算等操作都需要事务保证数据一致性。</p>
 
+<div class="example-box">
+<div class="example-title">案例：设备状态变更的事务控制</div>
+<p><strong>业务背景：</strong>设备检修流程涉及多个表的联动更新，需要事务保证操作的原子性，避免数据不一致。</p>
+<p><strong>数据关联：</strong>涉及 devices 表、maintenance_logs 表和 work_orders 表，三个表需要在同一事务中完成更新。</p>
+<p><strong>操作思路：</strong>1) 使用 START TRANSACTION 开启事务；2) 执行多个关联操作；3) 使用 COMMIT 提交或 ROLLBACK 回滚；4) 使用 SAVEPOINT 实现部分回滚。</p>
 <pre><code>-- 开启事务（MySQL）
 START TRANSACTION;
 -- 或 BEGIN;
 
 -- 执行一系列操作
+-- 注意：maintenance_logs 和 work_orders 表需提前创建
 UPDATE devices SET status = '检修' WHERE device_id = 1;
 INSERT INTO maintenance_logs (device_id, action, operate_time)
 VALUES (1, '转入检修状态', NOW());
@@ -1993,9 +2068,9 @@ COMMIT;</code></pre>
 
 <figure class="chart-figure">
 <figcaption>图5-2：事务提交与回滚流程</figcaption>
-<svg width="100%" height="140" viewBox="0 0 640 140" xmlns="http://www.w3.org/2000/svg">
-  <rect x="20" y="45" width="100" height="40" fill="#2563eb" rx="6"/>
-  <text x="70" y="70" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">BEGIN</text>
+<svg width="100%" height="120" viewBox="0 0 780 120" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="35" width="100" height="40" fill="#2563eb" rx="6"/>
+  <text x="70" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">BEGIN</text>
   <line x1="120" y1="65" x2="170" y2="65" stroke="#666" stroke-width="2" marker-end="url(#arrow7)"/>
   <rect x="170" y="45" width="120" height="40" fill="#7c3aed" rx="6"/>
   <text x="230" y="70" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">执行SQL操作</text>
@@ -2017,7 +2092,7 @@ COMMIT;</code></pre>
 
 <div class="callout">
 <div class="callout-title">事务设计原则</div>
-<p>电网业务系统中的事务应遵循以下原则：1）事务范围尽可能小，避免长时间锁定资源；2）在事务中避免用户交互（如弹窗确认），防止事务悬挂；3）同一事务中避免混合读写操作和复杂计算；4）对于只读查询，使用<code>START TRANSACTION READ ONLY</code>（MySQL 8.0+）提升并发性能。</p>
+<p>电网业务系统中的事务设计应遵循以下原则：：1)事务范围尽可能小，避免长时间锁定资源；2)在事务中避免用户交互（如弹窗确认等交互操作），防止事务悬挂；3)同一事务中避免混合读写操作和复杂计算；4)对于只读查询，使用<code>START TRANSACTION READ ONLY</code>（MySQL 8.0+）提升并发性能。</p>
 </div>
 
 <div class="example-box">
@@ -2034,6 +2109,11 @@ COMMIT;</code></pre>
 <h3>6.1 创建与修改表</h3>
 <p>DDL（数据定义语言）用于定义和管理数据库对象。在电网系统开发过程中，随着业务需求变化，经常需要创建新表、修改现有表结构或删除不再使用的表。掌握DDL语句是数据库设计和运维的基础技能。</p>
 
+<div class="example-box">
+<div class="example-title">案例：变压器运行数据表管理</div>
+<p><strong>业务背景：</strong>电网公司需要建立变压器运行数据表，存储油温、绕组温度、负载率、电压电流等监测数据，并随着业务需求变化对表结构进行调整。</p>
+<p><strong>数据关联：</strong>新建 transformer_data 表，包含 device_id 外键关联 devices 表，以及 oil_temp、winding_temp、load_rate 等监测字段。</p>
+<p><strong>操作思路：</strong>1) 使用 CREATE TABLE 创建表结构并建立索引；2) 使用 ALTER TABLE 添加、修改、删除列；3) 使用 RENAME 重命名表；4) 使用 DROP TABLE 和 TRUNCATE 清理数据。</p>
 <pre><code>-- 创建表：变压器运行数据表
 CREATE TABLE transformer_data (
     data_id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -2100,14 +2180,14 @@ TRUNCATE TABLE temp_table;</code></pre>
 
 <div class="example-box">
 <div class="example-title">电网场景：SCADA历史表按年分区</div>
-<p>某调度系统SCADA历史数据表每年新增超过1亿条记录。为便于归档和查询，使用MySQL分区表按年拆分：<code>ALTER TABLE scada_history PARTITION BY RANGE (YEAR(record_time)) (PARTITION p2023 VALUES LESS THAN (2024), PARTITION p2024 VALUES LESS THAN (2025), PARTITION pmax VALUES LESS THAN MAXVALUE);</code>。查询某年数据时，MySQL会自动只扫描对应分区，大幅提升查询效率。</p>
+<p>某调度系统SCADA历史数据表每年新增超过1亿条记录。。为便于归档和查询，使用MySQL分区表按年拆分：<code>ALTER TABLE scada_history PARTITION BY RANGE (YEAR(record_time)) (PARTITION p2023 VALUES LESS THAN (2024), PARTITION p2024 VALUES LESS THAN (2025), PARTITION pmax VALUES LESS THAN MAXVALUE);</code>。查询某年数据时，MySQL会自动只扫描对应分区，大幅提升查询效率。</p>
 </div>
 
 <figure class="chart-figure">
 <figcaption>图6-1：表生命周期管理流程</figcaption>
-<svg width="100%" height="140" viewBox="0 0 640 140" xmlns="http://www.w3.org/2000/svg">
-  <rect x="20" y="45" width="100" height="40" fill="#2563eb" rx="6"/>
-  <text x="70" y="70" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">CREATE</text>
+<svg width="100%" height="120" viewBox="0 0 780 120" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="35" width="100" height="40" fill="#2563eb" rx="6"/>
+  <text x="70" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">CREATE</text>
   <line x1="120" y1="65" x2="170" y2="65" stroke="#666" stroke-width="2" marker-end="url(#arrow8)"/>
   <rect x="170" y="45" width="100" height="40" fill="#059669" rx="6"/>
   <text x="220" y="70" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">INSERT</text>
@@ -2128,6 +2208,11 @@ TRUNCATE TABLE temp_table;</code></pre>
 <h3>6.2 数据类型选择</h3>
 <p>合理选择数据类型是数据库设计的关键环节。数据类型影响存储空间、查询性能和数据精度。电网系统中常见的数据包括设备编号、电压电流值、时间戳、地理位置和JSON格式的扩展属性等。</p>
 
+<div class="example-box">
+<div class="example-title">案例：电网设备数据类型设计</div>
+<p><strong>业务背景：</strong>电网系统包含多种数据类型，如设备编码（字符串）、电压电流（精确小数）、地理位置（空间坐标）、扩展属性（JSON）等，需要根据数据特点选择合适的数据类型。</p>
+<p><strong>数据关联：</strong>新建 grid_equipment 表，展示整数、变长字符串、精确小数、布尔值、日期时间、空间坐标、JSON和二进制等数据类型的使用。</p>
+<p><strong>操作思路：</strong>1) 根据数据精度要求选择 DECIMAL 而非 DOUBLE 存储电量金额；2) 使用 VARCHAR 存储变长字符串，CHAR 存储定长编码；3) 使用 JSON 类型存储灵活的扩展属性；4) 使用 POINT 类型存储地理坐标。</p>
 <pre><code>-- 电网数据类型设计示例
 CREATE TABLE grid_equipment (
     equip_id INT PRIMARY KEY AUTO_INCREMENT,        -- 整数，自增主键
@@ -2138,7 +2223,7 @@ CREATE TABLE grid_equipment (
     is_critical TINYINT(1) DEFAULT 0,               -- 是否重要设备，布尔值
     install_date DATE,                              -- 安装日期
     last_check DATETIME,                            -- 上次巡检时间
-    coords POINT,                                   -- 地理坐标（PostGIS/MySQL 8.0）
+    coords POINT SRID 4326,                         -- 地理坐标（MySQL 8.0支持SRID）
     ext_info JSON,                                  -- 扩展属性（MySQL 5.7+）
     description TEXT,                               -- 详细描述，大文本
     photo BLOB                                      -- 设备照片二进制数据
@@ -2175,6 +2260,11 @@ CREATE TABLE grid_equipment (
 <h3>6.3 索引与约束</h3>
 <p>索引是提升查询性能的核心手段，而约束用于保证数据的完整性和一致性。在电网数据库设计中，应在主键、外键和频繁查询的列上建立索引，同时通过主键、外键、唯一约束和CHECK约束确保数据质量。</p>
 
+<div class="example-box">
+<div class="example-title">案例：索引与约束设计</div>
+<p><strong>业务背景：</strong>电网数据库需要保证数据完整性（主键、外键、唯一约束、检查约束）并提升查询性能（各类索引）。</p>
+<p><strong>数据关联：</strong>substations 表与 feeders 表通过 sub_id 外键关联，transformer_data 表使用 CHECK 约束限制油温和负载率范围。</p>
+<p><strong>操作思路：</strong>1) 使用 PRIMARY KEY 和 UNIQUE 约束保证数据唯一性；2) 使用 FOREIGN KEY 维护表间引用完整性；3) 使用 CHECK 约束限制数据范围；4) 创建普通索引、复合索引和唯一索引优化查询。</p>
 <pre><code>-- 主键约束（唯一标识每行记录）
 CREATE TABLE substations (
     sub_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -2241,7 +2331,7 @@ DROP INDEX idx_feeder_name ON feeders;</code></pre>
 
 <div class="callout">
 <div class="callout-title">索引设计原则</div>
-<p>1）在WHERE、JOIN、ORDER BY涉及的列上建索引；2）选择性低的列（如仅有"运行"/"检修"两种值的status列）单独建索引效果差，可考虑复合索引；3）避免在频繁更新的列上建过多索引（索引维护有开销）；4）定期使用<code>ANALYZE TABLE</code>更新统计信息，帮助优化器选择正确的执行计划。</p>
+<p>1)在WHERE、JOIN、ORDER BY涉及的列上建索引；2)选择性低的列（如仅有"运行"/"检修"两种值的status列）单独建索引效果差，可考虑复合索引；3)避免在频繁更新的列上建过多索引（索引维护有开销）；4)定期使用<code>ANALYZE TABLE</code>更新统计信息，帮助优化器选择正确的执行计划。</p>
 </div>
 
 <figure class="chart-figure">
@@ -2283,13 +2373,18 @@ DROP INDEX idx_feeder_name ON feeders;</code></pre>
 
 <div class="example-box">
 <div class="example-title">电网场景：SCADA数据表索引优化</div>
-<p>某SCADA历史数据表有2亿条记录，最初仅对device_id建了单列索引。查询"某设备某时段数据"时，数据库先通过索引找到该设备所有记录，再逐行过滤时间范围，耗时超过30秒。添加复合索引<code>(device_id, record_time)</code>后，查询时间降至200毫秒，因为索引直接定位到设备和时间的交集范围。</p>
+<p>某SCADA历史数据表有2亿条记录，，最初仅对device_id建了单列索引。查询"某设备某时段数据"时，，数据库先通过索引找到该设备所有记录，再逐行过滤时间范围，耗时超过30秒。添加复合索引<code>(device_id, record_time)</code>后，查询时间降至200毫秒，因为索引直接定位到设备和时间的交集范围。</p>
 </div>
 
 <span class="top-anchor" id="ch6-4"></span>
 <h3>6.4 视图与存储过程</h3>
 <p>视图（View）是基于查询的虚拟表，可以简化复杂查询、封装业务逻辑并增强数据安全性。存储过程（Stored Procedure）是预编译的SQL代码块，适合封装重复执行的复杂业务逻辑。</p>
 
+<div class="example-box">
+<div class="example-title">案例：设备信息视图与统计存储过程</div>
+<p><strong>业务背景：</strong>运维人员经常需要查询设备的完整信息（含变电站和厂家），并需要封装复杂的统计逻辑为可复用的存储过程。</p>
+<p><strong>数据关联：</strong>视图 v_device_full_info 关联 devices、stations 和 manufacturers 三张表。存储过程 sp_station_device_stats 接收变电站ID参数并返回设备统计。</p>
+<p><strong>操作思路：</strong>1) 创建视图封装多表关联查询，简化日常查询；2) 创建带输入参数的存储过程进行设备统计；3) 创建带输入输出参数的分页存储过程。</p>
 <pre><code>-- 创建视图：设备完整信息视图（关联变电站和厂家）
 CREATE VIEW v_device_full_info AS
 SELECT
@@ -2361,7 +2456,7 @@ SELECT @total AS 总记录数;</code></pre>
 
 <div class="callout">
 <div class="callout-title">视图的安全应用</div>
-<p>在电网多层级权限系统中，视图可用于数据行级隔离。例如，为县局用户创建只包含本县设备的视图，并授予该视图查询权限而非底层表权限：<code>CREATE VIEW v_county_devices AS SELECT * FROM devices WHERE county_code = SESSION_USER_COUNTY();</code>。这样即使用户编写<code>SELECT * FROM v_county_devices</code>，也只能看到授权范围内的数据。</p>
+<p>在电网多层级权限系统中，视图可用于数据行级隔离。例如，可以为县局用户创建只包含本县设备的视图，，并授予该视图的查询权限，而非底层表的直接访问权限：：<code>CREATE VIEW v_county_devices AS SELECT * FROM devices WHERE county_code = SESSION_USER_COUNTY();</code>。这样即使有用户编写<code>SELECT * FROM v_county_devices</code>，也只能看到自己权限范围内的数据。。</p>
 </div>
 
 <div class="example-box">
@@ -2377,6 +2472,11 @@ SELECT @total AS 总记录数;</code></pre>
 <h3>7.1 窗口函数</h3>
 <p>窗口函数（Window Function）是SQL:2003标准引入的高级分析功能，能够在不分组的情况下对数据集的子集进行计算。与GROUP BY不同，窗口函数不会合并行，而是为每一行返回一个计算结果。MySQL 8.0、PostgreSQL、Oracle和SQL Server均支持窗口函数。</p>
 
+<div class="example-box">
+<div class="example-title">案例：变电站负荷排行与环比分析</div>
+<p><strong>业务背景：</strong>调度中心需要对各变电站的月度负荷数据进行排名和环比分析，在不破坏原始数据的情况下为每行附加分析结果。</p>
+<p><strong>数据关联：</strong>新建 monthly_load 表，包含 station_id、month、max_load 和 avg_load 字段，存储各变电站月度负荷数据。</p>
+<p><strong>操作思路：</strong>1) 使用 ROW_NUMBER、RANK、DENSE_RANK 进行排名分析；2) 使用 LAG 获取上月负荷计算环比；3) 使用 SUM OVER 计算累计负荷。</p>
 <pre><code>-- 创建示例数据：各变电站月度负荷数据
 CREATE TABLE monthly_load (
     station_id INT,
@@ -2396,30 +2496,49 @@ INSERT INTO monthly_load VALUES
 (3, '2024-02', 1180.40, 920.30),
 (3, '2024-03', 1320.80, 1050.60);
 
--- ROW_NUMBER：为每组记录分配唯一行号
+-- ROW_NUMBER：为每组内的记录分配唯一行号（按负荷降序排列）
 SELECT station_id, month, max_load,
-    ROW_NUMBER() OVER (PARTITION BY station_id ORDER BY max_load DESC) AS load_rank
+    ROW_NUMBER() OVER (
+        PARTITION BY station_id              -- 按变电站分组
+        ORDER BY max_load DESC               -- 组内按最大负荷降序
+    ) AS load_rank                           -- 排名结果
 FROM monthly_load;
 
--- RANK：排名（相同值并列，后续排名跳过）
+-- RANK：排名（相同值并列，后续排名跳过，如1,2,2,4)
 SELECT station_id, month, max_load,
-    RANK() OVER (PARTITION BY station_id ORDER BY max_load DESC) AS rk
+    RANK() OVER (
+        PARTITION BY station_id
+        ORDER BY max_load DESC
+    ) AS rk
 FROM monthly_load;
 
--- DENSE_RANK：密集排名（相同值并列，后续排名不跳过）
+-- DENSE_RANK：密集排名（相同值并列，后续排名不跳过，如1,2,2,3)
 SELECT station_id, month, max_load,
-    DENSE_RANK() OVER (PARTITION BY station_id ORDER BY max_load DESC) AS drk
+    DENSE_RANK() OVER (
+        PARTITION BY station_id
+        ORDER BY max_load DESC
+    ) AS drk
 FROM monthly_load;
 
--- LEAD/LAG：获取前后行的值（同比环比计算）
+-- LAG：获取分组内前N行的值（用于环比计算）
 SELECT station_id, month, max_load,
-    LAG(max_load, 1) OVER (PARTITION BY station_id ORDER BY month) AS 上月负荷,
-    max_load - LAG(max_load, 1) OVER (PARTITION BY station_id ORDER BY month) AS 环比增量
+    LAG(max_load, 1) OVER (                -- 获取前1行的 max_load 值
+        PARTITION BY station_id            -- 按变电站分区
+        ORDER BY month                     -- 按月份排序
+    ) AS 上月负荷,
+    max_load - LAG(max_load, 1) OVER (     -- 计算环比增量
+        PARTITION BY station_id
+        ORDER BY month
+    ) AS 环比增量
 FROM monthly_load;
 
--- SUM OVER：累计求和
+-- SUM OVER：累计求和（从分区起始到当前行的累计值）
 SELECT station_id, month, max_load,
-    SUM(max_load) OVER (PARTITION BY station_id ORDER BY month) AS 累计负荷
+    SUM(max_load) OVER (
+        PARTITION BY station_id              -- 按变电站分区
+        ORDER BY month                       -- 按月份排序
+        -- 默认窗口：ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS 累计负荷
 FROM monthly_load;</code></pre>
 
 <div class="table-wrap">
@@ -2443,9 +2562,9 @@ FROM monthly_load;</code></pre>
 
 <figure class="chart-figure">
 <figcaption>图7-1：窗口函数与GROUP BY的区别</figcaption>
-<svg width="100%" height="160" viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg">
-  <rect x="30" y="20" width="100" height="30" fill="#2563eb" rx="4"/>
-  <text x="80" y="39" text-anchor="middle" fill="#fff" font-size="10">记录A</text>
+<svg width="100%" height="170" viewBox="0 0 640 170" xmlns="http://www.w3.org/2000/svg">
+  <rect x="30" y="15" width="100" height="30" fill="#2563eb" rx="4"/>
+  <text x="80" y="34" text-anchor="middle" fill="#fff" font-size="10">记录A</text>
   <rect x="30" y="55" width="100" height="30" fill="#2563eb" rx="4"/>
   <text x="80" y="74" text-anchor="middle" fill="#fff" font-size="10">记录B</text>
   <rect x="30" y="90" width="100" height="30" fill="#2563eb" rx="4"/>
@@ -2481,6 +2600,11 @@ FROM monthly_load;</code></pre>
 <h3>7.2 公用表表达式CTE</h3>
 <p>公用表表达式（Common Table Expression，CTE）通过WITH子句定义临时结果集，使复杂查询更具可读性和可维护性。递归CTE能够处理层级数据，特别适合配电网拓扑分析、组织架构查询等场景。</p>
 
+<div class="example-box">
+<div class="example-title">案例：配电网拓扑递归查询</div>
+<p><strong>业务背景：</strong>配电网馈线存在层级关系（主干线→分支线→子分支线），当发生故障时需要快速遍历所有下级线路，确定停电影响范围。</p>
+<p><strong>数据关联：</strong>新建 feeder_topology 表，通过 parent_feeder_id 字段建立父子层级关系。</p>
+<p><strong>操作思路：</strong>1) 使用非递归CTE简化设备统计查询；2) 使用递归CTE从指定馈线出发遍历所有下级线路；3) 通过 depth 字段记录层级深度。</p>
 <pre><code>-- 非递归CTE：简化复杂查询
 WITH station_stats AS (
     SELECT
@@ -2512,23 +2636,24 @@ INSERT INTO feeder_topology VALUES
 (6, '主干线B', NULL, '10kV'),
 (7, '分支线B1', 6, '10kV');
 
--- 查询某馈线的所有下级线路
+-- 查询某馈线的所有下级线路（递归CTE遍历树形结构）
 WITH RECURSIVE sub_feeders AS (
-    -- 锚点成员：查询起始馈线
+    -- 锚点成员（Anchor Member）：查询起始馈线，depth=0表示根节点
     SELECT feeder_id, feeder_name, parent_feeder_id, 0 AS depth
     FROM feeder_topology
-    WHERE feeder_id = 1
+    WHERE feeder_id = 1                              -- 从主干线A开始
 
     UNION ALL
 
-    -- 递归成员：查询下级线路
+    -- 递归成员（Recursive Member）：逐层查询下级线路
+    -- 每次递归 depth+1，表示层级深度递增
     SELECT f.feeder_id, f.feeder_name, f.parent_feeder_id, s.depth + 1
     FROM feeder_topology f
-    INNER JOIN sub_feeders s ON f.parent_feeder_id = s.feeder_id
+    INNER JOIN sub_feeders s ON f.parent_feeder_id = s.feeder_id  -- 父ID匹配当前结果
 )
-SELECT feeder_id, feeder_name, depth
+SELECT feeder_id, feeder_name, depth                 -- 最终输出所有层级结果
 FROM sub_feeders
-ORDER BY depth, feeder_id;</code></pre>
+ORDER BY depth, feeder_id;                           -- 按层级深度排序</code></pre>
 
 <div class="table-wrap">
 <table class="data-table">
@@ -2596,6 +2721,7 @@ WITH date_range AS (
 )
 SELECT d.dt, COALESCE(t.max_load, 0) AS max_load
 FROM date_range d
+-- 注意：daily_load 表需提前创建，包含 record_date 和 max_load 字段
 LEFT JOIN daily_load t ON d.dt = t.record_date
 ORDER BY d.dt;</code></pre>
 
@@ -2648,8 +2774,13 @@ ORDER BY d.dt;</code></pre>
 
 <span class="top-anchor" id="ch7-4"></span>
 <h3>7.4 性能优化</h3>
-<p>随着电网数据规模持续增长，SQL查询性能优化成为数据库运维的核心技能。本节介绍执行计划分析、慢查询优化和索引策略，帮助读者定位和解决性能瓶颈。</p>
+<p>随着电网数据规模持续增长，SQL查询性能优化就成为数据库运维的核心技能。本节介绍执行计划分析、慢查询优化和索引策略，帮助读者定位和解决性能瓶颈。</p>
 
+<div class="example-box">
+<div class="example-title">案例：慢查询分析与优化</div>
+<p><strong>业务背景：</strong>随着电网数据量增长，部分查询出现性能瓶颈，需要系统性地分析执行计划、定位慢查询并实施优化。</p>
+<p><strong>数据关联：</strong>基于 devices 表，使用 EXPLAIN 分析查询执行计划，通过慢查询日志定位性能瓶颈。</p>
+<p><strong>操作思路：</strong>1) 使用 EXPLAIN 分析查询执行计划；2) 使用 EXPLAIN ANALYZE 获取实际执行耗时；3) 查看慢查询日志定位问题SQL；4) 使用 ANALYZE TABLE 和 OPTIMIZE TABLE 维护表统计信息。</p>
 <pre><code>-- EXPLAIN：分析查询执行计划
 EXPLAIN SELECT * FROM devices WHERE station_id = 1 AND status = '运行';
 
@@ -2702,19 +2833,19 @@ OPTIMIZE TABLE devices;</code></pre>
 
 <div class="example-box">
 <div class="example-title">电网场景：SCADA历史查询优化实战</div>
-<p>某查询"查询城东变电站2024年1月所有遥测数据"最初耗时45秒。通过EXPLAIN分析发现type为ALL，rows超过2亿。优化步骤：1）确认device_id和record_time上有复合索引；2）将<code>WHERE station_id = 1</code>改为<code>WHERE device_id IN (SELECT device_id FROM devices WHERE station_id = 1)</code>；3）使用分区裁剪，只扫描2024年1月分区。优化后查询时间降至0.3秒。</p>
+<p>某查询"查询城东变电站2024年1月所有遥测数据"最初耗时45秒。。通过EXPLAIN分析发现type为ALL，rows超过2亿。优化步骤：1)确认device_id和record_time上有复合索引；2)将<code>WHERE station_id = 1</code>改为<code>WHERE device_id IN (SELECT device_id FROM devices WHERE station_id = 1)</code>；3)使用分区裁剪，只扫描2024年1月分区。优化后查询时间降至0.3秒。</p>
 </div>
 
 <div class="callout">
 <div class="callout-title">索引策略总结</div>
-<p>1）最左前缀原则：复合索引<code>(a,b,c)</code>等价于建立了<code>(a)</code>、<code>(a,b)</code>、<code>(a,b,c)</code>三个索引；2）覆盖索引：查询的所有列都在索引中，无需回表查询；3）索引下推（ICP）：MySQL 5.6+将WHERE条件下推到存储引擎层过滤；4）定期使用<code>ANALYZE TABLE</code>更新统计信息，确保优化器选择最优执行计划。</p>
+<p>1)最左前缀原则：复合索引<code>(a,b,c)</code>等价于建立了<code>(a)</code>、<code>(a,b)</code>、<code>(a,b,c)</code>三个索引；2)覆盖索引：查询的所有列都在索引中，无需回表查询；3)索引下推（ICP）：MySQL 5.6+将WHERE条件下推到存储引擎层过滤；4)定期使用<code>ANALYZE TABLE</code>更新统计信息，确保优化器选择最优执行计划。</p>
 </div>
 
 <figure class="chart-figure">
 <figcaption>图7-3：SQL性能优化流程</figcaption>
-<svg width="100%" height="160" viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg">
-  <rect x="20" y="55" width="100" height="36" fill="#dc2626" rx="6"/>
-  <text x="70" y="77" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">发现慢查询</text>
+<svg width="100%" height="140" viewBox="0 0 780 140" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="45" width="100" height="36" fill="#dc2626" rx="6"/>
+  <text x="70" y="67" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">发现慢查询</text>
   <line x1="120" y1="73" x2="170" y2="73" stroke="#666" stroke-width="2" marker-end="url(#arrow10)"/>
   <rect x="170" y="55" width="100" height="36" fill="#d97706" rx="6"/>
   <text x="220" y="77" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">EXPLAIN分析</text>
@@ -2746,6 +2877,11 @@ OPTIMIZE TABLE devices;</code></pre>
 <h3>8.1 变压器运行数据查询与统计</h3>
 <p>变压器是电网的核心设备，其运行数据（油温、绕组温度、负载率等）直接反映设备健康状态。本节通过完整的SQL案例，展示如何查询和统计变压器运行数据。</p>
 
+<div class="example-box">
+<div class="example-title">案例：变压器运行数据查询与告警</div>
+<p><strong>业务背景：</strong>变压器是电网的核心设备，需要实时监控其油温、负载率等运行指标，当油温超过告警阈值时自动生成告警信息。</p>
+<p><strong>数据关联：</strong>新建 transformer_monitor 表存储变压器监测数据，通过 device_id 关联 devices 表获取设备名称等信息。</p>
+<p><strong>操作思路：</strong>1) 查询指定设备在指定时间范围内的运行数据；2) 按天统计最高、最低、平均油温和负载率；3) 使用 CASE WHEN 分级告警（一般告警/紧急告警）；4) 计算七日滑动平均油温观察趋势。</p>
 <pre><code>-- 案例表结构
 CREATE TABLE transformer_monitor (
     record_id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -2798,8 +2934,10 @@ ORDER BY m.oil_temp DESC;
 SELECT
     DATE(record_time) AS 日期,
     AVG(oil_temp) AS 日平均油温,
-    AVG(AVG(oil_temp)) OVER (
-        ORDER BY DATE(record_time)
+    -- 注意：嵌套 AVG 在 MySQL 中不可用，需先通过子查询计算日平均值
+    -- 以下为概念示意，实际需改写为 CTE 或子查询
+    AVG(daily_avg_temp) OVER (
+        ORDER BY record_date
         ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
     ) AS 七日滑动平均
 FROM transformer_monitor
@@ -2833,6 +2971,11 @@ ORDER BY 日期;</code></pre>
 <h3>8.2 线路故障分析与定位</h3>
 <p>配电网线路故障的快速定位直接影响抢修效率和供电可靠性。本节展示如何通过SQL分析故障记录、关联线路拓扑和设备台账，辅助故障定位。</p>
 
+<div class="example-box">
+<div class="example-title">案例：线路故障统计与定位</div>
+<p><strong>业务背景：</strong>配电网线路故障直接影响供电可靠性，需要统计故障频率、分析故障类型分布、计算平均恢复时间，并识别反复故障的薄弱线路。</p>
+<p><strong>数据关联：</strong>新建 fault_records 表存储故障记录，通过 feeder_id 关联 feeder_topology 表获取线路名称，通过 devices 表关联设备台账。</p>
+<p><strong>操作思路：</strong>1) 统计近一年各线路的故障次数和停电时长；2) 分析故障类型占比分布；3) 关联设备台账查询故障线路上的设备清单；4) 使用 HAVING 筛选反复故障线路（3次以上）。</p>
 <pre><code>-- 故障记录表
 CREATE TABLE fault_records (
     fault_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -2874,6 +3017,8 @@ SELECT
     d.device_type,
     d.voltage_level,
     d.status
+-- 注意：此处假设 devices.station_id 与 feeder_topology.feeder_id 存在业务关联
+-- 实际场景中应通过中间表关联，此处为简化示例
 FROM devices d
 JOIN feeder_topology ft ON d.station_id = ft.feeder_id
 WHERE ft.feeder_id = (
@@ -2907,9 +3052,9 @@ ORDER BY fault_count DESC;</code></pre>
 
 <figure class="chart-figure">
 <figcaption>图8-1：故障分析SQL查询流程</figcaption>
-<svg width="100%" height="140" viewBox="0 0 640 140" xmlns="http://www.w3.org/2000/svg">
-  <rect x="20" y="45" width="120" height="40" fill="#dc2626" rx="6"/>
-  <text x="80" y="70" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">故障记录表</text>
+<svg width="100%" height="120" viewBox="0 0 780 120" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="35" width="120" height="40" fill="#dc2626" rx="6"/>
+  <text x="80" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">故障记录表</text>
   <line x1="140" y1="65" x2="200" y2="65" stroke="#666" stroke-width="2" marker-end="url(#arrow11)"/>
   <rect x="200" y="45" width="120" height="40" fill="#d97706" rx="6"/>
   <text x="260" y="70" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">时间/类型过滤</text>
@@ -2933,6 +3078,11 @@ ORDER BY fault_count DESC;</code></pre>
 <h3>8.3 月度负荷报表自动生成</h3>
 <p>月度负荷报表是电网运行分析的基础文档，涵盖各变电站、各电压等级的最大负荷、最小负荷、平均负荷和负荷率等指标。本节展示如何通过一条复杂的SQL生成完整的月度负荷报表。</p>
 
+<div class="example-box">
+<div class="example-title">案例：月度负荷报表自动生成</div>
+<p><strong>业务背景：</strong>调度部门每月需要生成负荷报表，包含各变电站的月最大负荷、月最小负荷、月平均负荷和最大负载率等指标。</p>
+<p><strong>数据关联：</strong>新建 load_data 表存储负荷数据，通过 station_id 关联 stations 表获取变电站名称和电压等级。</p>
+<p><strong>操作思路：</strong>1) 使用CTE先计算每日统计数据；2) 在日统计基础上汇总月度指标；3) 关联 stations 表获取变电站信息；4) 按电压等级汇总各等级负荷数据。</p>
 <pre><code>-- 负荷数据表（简化示例）
 CREATE TABLE load_data (
     record_id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -2973,7 +3123,9 @@ SELECT
     m.月最小负荷,
     ROUND(m.月平均负荷, 2) AS 月平均负荷,
     ROUND(m.日最大负荷均值, 2) AS 日最大负荷均值,
-    ROUND(m.月最大负荷 / NULLIF(s.rated_capacity, 0) * 100, 2) AS 最大负载率
+    -- 注意：若 stations 表没有 rated_capacity 字段，请先执行：
+-- ALTER TABLE stations ADD COLUMN rated_capacity DECIMAL(10,2) COMMENT '额定容量(kVA)';
+ROUND(m.月最大负荷 / NULLIF(s.rated_capacity, 0) * 100, 2) AS 最大负载率
 FROM monthly_stats m
 JOIN stations s ON m.station_id = s.station_id
 ORDER BY m.月最大负荷 DESC;
@@ -3015,6 +3167,11 @@ ORDER BY 电压等级 DESC;</code></pre>
 <h3>8.4 设备全生命周期数据查询</h3>
 <p>设备全生命周期管理（Asset Life Cycle Management）是电网设备管理的核心业务，涵盖设备采购、安装、运行、检修、技改、退役和报废全过程。本节展示如何通过多表关联查询，完整呈现单台设备的全生命周期数据。</p>
 
+<div class="example-box">
+<div class="example-title">案例：设备全生命周期成本分析</div>
+<p><strong>业务背景：</strong>电网公司需要对设备进行全生命周期管理，包括采购、安装、检修、技改、退役和报废等全过程，并统计分析各阶段的成本投入。</p>
+<p><strong>数据关联：</strong>新建 device_lifecycle 表存储设备生命周期事件，通过 device_id 关联 devices 表，再通过 devices 表关联 stations 和 manufacturers 表。</p>
+<p><strong>操作思路：</strong>1) 创建 device_lifecycle 表并插入生命周期事件数据；2) 多表关联查询设备完整生命周期信息；3) 使用条件聚合统计采购成本、检修成本、技改成本等各项指标。</p>
 <pre><code>-- 设备全生命周期相关表
 CREATE TABLE device_lifecycle (
     event_id INT PRIMARY KEY AUTO_INCREMENT,

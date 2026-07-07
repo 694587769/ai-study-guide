@@ -612,23 +612,33 @@ figcaption {
     </div>
 
     <div class="nav-chapter" data-ch="ch7">
-      <a href="#ch7" class="nav-chapter-toggle">第7章 数据可视化（画图）<span class="chevron">▶</span></a>
+      <a href="#ch7" class="nav-chapter-toggle">第7章 正则表达式<span class="chevron">▶</span></a>
       <div class="nav-sections">
-        <a href="#ch7-1">7.1 Matplotlib基础</a>
-        <a href="#ch7-2">7.2 Seaborn统计绘图</a>
-        <a href="#ch7-3">7.3 turtle绘图</a>
-        <a href="#ch7-4">7.4 2D图高级技巧</a>
-        <a href="#ch7-5">7.5 3D图（mplot3d）</a>
+        <a href="#ch7-1">7.1 正则表达式基础</a>
+        <a href="#ch7-2">7.2 基本匹配规则</a>
+        <a href="#ch7-3">7.3 re模块常用方法</a>
+        <a href="#ch7-4">7.4 电网数据提取实战</a>
       </div>
     </div>
 
     <div class="nav-chapter" data-ch="ch8">
-      <a href="#ch8" class="nav-chapter-toggle">第8章 典型案例<span class="chevron">▶</span></a>
+      <a href="#ch8" class="nav-chapter-toggle">第8章 数据可视化（画图）<span class="chevron">▶</span></a>
       <div class="nav-sections">
-        <a href="#ch8-1">8.1 变压器温度监测数据分析</a>
-        <a href="#ch8-2">8.2 电力负荷数据统计</a>
-        <a href="#ch8-3">8.3 线路巡检数据批量处理</a>
-        <a href="#ch8-4">8.4 设备台账自动化管理</a>
+        <a href="#ch8-1">8.1 Matplotlib基础</a>
+        <a href="#ch8-2">8.2 Seaborn统计绘图</a>
+        <a href="#ch8-3">8.3 turtle绘图</a>
+        <a href="#ch8-4">8.4 2D图高级技巧</a>
+        <a href="#ch8-5">8.5 3D图（mplot3d）</a>
+      </div>
+    </div>
+
+    <div class="nav-chapter" data-ch="ch9">
+      <a href="#ch9" class="nav-chapter-toggle">第9章 典型案例<span class="chevron">▶</span></a>
+      <div class="nav-sections">
+        <a href="#ch9-1">9.1 变压器温度监测数据分析</a>
+        <a href="#ch9-2">9.2 电力负荷数据统计</a>
+        <a href="#ch9-3">9.3 线路巡检数据批量处理</a>
+        <a href="#ch9-4">9.4 设备台账自动化管理</a>
       </div>
     </div>
 
@@ -638,7 +648,7 @@ figcaption {
 <!-- ===== Main Content ===== -->
 <main class="main" id="mainContent">
 <h1 class="doc-title">Python基础教程</h1>
-<div class="doc-meta">覆盖Python基础、安装配置、基本语法、循环条件、函数、文件处理、数据可视化及电网行业典型案例</div>
+<div class="doc-meta">覆盖Python基础、安装配置、基本语法、循环条件、函数、文件处理、正则表达式、数据可视化及电网行业典型案例</div>
 
 <!-- ========== CHAPTER 1 ========== -->
 <span class="top-anchor" id="ch1"></span>
@@ -847,7 +857,7 @@ sudo yum install python3 python3-pip</code></pre>
 
 <div class="example-box">
 <div class="example-title">电网场景：SCADA服务器上的Python环境</div>
-<p>电网调度自动化系统中的SCADA服务器通常运行Linux系统。在部署Python自动化脚本前，需要确认服务器上已安装Python 3.6+。对于内网环境，可将Python依赖包预先打包为离线whl文件，通过堡垒机上传后批量安装：<code>pip install --no-index --find-links=./offline_packages pandas NumPy</code></p>
+<p>电网调度自动化系统中的SCADA服务器通常运行Linux系统。在部署Python自动化脚本前，需要确认服务器上已安装Python 3.6+。对于内网环境，可将Python依赖包预先打包为离线whl文件，通过堡垒机上传后批量安装：<code>pip install --no-index --find-links=./offline_packages pandas numpy</code></p>
 </div>
 
 <span class="top-anchor" id="ch2-2"></span>
@@ -891,7 +901,7 @@ conda create -n grid_analysis python=3.10
 conda activate grid_analysis
 
 # 安装常用库
-conda install pandas NumPy Matplotlib jupyter
+conda install pandas numpy matplotlib jupyter
 
 # 查看所有环境
 conda env list
@@ -1027,7 +1037,7 @@ python -m venv scada_env
 source scada_env/bin/activate  # Linux/Mac
 scada_env\Scripts\activate   # Windows
 
-pip install pandas==1.5.3 NumPy==1.24.0
+pip install pandas==1.5.3 numpy==1.24.0
 
 # 另一个项目使用独立环境
 python -m venv ai_model_env
@@ -2262,20 +2272,569 @@ for filename in os.listdir('historical_data'):
         dst = os.path.join('utf8_data', filename)
         convert_to_utf8(src, dst)</code></pre>
 </div>
-<!-- ========== CHAPTER 8 ========== -->
+<!-- ========== CHAPTER 7 ========== -->
 <span class="top-anchor" id="ch7"></span>
-<h2>第7章 数据可视化（画图）</h2>
+<h2>第7章 正则表达式</h2>
+
+<p>正则表达式（Regular Expression，简称regex）是一种强大的文本模式匹配工具，通过预定义的字符模式来搜索、匹配和操作字符串。在电网自动化运维中，日志分析、数据提取和设备信息解析等场景频繁使用正则表达式，掌握正则表达式能够极大提升文本处理效率。Python通过内置的<code>re</code>模块提供完整的正则表达式支持。</p>
+
+<span class="top-anchor" id="ch7-1"></span>
+<h3>7.1 正则表达式基础</h3>
+
+<p>正则表达式本质上是一种描述字符串匹配模式的特殊语法。它使用单个字符串来描述、匹配一系列符合某个句法规则的字符串。在Python中，<code>re</code>模块是标准库的一部分，无需额外安装即可使用。</p>
+
+<p>正则表达式在电网自动化运维中的应用场景非常广泛：从SCADA系统日志中提取关键设备参数，到解析设备铭牌信息中的型号和额定值，再到批量处理巡检记录中的时间戳和数值数据，正则表达式都是不可或缺的工具。</p>
+
+<div class="callout">
+<div class="callout-title">正则表达式学习建议</div>
+<p>正则表达式初看可能显得晦涩难懂，但掌握其核心规则后并不复杂。建议先从简单的字符匹配入手，逐步掌握元字符和量词，再通过实际电网场景中的案例进行练习。常用的在线正则测试工具（如regex101.com）可以帮助你实时看到匹配结果，加速学习过程。</p>
+</div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表7-1：正则表达式在电网场景中的典型应用</caption>
+<tr><th>应用场景</th><th>数据来源</th><th>正则表达式功能</th><th>示例</th></tr>
+<tr><td>日志信息提取</td><td>SCADA系统日志</td><td>提取设备编号和状态</td><td>从"Device:TR-001 Status:OK"中提取设备编号</td></tr>
+<tr><td>铭牌信息解析</td><td>设备铭牌文本</td><td>提取型号、容量、电压等级</td><td>从"SZ11-50000/110"中解析容量和电压</td></tr>
+<tr><td>时间戳匹配</td><td>巡检记录</td><td>提取日期时间信息</td><td>从"2024-01-15 09:30:45"中提取年月日</td></tr>
+<tr><td>数据格式验证</td><td>用户输入</td><td>验证设备编号格式</td><td>验证"TR-2024-001"是否符合命名规范</td></tr>
+<tr><td>批量文本替换</td><td>配置文件</td><td>统一设备命名格式</td><td>将旧编号"OLD_001"替换为"NEW_001"</td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图7-1：正则表达式匹配流程示意</figcaption>
+<svg width="100%" height="240" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+  <rect x="30" y="10" width="540" height="40" fill="#2563eb" rx="6"/>
+  <text x="300" y="35" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">正则表达式匹配流程</text>
+  <line x1="300" y1="50" x2="300" y2="70" stroke="#666" stroke-width="1.5"/>
+  <polygon points="300,76 295,70 305,70" fill="#666"/>
+  <rect x="150" y="76" width="300" height="36" fill="#f0f0f5" rx="6" stroke="#666"/>
+  <text x="300" y="99" text-anchor="middle" fill="#333" font-size="12">输入文本（待匹配的字符串）</text>
+  <line x1="300" y1="112" x2="300" y2="132" stroke="#666" stroke-width="1.5"/>
+  <polygon points="300,138 295,132 305,132" fill="#666"/>
+  <rect x="175" y="138" width="250" height="36" fill="#059669" rx="6"/>
+  <text x="300" y="161" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">re模块：编译正则 → 扫描文本</text>
+  <line x1="300" y1="174" x2="300" y2="194" stroke="#666" stroke-width="1.5"/>
+  <polygon points="300,200 295,194 305,194" fill="#666"/>
+  <rect x="175" y="200" width="250" height="32" fill="#dc2626" rx="6"/>
+  <text x="300" y="221" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">返回匹配结果（Match对象）</text>
+</svg>
+</figure>
+
+<div class="example-box">
+<div class="example-title">电网场景：SCADA日志初步分析</div>
+<p>某变电站SCADA系统每天产生大量运行日志，包含设备编号、电压、电流、温度等关键参数。运维人员需要从这些日志中快速提取异常信息。例如，一条典型的SCADA日志如下：</p>
+<pre><code># SCADA日志示例
+log_entry = "2024-01-15 09:30:45 | Device:TR-001 | OilTemp:72.5C | Load:85.0% | Status:OK"
+
+# 使用正则表达式提取关键信息
+import re
+
+# 提取时间戳
+time_pattern = r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+timestamp = re.search(time_pattern, log_entry)
+print(f"时间戳: {timestamp.group()}")
+
+# 提取设备编号
+device_pattern = r'Device:([A-Z]+-\d+)'
+device = re.search(device_pattern, log_entry)
+print(f"设备编号: {device.group(1)}")
+
+# 提取所有数值
+values = re.findall(r'\d+\.?\d*', log_entry)
+print(f"提取的数值: {values}")</code></pre>
+</div>
+
+<span class="top-anchor" id="ch7-2"></span>
+<h3>7.2 基本匹配规则</h3>
+
+<p>正则表达式的核心是匹配规则（pattern），由普通字符和元字符组合而成。理解这些基本规则是掌握正则表达式的关键。</p>
+
+<h4>7.2.1 字符类（Character Classes）</h4>
+<p>字符类用于匹配某一类字符。用方括号<code>[]</code>定义，可以匹配方括号中任意一个字符。例如，<code>[abc]</code>匹配a、b或c中的任意一个；<code>[0-9]</code>匹配任意一个数字；<code>[A-Z]</code>匹配任意一个大写字母。字符类还支持取反操作，<code>[^0-9]</code>匹配任意一个非数字字符。</p>
+
+<h4>7.2.2 元字符（Metacharacters）</h4>
+<p>元字符是正则表达式中具有特殊含义的字符。常用的元字符包括：<code>.</code>（匹配任意单个字符，换行符除外）、<code>\d</code>（匹配任意数字，等价于<code>[0-9]</code>）、<code>\w</code>（匹配字母、数字或下划线）、<code>\s</code>（匹配空白字符）、<code></code>（匹配单词边界）。大写形式表示取反，如<code>\D</code>匹配非数字字符。</p>
+
+<h4>7.2.3 量词（Quantifiers）</h4>
+<p>量词用于指定匹配次数。常用的量词包括：<code>*</code>（匹配0次或多次）、<code>+</code>（匹配1次或多次）、<code>?</code>（匹配0次或1次）、<code>{n}</code>（精确匹配n次）、<code>{n,}</code>（匹配至少n次）、<code>{n,m}</code>（匹配n到m次）。默认量词采用贪婪匹配（尽可能多地匹配），在量词后加<code>?</code>可切换为懒惰匹配（尽可能少地匹配）。</p>
+
+<h4>7.2.4 锚点（Anchors）</h4>
+<p>锚点用于指定匹配位置而非字符。常用的锚点包括：<code>^</code>（匹配字符串开头）、<code>$</code>（匹配字符串结尾）、<code></code>（匹配单词边界）、<code>\B</code>（匹配非单词边界）。锚点本身不消耗字符，只检查位置条件。</p>
+
+<h4>7.2.5 分组与捕获（Groups）</h4>
+<p>使用圆括号<code>()</code>可以创建分组，分组内的表达式作为一个整体处理。分组同时具有捕获功能，匹配到的子串可以通过<code>group()</code>方法获取。在电网数据提取中，分组常用于提取设备编号、参数值等关键信息。</p>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表7-2：正则表达式常用符号速查表</caption>
+<tr><th>类别</th><th>符号</th><th>含义</th><th>示例</th><th>匹配结果</th></tr>
+<tr><td rowspan="4">字符类</td><td><code>[abc]</code></td><td>匹配a、b或c中任意一个</td><td><code>[ABC]</code></td><td>A、B或C</td></tr>
+<tr><td><code>[0-9]</code></td><td>匹配0到9中任意数字</td><td><code>[0-3]</code></td><td>0、1、2或3</td></tr>
+<tr><td><code>[a-z]</code></td><td>匹配任意小写字母</td><td><code>[a-f]</code></td><td>a到f</td></tr>
+<tr><td><code>[^0-9]</code></td><td>匹配非数字字符</td><td><code>[^0-9]</code></td><td>任意非数字</td></tr>
+<tr><td rowspan="5">元字符</td><td><code>\d</code></td><td>匹配任意数字</td><td><code>\d+</code></td><td>一个或多个数字</td></tr>
+<tr><td><code>\w</code></td><td>匹配字母、数字、下划线</td><td><code>\w{3}</code></td><td>三个字母数字</td></tr>
+<tr><td><code>\s</code></td><td>匹配空白字符</td><td><code>\s+</code></td><td>一个或多个空白</td></tr>
+<tr><td><code>.</code></td><td>匹配任意字符（除换行）</td><td><code>.+</code></td><td>任意非空字符串</td></tr>
+<tr><td><code>|</code></td><td>或（选择分支）</td><td><code>OK|ERR</code></td><td>OK或ERR</td></tr>
+<tr><td rowspan="4">量词</td><td><code>*</code></td><td>0次或多次</td><td><code>\d*</code></td><td>空或任意数字</td></tr>
+<tr><td><code>+</code></td><td>1次或多次</td><td><code>\d+</code></td><td>至少一个数字</td></tr>
+<tr><td><code>{n}</code></td><td>精确n次</td><td><code>\d{4}</code></td><td>恰好四个数字</td></tr>
+<tr><td><code>{n,m}</code></td><td>n到m次</td><td><code>\d{2,4}</code></td><td>2到4个数字</td></tr>
+<tr><td rowspan="2">锚点</td><td><code>^</code></td><td>字符串开头</td><td><code>^TR</code></td><td>以TR开头的字符串</td></tr>
+<tr><td><code>$</code></td><td>字符串结尾</td><td><code>OK$</code></td><td>以OK结尾的字符串</td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图7-2：正则表达式元素关系图</figcaption>
+<svg width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="200" y="10" width="200" height="40" fill="#2563eb" rx="6"/>
+  <text x="300" y="35" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">正则表达式</text>
+  <line x1="300" y1="50" x2="300" y2="57" stroke="#666" stroke-width="1.5"/>
+  <line x1="120" y1="57" x2="480" y2="57" stroke="#666" stroke-width="1.5"/>
+  <line x1="120" y1="57" x2="120" y2="70" stroke="#666" stroke-width="1.5"/>
+  <polygon points="120,76 115,70 125,70" fill="#666"/>
+  <line x1="300" y1="57" x2="300" y2="70" stroke="#666" stroke-width="1.5"/>
+  <polygon points="300,76 295,70 305,70" fill="#666"/>
+  <line x1="480" y1="57" x2="480" y2="70" stroke="#666" stroke-width="1.5"/>
+  <polygon points="480,76 475,70 485,70" fill="#666"/>
+  <rect x="20" y="76" width="200" height="36" fill="#059669" rx="6"/>
+  <text x="120" y="99" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">字符类 [abc]</text>
+  <rect x="200" y="130" width="200" height="36" fill="#d97706" rx="6"/>
+  <text x="300" y="153" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">元字符 \d \w \s</text>
+  <rect x="380" y="76" width="200" height="36" fill="#7c3aed" rx="6"/>
+  <text x="480" y="99" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">量词 * + {n}</text>
+  <line x1="120" y1="112" x2="120" y2="130" stroke="#666" stroke-width="1.5"/>
+  <polygon points="120,136 115,130 125,130" fill="#666"/>
+  <line x1="480" y1="112" x2="480" y2="130" stroke="#666" stroke-width="1.5"/>
+  <polygon points="480,136 475,130 485,130" fill="#666"/>
+  <rect x="100" y="136" width="120" height="36" fill="#dc2626" rx="6"/>
+  <text x="160" y="159" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">锚点 ^ $</text>
+  <rect x="380" y="136" width="120" height="36" fill="#dc2626" rx="6"/>
+  <text x="440" y="159" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">分组 ()</text>
+</svg>
+</figure>
+
+<div class="callout">
+<div class="callout-title">常见误区</div>
+<p>初学者容易混淆的几个点：<strong>(1)</strong> <code>[]</code>内部大多数字符会失去特殊含义，如<code>[.]</code>只匹配句点而非任意字符；<strong>(2)</strong> <code>^</code>在<code>[]</code>内部表示取反（如<code>[^a-z]</code>），在外部表示字符串开头；<strong>(3)</strong> 量词默认贪婪匹配，如<code>\d+</code>会尽可能多地匹配数字，在不需要贪婪的场景记得加<code>?</code>。</p>
+</div>
+
+<div class="example-box">
+<div class="example-title">电网场景：设备编号格式验证</div>
+<p>电网设备编号通常遵循严格的命名规范，例如"变压器编号格式为<code>TR-YYYY-NNN</code>（TR-年份-序号）"。在设备台账录入时，需要使用正则表达式验证编号格式是否正确。</p>
+<pre><code>import re
+
+# 定义设备编号规则
+# 变压器: TR-年份-序号（如 TR-2024-001）
+# 断路器: CB-电压等级-序号（如 CB-110-005）
+# 电压互感器: PT-电压等级-序号（如 PT-220-003）
+
+def validate_device_id(device_id):
+    """验证设备编号格式"""
+    patterns = {
+        '变压器': r'^TR-\d{4}-\d{3}$',
+        '断路器': r'^CB-\d{2,3}-\d{3}$',
+        '电压互感器': r'^PT-\d{2,3}-\d{3}$',
+        '电流互感器': r'^CT-\d{2,3}-\d{3}$',
+    }
+    for device_type, pattern in patterns.items():
+        if re.match(pattern, device_id):
+            return f"有效: {device_id} ({device_type})"
+    return f"无效: {device_id}"
+
+# 测试
+test_ids = ["TR-2024-001", "CB-110-005", "PT-220-003", "XX-123-456", "TR-24-001"]
+for tid in test_ids:
+    print(validate_device_id(tid))</code></pre>
+</div>
+
+<span class="top-anchor" id="ch7-3"></span>
+<h3>7.3 re模块常用方法</h3>
+
+<p>Python的<code>re</code>模块提供了丰富的正则表达式操作方法。理解每个方法的适用场景和返回值类型，能够帮助你在不同场景下选择最合适的方法。</p>
+
+<h4>7.3.1 search() 方法</h4>
+<p><code>re.search(pattern, string)</code>在字符串中搜索正则表达式的第一个匹配项。如果找到匹配，返回一个Match对象（包含匹配的详细信息）；如果未找到，返回<code>None</code>。适用于从文本中提取第一个出现的模式。</p>
+
+<pre><code>import re
+
+# 从SCADA日志中提取第一个设备编号
+log = "Alarm: TR-001 overheat | Device: TR-002 normal"
+result = re.search(r'TR-\d{3}', log)
+if result:
+    print(f"找到设备: {result.group()}")  # 输出: TR-001
+    print(f"匹配位置: {result.start()} ~ {result.end()}")</code></pre>
+
+<h4>7.3.2 match() 方法</h4>
+<p><code>re.match(pattern, string)</code>从字符串开头开始匹配正则表达式。如果开头匹配成功，返回Match对象；否则返回<code>None</code>。注意：<code>match()</code>只匹配开头，即使字符串中间有匹配也不会返回。</p>
+
+<pre><code># match()与search()的区别
+text = "Device: TR-001 Status: OK"
+
+# match()从开头匹配
+print(re.match(r'Device', text))  # 匹配成功
+print(re.match(r'TR-\d{3}', text))  # None，因为开头不是TR
+
+# search()搜索整个字符串
+print(re.search(r'TR-\d{3}', text))  # 匹配成功</code></pre>
+
+<h4>7.3.3 findall() 方法</h4>
+<p><code>re.findall(pattern, string)</code>返回字符串中所有与正则表达式匹配的非重叠子串，以列表形式返回。如果模式中包含分组，则返回分组匹配的元组列表。适用于提取所有匹配项。</p>
+
+<pre><code># 从巡检日志中提取所有温度值
+log = "OilTemp:72.5C | WindingTemp:82.0C | Ambient:30.5C"
+temperatures = re.findall(r'(\d+\.?\d*)C', log)
+print(f"提取的温度值: {temperatures}")  # ['72.5', '82.0', '30.5']</code></pre>
+
+<h4>7.3.4 finditer() 方法</h4>
+<p><code>re.finditer(pattern, string)</code>与<code>findall()</code>类似，但返回一个迭代器，每次迭代产生一个Match对象。适用于需要获取每个匹配的详细信息（位置、分组等）的场景。</p>
+
+<pre><code># 提取所有设备编号及其位置
+log = "TR-001 -> CB-110-005 -> PT-220-003"
+for match in re.finditer(r'[A-Z]+-\d+(?:-\d+)?', log):
+    print(f"{match.group()} 位于位置 {match.start()}-{match.end()}")</code></pre>
+
+<h4>7.3.5 sub() 方法</h4>
+<p><code>re.sub(pattern, replacement, string)</code>将字符串中所有匹配正则表达式的部分替换为指定字符串。适用于批量文本替换、格式统一等场景。</p>
+
+<pre><code># 将旧设备编号格式统一替换为新格式
+old_log = "OLD_TR-001 temperature: 72.5C | OLD_TR-002 temperature: 68.0C"
+new_log = re.sub(r'OLD_TR-(\d{3})', r'NEW_TR-', old_log)
+print(new_log)
+# 输出: NEW_TR-001 temperature: 72.5C | NEW_TR-002 temperature: 68.0C</code></pre>
+
+<h4>7.3.6 split() 方法</h4>
+<p><code>re.split(pattern, string)</code>使用正则表达式作为分隔符来分割字符串。比字符串的<code>split()</code>方法更灵活，可以处理多种分隔符。</p>
+
+<pre><code># 使用多种分隔符分割设备参数
+param_str = "TR-001 | 72.5C | 85.0% | OK"
+parts = re.split(r'\s*\|\s*', param_str)
+print(parts)  # ['TR-001', '72.5C', '85.0%', 'OK']</code></pre>
+
+<h4>7.3.7 compile() 方法</h4>
+<p><code>re.compile(pattern)</code>将正则表达式编译为正则表达式对象，可以重复使用。当同一个模式需要多次匹配时，编译后可以提高执行效率。</p>
+
+<pre><code># 编译设备编号模式，提高批量处理效率
+device_pattern = re.compile(r'TR-\d{4}-\d{3}')
+
+# 批量验证1000个设备编号
+for i in range(1000):
+    device_id = f"TR-2024-{i:03d}"
+    if device_pattern.match(device_id):
+        pass  # 处理有效编号</code></pre>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表7-3：re模块常用方法对比表</caption>
+<tr><th>方法</th><th>匹配范围</th><th>返回值</th><th>适用场景</th><th>电网示例</th></tr>
+<tr><td><code>search()</code></td><td>搜索整个字符串</td><td>Match对象或None</td><td>查找第一个匹配</td><td>从日志中查找第一个告警</td></tr>
+<tr><td><code>match()</code></td><td>仅从开头匹配</td><td>Match对象或None</td><td>验证字符串格式</td><td>验证设备编号前缀</td></tr>
+<tr><td><code>findall()</code></td><td>搜索整个字符串</td><td>字符串列表</td><td>提取所有匹配</td><td>提取所有温度值</td></tr>
+<tr><td><code>finditer()</code></td><td>搜索整个字符串</td><td>Match对象迭代器</td><td>需要位置信息</td><td>定位日志中所有异常条目</td></tr>
+<tr><td><code>sub()</code></td><td>搜索整个字符串</td><td>替换后的字符串</td><td>批量替换</td><td>统一设备编号格式</td></tr>
+<tr><td><code>split()</code></td><td>搜索整个字符串</td><td>字符串列表</td><td>分割字符串</td><td>分割多字段参数行</td></tr>
+<tr><td><code>compile()</code></td><td>—</td><td>正则表达式对象</td><td>重复使用模式</td><td>批量处理大量日志</td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图7-3：re模块方法选择决策流程</figcaption>
+<svg width="100%" height="240" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+  <rect x="200" y="10" width="200" height="36" fill="#2563eb" rx="6"/>
+  <text x="300" y="33" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">需要正则匹配？</text>
+  <line x1="300" y1="46" x2="300" y2="62" stroke="#666" stroke-width="1.5"/>
+  <polygon points="300,68 295,62 305,62" fill="#666"/>
+  <rect x="150" y="68" width="300" height="36" fill="#f0f0f5" rx="6" stroke="#666"/>
+  <text x="300" y="91" text-anchor="middle" fill="#333" font-size="12">匹配数量？</text>
+  <line x1="210" y1="104" x2="100" y2="130" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="104" x2="300" y2="130" stroke="#666" stroke-width="1.5"/>
+  <line x1="390" y1="104" x2="500" y2="130" stroke="#666" stroke-width="1.5"/>
+  <rect x="20" y="130" width="160" height="40" fill="#059669" rx="6"/>
+  <text x="100" y="148" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">仅需第一个</text>
+  <text x="100" y="163" text-anchor="middle" fill="#fff" font-size="10">search() / match()</text>
+  <rect x="220" y="130" width="160" height="40" fill="#d97706" rx="6"/>
+  <text x="300" y="148" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">需要全部</text>
+  <text x="300" y="163" text-anchor="middle" fill="#fff" font-size="10">findall() / finditer()</text>
+  <rect x="420" y="130" width="160" height="40" fill="#7c3aed" rx="6"/>
+  <text x="500" y="148" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">替换/分割</text>
+  <text x="500" y="163" text-anchor="middle" fill="#fff" font-size="10">sub() / split()</text>
+  <text x="300" y="215" text-anchor="middle" fill="#666" font-size="11">提示：需要多次匹配同一模式时使用 compile() 提高效率</text>
+</svg>
+</figure>
+
+<div class="callout">
+<div class="callout-title">性能提示</div>
+<p>当同一个正则表达式需要被多次使用时（例如在循环中匹配大量日志行），建议使用<code>re.compile()</code>预编译正则表达式，这样可以避免每次调用时重新编译模式，显著提升处理效率。对于10000条以上的日志数据处理，编译版本通常比直接调用<code>re.search()</code>快30%到50%。</p>
+</div>
+
+<div class="example-box">
+<div class="example-title">电网场景：批量解析保护装置报文</div>
+<p>变电站保护装置会定期上送报文信息，包含设备地址、动作类型、时间戳等信息。运维人员需要批量解析这些报文，提取关键信息并生成汇总报告。</p>
+<pre><code>import re
+
+# 模拟保护装置报文列表
+messages = [
+    "[2024-01-15 09:30:45] DEV=PR-001 TYPE=过流 ACT=跳闸 VAL=1250A",
+    "[2024-01-15 10:15:22] DEV=PR-002 TYPE=差动 ACT=告警 VAL=0.35A",
+    "[2024-01-15 11:02:08] DEV=PR-001 TYPE=过压 ACT=恢复 VAL=220kV",
+    "[2024-01-15 14:30:00] DEV=PR-003 TYPE=过流 ACT=跳闸 VAL=1380A",
+]
+
+# 编译正则表达式（提高批量处理效率）
+pattern = re.compile(
+    r'\[([^\]]+)\]\s+'
+    r'DEV=([A-Z]+-\d+)\s+'
+    r'TYPE=(\w+)\s+'
+    r'ACT=(\w+)\s+'
+    r'VAL=([\d.]+[kVA]?)'
+)
+
+# 批量解析
+for msg in messages:
+    m = pattern.match(msg)
+    if m:
+        timestamp, device, action_type, action, value = m.groups()
+        print(f"时间: {timestamp} | 设备: {device} | "
+              f"类型: {action_type} | 动作: {action} | 值: {value}")
+
+# 统计跳闸事件
+trip_events = [m for m in messages if 'ACT=跳闸' in m]
+print(f"
+共发生{len(trip_events)}次跳闸事件")</code></pre>
+</div>
+
+<span class="top-anchor" id="ch7-4"></span>
+<h3>7.4 电网数据提取实战</h3>
+
+<p>本节通过三个典型的电网数据提取场景，综合运用正则表达式解决实际问题。每个案例都包含完整的业务背景、数据说明和代码实现。</p>
+
+<h4>7.4.1 从SCADA日志中提取设备编号和参数</h4>
+<p>SCADA系统日志通常以格式化文本形式记录设备运行参数。以下代码演示如何从日志中批量提取设备编号、温度、负载率和状态信息。</p>
+
+<pre><code>import re
+
+# 模拟SCADA日志数据
+scada_logs = [
+    "2024-01-15 08:00 | TR-001 | OilTemp:72.5C | WindingTemp:82.0C | Load:75.0% | Status:OK",
+    "2024-01-15 09:00 | TR-001 | OilTemp:75.0C | WindingTemp:86.0C | Load:82.0% | Status:OK",
+    "2024-01-15 10:00 | TR-001 | OilTemp:82.5C | WindingTemp:95.0C | Load:90.0% | Status:WARN",
+    "2024-01-15 08:00 | TR-002 | OilTemp:68.0C | WindingTemp:78.0C | Load:65.0% | Status:OK",
+    "2024-01-15 09:00 | TR-002 | OilTemp:70.0C | WindingTemp:80.0C | Load:70.0% | Status:OK",
+]
+
+# 编译提取模式
+log_pattern = re.compile(
+    r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\s*\|\s*'  # 时间戳
+    r'([A-Z]+-\d+)\s*\|\s*'                         # 设备编号
+    r'OilTemp:([\d.]+)C\s*\|\s*'                    # 油温
+    r'WindingTemp:([\d.]+)C\s*\|\s*'                # 绕组温度
+    r'Load:([\d.]+)%\s*\|\s*'                       # 负载率
+    r'Status:(\w+)'                                   # 状态
+)
+
+# 提取并分析
+for log in scada_logs:
+    m = log_pattern.match(log)
+    if m:
+        timestamp, device, oil_temp, winding_temp, load, status = m.groups()
+        oil_temp_f = float(oil_temp)
+        winding_temp_f = float(winding_temp)
+        # 计算温差（绕组温度-油温），温差过大气可能是绝缘老化
+        temp_diff = winding_temp_f - oil_temp_f
+        flag = " !! 温差异常" if temp_diff > 15 else ""
+        print(f"{timestamp} | {device} | 油温:{oil_temp}℃ | "
+              f"绕组:{winding_temp}℃ | 温差:{temp_diff:.1f}℃ | "
+              f"负载:{load}% | {status}{flag}")</code></pre>
+
+<h4>7.4.2 解析设备铭牌信息</h4>
+<p>设备铭牌包含型号、容量、电压等级、额定电流等关键参数。以下代码从铭牌文本中提取变压器的型号、容量和电压等级。</p>
+
+<pre><code>import re
+
+# 模拟变压器铭牌信息
+nameplate_texts = [
+    "型号: SZ11-50000/110 | 额定容量: 50000kVA | 额定电压: 110/10.5kV | 冷却方式: ONAN",
+    "型号: S13-M-630/10 | 额定容量: 630kVA | 额定电压: 10/0.4kV | 冷却方式: ONAN",
+    "型号: SFZ11-180000/220 | 额定容量: 180000kVA | 额定电压: 220/121/10.5kV | 冷却方式: ODAF",
+]
+
+# 铭牌信息提取模式
+nameplate_pattern = re.compile(
+    r'型号:\s*([\w-]+)\s*\|\s*'           # 型号
+    r'额定容量:\s*(\d+)\s*kVA\s*\|\s*'     # 容量
+    r'额定电压:\s*([\d./]+)\s*kV'          # 电压等级
+)
+
+for text in nameplate_texts:
+    m = nameplate_pattern.search(text)
+    if m:
+        model, capacity, voltage = m.groups()
+        # 从型号中提取系列和设计序号
+        series_match = re.match(r'([A-Z]+)\d*', model)
+        series = series_match.group(1) if series_match else "未知"
+        print(f"型号: {model}")
+        print(f"  系列: {series}")
+        print(f"  容量: {capacity} kVA ({int(capacity)/1000:.0f} MVA)")
+        print(f"  电压等级: {voltage} kV")
+        print()</code></pre>
+
+<h4>7.4.3 提取时间戳和数值</h4>
+<p>从巡检记录和事件报告中提取时间戳和数值是电网数据处理中最常见的需求之一。以下代码演示了如何灵活处理多种时间格式和数值格式。</p>
+
+<pre><code>import re
+from datetime import datetime
+
+# 模拟多种格式的巡检记录
+patrol_records = [
+    "2024/01/15 09:30:45 巡检员:张工 1号主变油温:72.5℃ 环境温度:18.5℃",
+    "2024-01-15-14:20:30 巡检员:李工 2号主变油温:68.0℃ 环境温度:22.0℃",
+    "01-15-2024 16:45:00 巡检员:王工 1号主变油温:75.5℃ 环境温度:25.0℃",
+]
+
+# 多种时间格式的正则模式
+time_patterns = [
+    (r'\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}', '%Y/%m/%d %H:%M:%S'),
+    (r'\d{4}-\d{2}-\d{2}-\d{2}:\d{2}:\d{2}', '%Y-%m-%d-%H:%M:%S'),
+    (r'\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}', '%m-%d-%Y %H:%M:%S'),
+]
+
+# 数值提取模式
+temp_pattern = re.compile(r'(\d+\.?\d*)\s*℃')
+
+for record in patrol_records:
+    # 提取时间戳
+    timestamp = None
+    for pattern, fmt in time_patterns:
+        ts_match = re.search(pattern, record)
+        if ts_match:
+            timestamp = datetime.strptime(ts_match.group(), fmt)
+            break
+
+    # 提取所有温度值
+    temperatures = temp_pattern.findall(record)
+
+    print(f"记录: {record}")
+    print(f"  时间: {timestamp}")
+    print(f"  温度值: {temperatures}")
+    print(f"  最高温度: {max(map(float, temperatures))}℃")
+    print()</code></pre>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表7-4：电网数据提取常用正则模式汇总</caption>
+<tr><th>提取目标</th><th>正则模式</th><th>匹配示例</th><th>说明</th></tr>
+<tr><td>日期时间</td><td><code>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}</code></td><td>2024-01-15 09:30:45</td><td>标准ISO格式</td></tr>
+<tr><td>设备编号</td><td><code>[A-Z]+-\d+(?:-\d+)?</code></td><td>TR-001 或 CB-110-005</td><td>含可选子编号</td></tr>
+<tr><td>温度值</td><td><code>\d+\.?\d*C</code></td><td>72.5C</td><td>带单位的温度</td></tr>
+<tr><td>电压值</td><td><code>\d+\.?\d*\s*kV</code></td><td>110kV 或 10.5kV</td><td>带单位的电压</td></tr>
+<tr><td>负载率</td><td><code>\d+\.?\d*\s*%</code></td><td>85.0%</td><td>百分比负载</td></tr>
+<tr><td>IP地址</td><td><code>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}</code></td><td>192.168.1.100</td><td>网络设备地址</td></tr>
+<tr><td>状态标识</td><td><code>(?:OK|WARN|ERR|ALARM)</code></td><td>OK、WARN、ERR</td><td>设备运行状态</td></tr>
+</table>
+</div>
+
+<figure class="chart-figure">
+<figcaption>图7-4：电网数据提取实战流程</figcaption>
+<svg width="100%" height="220" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+  <rect x="200" y="10" width="200" height="36" fill="#2563eb" rx="6"/>
+  <text x="300" y="33" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">电网数据提取流程</text>
+  <line x1="300" y1="46" x2="300" y2="62" stroke="#666" stroke-width="1.5"/>
+  <polygon points="300,68 295,62 305,62" fill="#666"/>
+  <rect x="180" y="68" width="240" height="36" fill="#059669" rx="6"/>
+  <text x="300" y="91" text-anchor="middle" fill="#fff" font-size="12">1. 明确提取目标（字段/格式）</text>
+  <line x1="300" y1="104" x2="300" y2="120" stroke="#666" stroke-width="1.5"/>
+  <polygon points="300,126 295,120 305,120" fill="#666"/>
+  <rect x="180" y="126" width="240" height="36" fill="#d97706" rx="6"/>
+  <text x="300" y="149" text-anchor="middle" fill="#fff" font-size="12">2. 编写正则模式并测试</text>
+  <line x1="300" y1="162" x2="300" y2="178" stroke="#666" stroke-width="1.5"/>
+  <polygon points="300,184 295,178 305,178" fill="#666"/>
+  <rect x="180" y="184" width="240" height="36" fill="#dc2626" rx="6"/>
+  <text x="300" y="207" text-anchor="middle" fill="#fff" font-size="12">3. 批量提取并验证结果</text>
+</svg>
+</figure>
+
+<div class="callout">
+<div class="callout-title">实战建议</div>
+<p>在实际电网项目中，正则表达式通常与文件读写结合使用。建议将正则模式定义为常量或配置文件，便于维护和修改。对于复杂的提取任务，可以先用<code>re.findall()</code>快速验证模式是否正确，再使用<code>re.compile()</code>编译后批量处理。同时，始终对提取结果进行合理性校验（如温度值应在合理范围内），避免因日志格式变化导致错误数据进入后续分析流程。</p>
+</div>
+
+<div class="example-box">
+<div class="example-title">电网场景：综合案例——SCADA日志批量分析</div>
+<p>本案例综合运用本章所学的正则表达式知识，实现对SCADA系统日志的批量分析。从文件读取日志数据，提取关键信息，进行统计分析，并生成汇总报告。</p>
+<pre><code>import re
+from collections import defaultdict
+
+# 模拟从文件读取的SCADA日志
+with open("scada_daily.log", "r", encoding="utf-8") as f:
+    log_lines = f.readlines()
+
+# 定义提取模式
+log_pattern = re.compile(
+    r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\s*\|\s*'
+    r'([A-Z]+-\d+)\s*\|\s*'
+    r'OilTemp:([\d.]+)C\s*\|\s*'
+    r'Load:([\d.]+)%\s*\|\s*'
+    r'Status:(\w+)'
+)
+
+# 统计数据结构
+device_stats = defaultdict(lambda: {
+    "max_temp": 0, "min_temp": 999, "records": 0,
+    "warn_count": 0, "err_count": 0
+})
+
+for line in log_lines:
+    m = log_pattern.match(line.strip())
+    if m:
+        timestamp, device, oil_temp, load, status = m.groups()
+        temp = float(oil_temp)
+
+        # 更新统计
+        stats = device_stats[device]
+        stats["max_temp"] = max(stats["max_temp"], temp)
+        stats["min_temp"] = min(stats["min_temp"], temp)
+        stats["records"] += 1
+        if status == "WARN":
+            stats["warn_count"] += 1
+        elif status == "ERR":
+            stats["err_count"] += 1
+
+# 生成汇总报告
+print("=" * 60)
+print("        SCADA日志批量分析报告")
+print("=" * 60)
+for device, stats in sorted(device_stats.items()):
+    print(f"
+设备: {device}")
+    print(f"  记录数: {stats['records']}")
+    print(f"  温度范围: {stats['min_temp']}℃ ~ {stats['max_temp']}℃")
+    print(f"  告警次数: {stats['warn_count']} | 错误次数: {stats['err_count']}")
+    if stats['max_temp'] > 85:
+        print(f"  !! 注意: 最高温度超过85℃告警阈值")
+print(f"
+共分析{len(device_stats)}个设备，{sum(s['records'] for s in device_stats.values())}条记录")</code></pre>
+</div>
+
+<p>本章介绍了正则表达式的基础知识、基本匹配规则、re模块的常用方法以及电网数据提取的实战应用。正则表达式是Python文本处理的核心工具之一，在电网自动化运维中有着广泛的应用。建议读者结合实际的电网数据，多加练习，逐步提升正则表达式的编写和应用能力。</p>
+
+<!-- ========== CHAPTER 8 ========== -->
+<span class="top-anchor" id="ch8"></span>
+<h2>第8章 数据可视化（画图）</h2>
 
 <p>数据可视化是电网数据分析的重要环节，能够直观展示数据趋势、分布特征和异常模式。Python拥有丰富的数据可视化生态，本章将介绍最常用的三种可视化工具：<strong>Matplotlib</strong>（基础绘图）、<strong>Seaborn</strong>（统计绘图）和<strong>Turtle</strong>（教育绘图），并介绍2D图和3D图的高级技巧。</p>
 
-<span class="top-anchor" id="ch7-1"></span>
-<h3>7.1 Matplotlib基础</h3>
-<p>Matplotlib是Python中最经典的基础绘图库，其设计风格参考了MATLAB的绘图语法，提供了细致的图形控制能力。安装命令：<code>pip install Matplotlib</code>。</p>
+<span class="top-anchor" id="ch8-1"></span>
+<h3>8.1 Matplotlib基础</h3>
+<p>Matplotlib是Python中最经典的基础绘图库，其设计风格参考了MATLAB的绘图语法，提供了细致的图形控制能力。安装命令：<code>pip install matplotlib</code>。</p>
 
-<h4>7.1.1 折线图（Line Plot）</h4>
+<h4>8.1.1 折线图（Line Plot）</h4>
 <p>折线图最适合展示连续数据的变化趋势，如电网负荷曲线、温度变化曲线等。</p>
 
-<pre><code>import Matplotlib.pyplot as plt
+<pre><code>import matplotlib.pyplot as plt
 
 # 模拟24小时变压器油温数据（℃）
 hours = list(range(24))
@@ -2300,7 +2859,7 @@ plt.show()</code></pre>
 <p>该折线图展示了变压器油温在24小时内的变化趋势。从图中可以看出，油温从早晨8点（第8小时）开始快速上升，在下午15-16点（第15-16小时）达到峰值约85℃，之后随环境温度下降而回落。图中的水平虚线标出了75℃（注意阈值）和85℃（告警阈值），便于运维人员快速判断设备状态。</p>
 </div>
 
-<h4>7.1.2 柱状图（Bar Chart）</h4>
+<h4>8.1.2 柱状图（Bar Chart）</h4>
 <p>柱状图适合展示分类数据的对比，如各变电站负荷对比、各电压等级设备数量等。</p>
 
 <pre><code># 各变电站的日最大负荷对比（MW）
@@ -2327,7 +2886,7 @@ plt.show()</code></pre>
 <p>柱状图清晰展示了5个变电站的日最大负荷对比。城中变因地处市中心商业区，负荷最高（240MW）；城西变因工业负荷较少，负荷最低（158MW）。运维人员可据此合理分配巡检资源和关注重点。</p>
 </div>
 
-<h4>7.1.3 饼图（Pie Chart）</h4>
+<h4>8.1.3 饼图（Pie Chart）</h4>
 <p>饼图用于展示各类别在整体中的占比，如电网能源结构、负荷类型分布等。</p>
 
 <pre><code># 某地区电网负荷类型分布
@@ -2350,7 +2909,7 @@ plt.show()</code></pre>
 
 <div class="table-wrap">
 <table class="data-table">
-<caption>表7-1：Matplotlib常用图表类型及适用场景</caption>
+<caption>表8-1：Matplotlib常用图表类型及适用场景</caption>
 <tr><th>图表类型</th><th>函数</th><th>适用场景</th><th>电网示例</th></tr>
 <tr><td>折线图</td><td><code>plt.plot()</code></td><td>连续数据变化趋势</td><td>负荷曲线、温度变化</td></tr>
 <tr><td>柱状图</td><td><code>plt.bar()</code></td><td>分类数据对比</td><td>各站负荷对比、设备数量统计</td></tr>
@@ -2362,7 +2921,7 @@ plt.show()</code></pre>
 </div>
 
 <figure class="chart-figure">
-<figcaption>图7-1：Matplotlib基础图表类型示意（折线图示例）</figcaption>
+<figcaption>图8-1：Matplotlib基础图表类型示意（折线图示例）</figcaption>
 <svg width="100%" height="220" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
   <rect x="20" y="180" width="560" height="1" fill="#ccc"/>
   <rect x="20" y="20" width="1" height="160" fill="#ccc"/>
@@ -2388,15 +2947,15 @@ plt.show()</code></pre>
 </svg>
 </figure>
 
-<span class="top-anchor" id="ch7-2"></span>
-<h3>7.2 Seaborn统计绘图</h3>
-<p>Seaborn是基于Matplotlib的高级统计绘图库，提供了更美观的默认样式和更简洁的API，特别适合统计数据的可视化分析。安装命令：<code>pip install Seaborn</code>。</p>
+<span class="top-anchor" id="ch8-2"></span>
+<h3>8.2 Seaborn统计绘图</h3>
+<p>Seaborn是基于Matplotlib的高级统计绘图库，提供了更美观的默认样式和更简洁的API，特别适合统计数据的可视化分析。安装命令：<code>pip install seaborn</code>。</p>
 
-<h4>7.2.1 热力图（Heatmap）</h4>
+<h4>8.2.1 热力图（Heatmap）</h4>
 <p>热力图用颜色深浅表示数据大小，适合展示二维矩阵数据，如设备运行参数的相关性矩阵、负荷时序数据的日周模式等。</p>
 
-<pre><code>import Seaborn as sns
-import NumPy as np
+<pre><code>import seaborn as sns
+import numpy as np
 
 # 模拟电网负荷相关性矩阵（不同电压等级之间的负荷相关性）
 np.random.seed(42)
@@ -2423,7 +2982,7 @@ plt.show()</code></pre>
 <p>热力图展示了5个电压等级的负荷相关系数矩阵。颜色越深（偏红）表示相关性越强。可以看出35kV和10kV的负荷相关性最高（0.93），因为它们都主要面向配电网用户；而500kV与其他电压等级的相关性相对较低，因为主网负荷受大工业用户影响更大。这种分析有助于电网调度中的负荷预测建模。</p>
 </div>
 
-<h4>7.2.2 箱线图（Box Plot）</h4>
+<h4>8.2.2 箱线图（Box Plot）</h4>
 <p>箱线图展示数据的分布特征（中位数、四分位数、异常值），适合对比多组数据的分布差异。</p>
 
 <pre><code># 模拟不同季节的变压器油温分布数据
@@ -2448,7 +3007,7 @@ plt.show()</code></pre>
 <p>箱线图清晰展示了不同季节变压器油温分布特征的差异。夏季温度中位数最高（约86℃），且存在多个高温异常点；冬季温度最低（约57℃）。运维人员可根据季节性特点制定差异化的巡检策略，例如夏季增加高温监测频次。</p>
 </div>
 
-<h4>7.2.3 分布图（Distribution Plot）</h4>
+<h4>8.2.3 分布图（Distribution Plot）</h4>
 <p>分布图（直方图+核密度估计曲线）展示数据分布形态，如负荷偏差分布、电压偏差分布等。</p>
 
 <pre><code># 模拟某变电站100天的日负荷率数据
@@ -2473,7 +3032,7 @@ plt.show()</code></pre>
 
 <div class="table-wrap">
 <table class="data-table">
-<caption>表7-2：Seaborn常用绘图函数</caption>
+<caption>表8-2：Seaborn常用绘图函数</caption>
 <tr><th>函数</th><th>图表类型</th><th>主要参数</th><th>电网应用</th></tr>
 <tr><td><code>sns.heatmap()</code></td><td>热力图</td><td>annot, cmap, fmt</td><td>负荷相关性、设备参数矩阵</td></tr>
 <tr><td><code>sns.boxplot()</code></td><td>箱线图</td><td>data, palette, orient</td><td>多组数据分布对比</td></tr>
@@ -2484,8 +3043,8 @@ plt.show()</code></pre>
 </table>
 </div>
 
-<span class="top-anchor" id="ch7-3"></span>
-<h3>7.3 turtle绘图</h3>
+<span class="top-anchor" id="ch8-3"></span>
+<h3>8.3 turtle绘图</h3>
 <p>Turtle（海龟绘图）是Python内置的LOGO语言风格绘图工具，通过控制"海龟"在画布上移动来绘制图形。它简单直观，适合初学者理解编程中的循环、递归和坐标概念，也可用于生成电网拓扑示意图。</p>
 
 <div class="callout warn">
@@ -2493,7 +3052,7 @@ plt.show()</code></pre>
 <p>turtle模块是Python标准库的一部分，无需额外安装。在Jupyter Notebook中需先执行 <code>%Matplotlib inline</code> 或使用 <code>turtle.Screen()</code> 的替代方案。以下代码在标准Python环境中可直接运行。</p>
 </div>
 
-<h4>7.3.1 基本图形</h4>
+<h4>8.3.1 基本图形</h4>
 
 <pre><code>import turtle
 
@@ -2569,7 +3128,7 @@ turtle.done()</code></pre>
 
 <div class="table-wrap">
 <table class="data-table">
-<caption>表7-3：turtle常用绘图命令</caption>
+<caption>表8-3：turtle常用绘图命令</caption>
 <tr><th>命令</th><th>功能</th><th>参数说明</th></tr>
 <tr><td><code>forward(d)</code></td><td>向前移动</td><td>d：像素距离</td></tr>
 <tr><td><code>right(a)</code> / <code>left(a)</code></td><td>右转/左转</td><td>a：角度（度）</td></tr>
@@ -2582,11 +3141,11 @@ turtle.done()</code></pre>
 </table>
 </div>
 
-<span class="top-anchor" id="ch7-4"></span>
-<h3>7.4 2D图高级技巧</h3>
+<span class="top-anchor" id="ch8-4"></span>
+<h3>8.4 2D图高级技巧</h3>
 <p>掌握Matplotlib的高级技巧可以让图表更加专业美观，满足电网报告和论文发表的要求。</p>
 
-<h4>7.4.1 子图（Subplot）</h4>
+<h4>8.4.1 子图（Subplot）</h4>
 <p>子图可以在同一张画布上绘制多个图表，便于对比分析。</p>
 
 <pre><code># 子图：同时展示负荷曲线的不同维度
@@ -2634,11 +3193,11 @@ plt.show()</code></pre>
 <p>子图将负荷数据的四个维度同时展示：日负荷曲线（左上）反映了整体变化趋势；逐时负荷变化柱状图（右上）用绿/红色分别标识正负变化；负荷分布直方图（左下）揭示了数据的集中区间；累计负荷曲线（右下）则展示了电量的累积过程。这种多维度呈现方式比单张图表传递的信息量大了数倍。</p>
 </div>
 
-<h4>7.4.2 样式美化</h4>
+<h4>8.4.2 样式美化</h4>
 <p>Matplotlib提供了丰富的样式配置，包括内置样式表和自定义设置：</p>
 
 <pre><code># 使用内置样式
-plt.style.use('Seaborn-v0_8')
+plt.style.use('seaborn-v0_8')
 # 或 plt.style.use('ggplot') / 'fivethirtyeight' / 'bmh'
 
 # 自定义样式
@@ -2674,7 +3233,7 @@ plt.show()</code></pre>
 
 <div class="table-wrap">
 <table class="data-table">
-<caption>表7-4：2D图高级技巧速查表</caption>
+<caption>表8-4：2D图高级技巧速查表</caption>
 <tr><th>功能</th><th>代码</th><th>效果</th></tr>
 <tr><td>创建子图</td><td><code>plt.subplots(2, 2)</code></td><td>2行2列共4个子图</td></tr>
 <tr><td>调整间距</td><td><code>plt.tight_layout()</code></td><td>自动调整子图间距</td></tr>
@@ -2686,13 +3245,13 @@ plt.show()</code></pre>
 </table>
 </div>
 
-<span class="top-anchor" id="ch7-5"></span>
-<h3>7.5 3D图（mplot3d）</h3>
+<span class="top-anchor" id="ch8-5"></span>
+<h3>8.5 3D图（mplot3d）</h3>
 <p>Matplotlib的mplot3d工具包支持三维图形的绘制，可用于电网中的三维空间数据展示，如杆塔坐标、雷电定位、三维电场分布等。</p>
 
-<h4>7.5.1 三维曲面（Surface Plot）</h4>
+<h4>8.5.1 三维曲面（Surface Plot）</h4>
 <pre><code>from mpl_toolkits.mplot3d import Axes3D  # 新版Matplotlib中可省略，直接用projection="3d"
-import NumPy as np
+import numpy as np
 
 # 模拟变电站周边三维电场强度分布
 x = np.linspace(-50, 50, 30)
@@ -2716,7 +3275,7 @@ plt.show()</code></pre>
 <p>三维曲面图模拟了变电站周边电场强度的空间分布。曲面中心区域（变电站位置）电场强度最高，向四周逐渐衰减。加入随机噪声以模拟实际测量中的波动。这种三维可视化有助于电磁环境分析和变电站选址规划。</p>
 </div>
 
-<h4>7.5.2 三维散点图（Scatter3D）</h4>
+<h4>8.5.2 三维散点图（Scatter3D）</h4>
 <pre><code># 模拟输电线路杆塔三维坐标
 np.random.seed(42)
 n_towers = 20
@@ -2743,7 +3302,7 @@ plt.show()</code></pre>
 <p>三维散点图展示了某条输电线路沿线20基杆塔的空间位置分布。散点的颜色代表杆塔高度，灰色连线展示了线路走向。从图中可以看出杆塔高度随地形起伏而变化，这种三维可视化有助于输电线路的设计评审和运维规划。</p>
 </div>
 
-<h4>7.5.3 三维等高线（Contour3D）</h4>
+<h4>8.5.3 三维等高线（Contour3D）</h4>
 <pre><code># 模拟配电网电压分布等高线
 x = np.linspace(-100, 100, 50)
 y = np.linspace(-100, 100, 50)
@@ -2767,7 +3326,7 @@ plt.show()</code></pre>
 </div>
 
 <figure class="chart-figure">
-<figcaption>图7-2：3D可视化在电网中的应用类型示意</figcaption>
+<figcaption>图8-2：3D可视化在电网中的应用类型示意</figcaption>
 <svg width="100%" height="180" viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
   <rect x="20" y="20" width="160" height="140" fill="#f0f0f5" rx="8" stroke="#2563eb" stroke-width="1.5"/>
   <text x="100" y="95" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">三维曲面</text>
@@ -2786,7 +3345,7 @@ plt.show()</code></pre>
 
 <div class="table-wrap">
 <table class="data-table">
-<caption>表7-5：3D绘图函数总结</caption>
+<caption>表8-5：3D绘图函数总结</caption>
 <tr><th>函数</th><th>图表类型</th><th>适用场景</th><th>电网示例</th></tr>
 <tr><td><code>plot_surface()</code></td><td>三维曲面</td><td>连续空间数据</td><td>电场/磁场/温度场分布</td></tr>
 <tr><td><code>scatter()</code> (3D)</td><td>三维散点</td><td>离散空间点</td><td>杆塔坐标、雷电定位</td></tr>
@@ -2798,12 +3357,12 @@ plt.show()</code></pre>
 
 <p>本章介绍了Python数据可视化的主要工具和方法。在实际电网工作中，建议根据数据特点和分析目标选择合适的图表类型：趋势数据用折线图、分类对比用柱状图、占比分析用饼图、相关性分析用热力图、空间数据用3D图。掌握这些可视化技巧，能够帮助电网工程师更高效地进行数据分析、报告编写和决策支持。</p>
 
-<!-- ========== CHAPTER 7 ========== -->
-<span class="top-anchor" id="ch8"></span>
-<h2>第8章 典型案例</h2>
+<!-- ========== CHAPTER 9 ========== -->
+<span class="top-anchor" id="ch9"></span>
+<h2>第9章 典型案例</h2>
 
-<span class="top-anchor" id="ch8-1"></span>
-<h3>8.1 变压器温度监测数据分析</h3>
+<span class="top-anchor" id="ch9-1"></span>
+<h3>9.1 变压器温度监测数据分析</h3>
 <p>本案例综合运用Python基础语法、循环、函数和文件处理，实现变压器温度监测数据的读取、分析和报告生成。</p>
 
 <pre><code>"""
@@ -2898,8 +3457,8 @@ report = f"""
 print(report)
 </code></pre>
 
-<span class="top-anchor" id="ch8-2"></span>
-<h3>8.2 电力负荷数据统计</h3>
+<span class="top-anchor" id="ch9-2"></span>
+<h3>9.2 电力负荷数据统计</h3>
 <p>本案例展示如何读取电力负荷数据，进行统计分析，计算日峰谷差和负荷率，并标记异常负荷点。</p>
 
 <pre><code>"""
@@ -2980,8 +3539,8 @@ print(f"\n负荷曲线特征: 典型双峰曲线，早高峰{stats['最大负荷
       f"低谷出现在{stats['最小负荷时刻']}为{stats['最小负荷']}MW。")
 </code></pre>
 
-<span class="top-anchor" id="ch8-3"></span>
-<h3>8.3 线路巡检数据批量处理</h3>
+<span class="top-anchor" id="ch9-3"></span>
+<h3>9.3 线路巡检数据批量处理</h3>
 <p>本案例模拟电网运维中最常见的场景——批量处理多条线路的巡检数据，按电压等级分组统计，识别需要重点关注的高风险线路。</p>
 
 <pre><code>"""
@@ -3078,8 +3637,8 @@ print(f"\n总结: 共巡检{len(patrol_data)}条线路，"
       f"低风险{sum(1 for l in patrol_data if l['risk_level']=='低风险')}条。")
 </code></pre>
 
-<span class="top-anchor" id="ch8-4"></span>
-<h3>8.4 设备台账自动化管理</h3>
+<span class="top-anchor" id="ch9-4"></span>
+<h3>9.4 设备台账自动化管理</h3>
 <p>本案例演示如何使用Python实现设备台账的自动化管理，包括设备信息的增删改查、按条件筛选、批量导出等功能。</p>
 
 <pre><code>"""
@@ -3199,7 +3758,7 @@ print(manager.export_report())
 
 <div class="table-wrap">
 <table class="data-table">
-<caption>表8-1：典型案例知识点汇总</caption>
+<caption>表9-1：典型案例知识点汇总</caption>
 <tr><th>案例</th><th>核心知识点</th><th>数据格式</th><th>输出结果</th></tr>
 <tr><td>8.1 变压器温度监测</td><td>列表、字典、函数、条件判断</td><td>列表嵌套字典</td><td>日报报告、状态评估</td></tr>
 <tr><td>8.2 电力负荷统计</td><td>列表操作、数学统计、异常检测</td><td>96点负荷数组</td><td>负荷指标、异常标记</td></tr>
@@ -3210,7 +3769,7 @@ print(manager.export_report())
 
 <div class="table-wrap">
 <table class="data-table">
-<caption>表8-2：线路风险评分标准</caption>
+<caption>表9-2：线路风险评分标准</caption>
 <tr><th>评价维度</th><th>低风险（0分）</th><th>中风险（10-20分）</th><th>高风险（20-30分）</th></tr>
 <tr><td>运行年限</td><td>≤5年</td><td>5-20年</td><td>＞20年</td></tr>
 <tr><td>腐蚀程度</td><td>无</td><td>轻度/中度</td><td>严重</td></tr>
@@ -3220,7 +3779,7 @@ print(manager.export_report())
 </div>
 
 <figure class="chart-figure">
-<figcaption>图8-1：典型案例技术栈关系图</figcaption>
+<figcaption>图9-1：典型案例技术栈关系图</figcaption>
 <svg width="100%" height="220" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
   <rect x="150" y="10" width="300" height="40" fill="#2563eb" rx="6"/>
   <text x="300" y="35" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">Python基础技能树</text>
