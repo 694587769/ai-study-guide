@@ -26,6 +26,95 @@
   --sidebar-w: 280px;
 }
 
+/* ===== Dark Theme ===== */
+html[data-theme="dark"] {
+  --bg: #1a1a2e;
+  --bg2: #2a2a40;
+  --surface: #1e293b;
+  --ink: #e2e8f0;
+  --muted: #94a3b8;
+  --rule: #334155;
+  --accent-light: #1e3a5f;
+  --accent2-light: #2d1b4e;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.25);
+}
+
+html[data-theme="dark"] .callout.warn {
+  background: #2d2416;
+}
+
+html[data-theme="dark"] .callout.danger {
+  background: #2d1616;
+}
+
+html[data-theme="dark"] code {
+  background: var(--bg2);
+}
+
+html[data-theme="dark"] pre {
+  background: #0f172a;
+}
+
+html[data-theme="dark"] .data-table tr:hover td {
+  background: #2a3a50;
+}
+
+html[data-theme="dark"] .example-box {
+  background: var(--bg2);
+}
+
+html[data-theme="dark"] .search-result-item:hover {
+  background: var(--bg2);
+}
+
+html[data-theme="dark"] #custom-search-widget .result-count {
+  background: var(--bg);
+}
+
+/* ===== Theme Toggle Button ===== */
+.theme-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--muted);
+  transition: all 0.25s;
+  padding: 0;
+  line-height: 1;
+}
+
+.theme-toggle:hover {
+  background: var(--bg2);
+  color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  transition: all 0.25s;
+}
+
+html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+html[data-theme="dark"] .theme-toggle .icon-sun { display: inline; }
+html:not([data-theme="dark"]) .theme-toggle .icon-sun { display: none; }
+html:not([data-theme="dark"]) .theme-toggle .icon-moon { display: inline; }
+
+/* ===== Chapter Divider ===== */
+.chapter-divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 40px 0;
+}
+
 /* ===== Fonts ===== */
 @font-face { font-family: 'WorkSans'; src: url('https://694587769.github.io/ai-study-guide/shared/fonts/WorkSans-Regular.ttf') format('truetype'); font-weight: 400; }
 @font-face { font-family: 'WorkSans'; src: url('https://694587769.github.io/ai-study-guide/shared/fonts/WorkSans-Bold.ttf') format('truetype'); font-weight: 700; }
@@ -60,6 +149,7 @@ body {
 .sidebar-header {
   padding: 20px 20px 12px;
   border-bottom: 1px solid var(--rule);
+  position: relative;
 }
 .sidebar-header h1 {
   margin: 0; font-size: 16px; font-weight: 700;
@@ -547,6 +637,10 @@ figcaption {
   <div class="sidebar-header">
     <h1>电网数据处理教程</h1>
     <div class="subtitle">Powered by Anqing Peng</div>
+    <button class="theme-toggle" id="themeToggle" title="切换夜间模式" aria-label="切换夜间模式">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
   </div>
   <nav class="sidebar-nav" id="sidebarNav">
     <div class="nav-chapter open" data-ch="ch1">
@@ -632,6 +726,7 @@ figcaption {
 <!-- ========== CHAPTER 1 ========== -->
 <span class="top-anchor" id="ch1"></span>
 <h2>第1章 数据处理基础</h2>
+<hr class="chapter-divider">
 
 <span class="top-anchor" id="ch1-1"></span>
 <h3>1.1 数据处理概述</h3>
@@ -956,6 +1051,7 @@ class GridDataPipeline:
 <!-- ========== CHAPTER 2 ========== -->
 <span class="top-anchor" id="ch2"></span>
 <h2>第2章 数据采集与加载</h2>
+<hr class="chapter-divider">
 
 <span class="top-anchor" id="ch2-1"></span>
 <h3>2.1 结构化数据加载</h3>
@@ -1322,6 +1418,7 @@ print(final_result.head(10))</code></pre>
 <!-- ========== CHAPTER 3 ========== -->
 <span class="top-anchor" id="ch3"></span>
 <h2>第3章 数据清洗</h2>
+<hr class="chapter-divider">
 
 <span class="top-anchor" id="ch3-1"></span>
 <h3>3.1 缺失值处理</h3>
@@ -1706,6 +1803,7 @@ print(f"\n缺失值统计:\n{missing_summary[missing_summary > 0]}")</code></pre
 <!-- ========== CHAPTER 4 ========== -->
 <span class="top-anchor" id="ch4"></span>
 <h2>第4章 数据集成与变换</h2>
+<hr class="chapter-divider">
 
 <span class="top-anchor" id="ch4-1"></span>
 <h3>4.1 数据合并</h3>
@@ -2084,6 +2182,7 @@ print(f"\n最终特征维度: {df_final.shape}")</code></pre>
 <!-- ========== CHAPTER 5 ========== -->
 <span class="top-anchor" id="ch5"></span>
 <h2>第5章 数据规约与特征工程</h2>
+<hr class="chapter-divider">
 
 <span class="top-anchor" id="ch5-1"></span>
 <h3>5.1 数据降维</h3>
@@ -2480,6 +2579,7 @@ print(f"组合采样后: 正常={n_comb_0}, 故障={n_comb_1}, 故障比例={n_c
 <!-- ========== CHAPTER 6 ========== -->
 <span class="top-anchor" id="ch6"></span>
 <h2>第6章 数据分析与统计</h2>
+<hr class="chapter-divider">
 
 <span class="top-anchor" id="ch6-1"></span>
 <h3>6.1 描述性统计</h3>
@@ -2872,6 +2972,7 @@ print(f"  (d=0.2小效应, d=0.5中效应, d=0.8大效应)")</code></pre>
 <!-- ========== CHAPTER 7 ========== -->
 <span class="top-anchor" id="ch7"></span>
 <h2>第7章 数据预测与分析模型</h2>
+<hr class="chapter-divider">
 
 <span class="top-anchor" id="ch7-1"></span>
 <h3>7.1 时间序列预测</h3>
@@ -3326,6 +3427,7 @@ print(f"综合判断异常数: {pred_combined.sum()}")</code></pre>
 <!-- ========== CHAPTER 8 ========== -->
 <span class="top-anchor" id="ch8"></span>
 <h2>第8章 综合案例</h2>
+<hr class="chapter-divider">
 
 <span class="top-anchor" id="ch8-1"></span>
 <h3>8.1 变电站SCADA日志数据处理全流程</h3>
@@ -3817,6 +3919,32 @@ if len(anomalies) &gt; 0:
 </div>
 
 <script>
+// ===== Theme Toggle =====
+(function() {
+  const STORAGE_KEY = 'data-processing-theme';
+  const html = document.documentElement;
+  const toggleBtn = document.getElementById('themeToggle');
+
+  // 从 localStorage 恢复用户偏好
+  const savedTheme = localStorage.getItem(STORAGE_KEY);
+  if (savedTheme === 'dark') {
+    html.setAttribute('data-theme', 'dark');
+  } else {
+    html.removeAttribute('data-theme');
+  }
+
+  // 切换主题
+  toggleBtn.addEventListener('click', function() {
+    if (html.hasAttribute('data-theme')) {
+      html.removeAttribute('data-theme');
+      localStorage.setItem(STORAGE_KEY, 'light');
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      localStorage.setItem(STORAGE_KEY, 'dark');
+    }
+  });
+})();
+
 // Sidebar navigation active state
 const navLinks = document.querySelectorAll('.nav-sections a');
 const sections = document.querySelectorAll('.top-anchor');
