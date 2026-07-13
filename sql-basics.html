@@ -27,80 +27,111 @@
   --sidebar-w: 280px;
 }
 /* ===== Dark Mode ===== */
-body.dark-mode {
+html[data-theme="dark"] {
   --bg: #1a1a2e;
-  --bg2: #222240;
-  --surface: #252540;
-  --ink: #e0e0f0;
-  --muted: #9999aa;
-  --rule: #333355;
-  --accent: #6090ff;
-  --accent2: #9d6eff;
-  --accent-light: #1a2a44;
-  --accent2-light: #2a1a44;
-  --success: #34d399;
-  --warning: #fbbf24;
-  --danger: #f87171;
-  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+  --bg2: #2a2a40;
+  --surface: #1e293b;
+  --ink: #e2e8f0;
+  --muted: #94a3b8;
+  --rule: #334155;
+  --accent: #2563eb;
+  --accent2: #7c3aed;
+  --accent-light: #1e3a5f;
+  --accent2-light: #2d1b4e;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.25);
 }
-body.dark-mode .sidebar {
+/* ===== Theme Toggle Button ===== */
+.theme-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--muted);
+  transition: all 0.25s;
+  padding: 0;
+  line-height: 1;
+}
+.theme-toggle:hover {
+  background: var(--bg2);
+  color: var(--accent);
+  box-shadow: var(--shadow);
+}
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  transition: all 0.25s;
+}
+html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+html[data-theme="dark"] .theme-toggle .icon-sun { display: inline; }
+html:not([data-theme="dark"]) .theme-toggle .icon-sun { display: none; }
+html:not([data-theme="dark"]) .theme-toggle .icon-moon { display: inline; }
+
+html[data-theme="dark"] .sidebar {
   background: var(--surface);
   border-right-color: var(--rule);
 }
-body.dark-mode .nav-chapter-toggle:hover {
+html[data-theme="dark"] .nav-chapter-toggle:hover {
   background: var(--bg2);
 }
-body.dark-mode .content-section {
+html[data-theme="dark"] .content-section {
   background: var(--surface);
   border-color: var(--rule);
 }
-body.dark-mode pre {
+html[data-theme="dark"] pre {
   background: var(--bg2);
   border-color: var(--rule);
 }
-body.dark-mode code {
+html[data-theme="dark"] code {
   background: var(--bg2);
 }
-body.dark-mode table th {
+html[data-theme="dark"] table th {
   background: var(--bg2);
 }
-body.dark-mode table td, body.dark-mode table th {
+html[data-theme="dark"] table td, html[data-theme="dark"] table th {
   border-color: var(--rule);
 }
-body.dark-mode blockquote {
+html[data-theme="dark"] blockquote {
   background: var(--bg2);
   border-left-color: var(--accent);
 }
-body.dark-mode .example-box {
+html[data-theme="dark"] .example-box {
   background: var(--bg2);
   border-color: var(--rule);
 }
-body.dark-mode .formula-block {
+html[data-theme="dark"] .formula-block {
   background: var(--bg2);
   border-color: var(--rule);
 }
-body.dark-mode .chart-figure {
+html[data-theme="dark"] .chart-figure {
   background: var(--surface);
   border-color: var(--rule);
 }
-body.dark-mode .search-overlay {
+html[data-theme="dark"] .search-overlay {
   background: rgba(0,0,0,0.7);
 }
-body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
+html[data-theme="dark"] input, html[data-theme="dark"] select, html[data-theme="dark"] textarea {
   background: var(--bg);
   color: var(--ink);
   border-color: var(--rule);
 }
-body.dark-mode .top-anchor {
+html[data-theme="dark"] .top-anchor {
   color: var(--muted);
 }
-body.dark-mode hr {
+html[data-theme="dark"] hr {
   border-color: var(--rule);
 }
-body.dark-mode .toc a {
+html[data-theme="dark"] .toc a {
   color: var(--muted);
 }
-body.dark-mode .toc a:hover {
+html[data-theme="dark"] .toc a:hover {
   color: var(--accent);
 }
 
@@ -137,6 +168,7 @@ body {
   box-shadow: var(--shadow);
 }
 .sidebar-header {
+  position: relative;
   padding: 20px 20px 12px;
   border-bottom: 1px solid var(--rule);
 }
@@ -620,78 +652,33 @@ figcaption {
 
 
 /* ===== Chapter Navigation ===== */
-.chapter-content-block {
-  display: none;
-}
-.chapter-content-block.active {
-  display: block;
-}
+
+
 
 /* Navigation buttons */
-.chapter-nav {
-  display: flex; justify-content: space-between; align-items: center;
-  margin: 60px 0 40px; padding-top: 30px;
-  border-top: 2px solid var(--rule);
-}
-.chapter-nav .nav-btn {
-  padding: 12px 24px;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--ink);
-  text-decoration: none;
-  font-size: 14px; font-weight: 600;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-.chapter-nav .nav-btn:hover {
-  background: var(--accent); color: #fff; border-color: var(--accent);
-}
-.chapter-nav .nav-btn.disabled {
-  opacity: 0.35; pointer-events: none;
-}
-.chapter-nav .nav-label {
-  font-size: 12px; color: var(--muted); display: block;
-}
-.chapter-nav .nav-title {
-  font-size: 14px; font-weight: 600;
-}
-body.dark-mode .chapter-nav { border-top-color: var(--rule); }
-body.dark-mode .chapter-nav .nav-btn {
-  background: var(--surface); border-color: var(--rule); color: var(--ink);
-}
-body.dark-mode .chapter-nav .nav-btn:hover {
-  background: var(--accent); color: #fff; border-color: var(--accent);
-}
+
+
+
+
+
+
+html[data-theme="dark"] 
+html[data-theme="dark"] 
+html[data-theme="dark"] 
 
 /* Word Count Stats */
-.word-count-stats {
-  margin: 16px 0 0; padding: 20px 24px;
-  background: var(--bg2); border-radius: var(--radius);
-  border: 1px solid var(--rule);
-}
-.word-count-stats .stats-title {
-  font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 12px;
-}
-.word-count-stats .stats-row {
-  display: flex; justify-content: space-between;
-  font-size: 13px; color: var(--muted); margin-bottom: 8px;
-}
-.word-count-stats .stats-row:last-child {
-  margin-bottom: 0; font-weight: 600; color: var(--accent);
-}
-.word-count-stats .stats-row span:last-child {
-  font-family: 'GeistMono', monospace;
-}
-body.dark-mode .word-count-stats {
-    background: var(--bg2); border-color: var(--rule);
-  }
 
-  body.dark-mode .data-table tr:hover td {
+
+
+
+
+html[data-theme="dark"] 
+
+  html[data-theme="dark"] .data-table tr:hover td {
     background: #2a3a5c;
   }
 
-  body.dark-mode tr:hover {
+  html[data-theme="dark"] tr:hover {
     background: #2a2a3c;
   }
 
@@ -704,6 +691,10 @@ body.dark-mode .word-count-stats {
 }
 
 </style>
+<!-- KaTeX for mathematical formulas -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 <!-- ===== Search Widget ===== -->
@@ -728,6 +719,11 @@ body.dark-mode .word-count-stats {
   <div class="sidebar-header">
     <h1>SQL基础教程</h1>
     <div class="subtitle">Powered by Anqing Peng</div>
+    <button class="theme-toggle" id="themeToggle" title="切换夜间模式" aria-label="切换夜间模式">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+
   </div>
   <nav class="sidebar-nav" id="sidebarNav">
 
@@ -1062,7 +1058,7 @@ SELECT @@VERSION;</code></pre>
 
 <span class="top-anchor" id="ch2-1"></span>
 <h3>2.1 MySQL安装</h3>
-<p>MySQL是目前电网行业应用最广泛的开源关系型数据库之一。本节介绍MySQL 8.0在Windows和Linux环境下的安装步骤。MySQL 8.0相比5.7版本，在性能、安全性和JSON支持方面均有显著提升，，推荐新项目直接使用8.0及以上版本。</p>
+<p>MySQL是目前电网行业应用最广泛的开源关系型数据库之一。本节介绍MySQL 8.0在Windows和Linux环境下的安装步骤。MySQL 8.0相比5.7版本，在性能、安全性和JSON支持方面均有显著提升，推荐新项目直接使用8.0及以上版本。</p>
 
 <h4>2.1.1 Windows系统安装</h4>
 <ol>
@@ -1124,7 +1120,7 @@ SHOW DATABASES;</code></pre>
 <p>数据库客户端工具提供图形化界面，可以大幅提升SQL编写和数据库管理的效率。本节介绍两款常用的MySQL客户端工具：DBeaver和Navicat。</p>
 
 <h4>2.2.1 DBeaver（免费开源）</h4>
-<p>DBeaver是一款支持多种数据库的通用数据库管理工具，，兼容MySQL、PostgreSQL、Oracle、SQL Server等主流数据库。它提供SQL编辑器、数据浏览、ER图生成、数据导入导出等功能，是电网开发人员常用的免费数据库管理工具。</p>
+<p>DBeaver是一款支持多种数据库的通用数据库管理工具，兼容MySQL、PostgreSQL、Oracle、SQL Server等主流数据库。它提供SQL编辑器、数据浏览、ER图生成、数据导入导出等功能，是电网开发人员常用的免费数据库管理工具。</p>
 <pre><code>-- DBeaver中创建新连接步骤：
 -- 1. 点击"新建数据库连接"按钮
 -- 2. 选择MySQL，填写主机（localhost）、端口（3306）、数据库（power_grid_db）
@@ -1132,7 +1128,7 @@ SHOW DATABASES;</code></pre>
 -- 4. 连接成功后，在导航树中展开数据库，右键选择"SQL编辑器"即可编写SQL</code></pre>
 
 <h4>2.2.2 Navicat（商业软件）</h4>
-<p>Navicat是一款功能更为强大的商业数据库管理工具，，提供更完善的数据建模、数据同步、备份恢复和报表功能。对于需要频繁进行数据库设计、数据迁移和自动化运维的电网DBA（数据库管理员），，Navicat是高效的工具选择。</p>
+<p>Navicat是一款功能更为强大的商业数据库管理工具，提供更完善的数据建模、数据同步、备份恢复和报表功能。对于需要频繁进行数据库设计、数据迁移和自动化运维的电网DBA（数据库管理员），Navicat是高效的工具选择。</p>
 
 <div class="table-wrap">
 <table class="data-table">
@@ -1255,6 +1251,70 @@ INSERT INTO devices (device_name, device_type, voltage_level, station_id, manufa
 </svg>
 </figure>
 
+<figure class="chart-figure">
+<figcaption>图2-2b：电网数据库ER关系图（实体-联系模型）</figcaption>
+<svg width="100%" height="320" viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+  <!-- stations 实体 -->
+  <rect x="30" y="20" width="180" height="160" fill="#2563eb" rx="8" opacity="0.12"/>
+  <rect x="40" y="20" width="160" height="30" fill="#2563eb" rx="6"/>
+  <text x="120" y="40" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">stations（变电站）</text>
+  <text x="50" y="65" fill="#1a1a2e" font-size="10"><tspan font-weight="bold" fill="#2563eb">PK</tspan> station_id</text>
+  <text x="50" y="82" fill="#1a1a2e" font-size="10">station_name</text>
+  <text x="50" y="99" fill="#1a1a2e" font-size="10">voltage_level</text>
+  <text x="50" y="116" fill="#1a1a2e" font-size="10">region</text>
+  <text x="50" y="133" fill="#1a1a2e" font-size="10">address</text>
+  <text x="50" y="150" fill="#1a1a2e" font-size="10">build_date</text>
+  <text x="50" y="167" fill="#1a1a2e" font-size="10">rated_capacity</text>
+
+  <!-- devices 实体 -->
+  <rect x="260" y="20" width="180" height="160" fill="#059669" rx="8" opacity="0.12"/>
+  <rect x="270" y="20" width="160" height="30" fill="#059669" rx="6"/>
+  <text x="350" y="40" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">devices（设备台账）</text>
+  <text x="280" y="65" fill="#1a1a2e" font-size="10"><tspan font-weight="bold" fill="#059669">PK</tspan> device_id</text>
+  <text x="280" y="82" fill="#1a1a2e" font-size="10">device_name</text>
+  <text x="280" y="99" fill="#1a1a2e" font-size="10">device_type</text>
+  <text x="280" y="116" fill="#1a1a2e" font-size="10">voltage_level</text>
+  <text x="280" y="133" fill="#1a1a2e" font-size="10"><tspan fill="#dc2626" font-weight="bold">FK</tspan> station_id</text>
+  <text x="280" y="150" fill="#1a1a2e" font-size="10">manufacturer</text>
+  <text x="280" y="167" fill="#1a1a2e" font-size="10">status</text>
+
+  <!-- 关系线 stations -> devices -->
+  <line x1="210" y1="120" x2="260" y2="120" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow_er)"/>
+  <text x="230" y="112" fill="#dc2626" font-size="9">1:N</text>
+
+  <!-- manufacturers 实体 -->
+  <rect x="490" y="20" width="180" height="140" fill="#7c3aed" rx="8" opacity="0.12"/>
+  <rect x="500" y="20" width="160" height="30" fill="#7c3aed" rx="6"/>
+  <text x="580" y="40" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">manufacturers（厂家）</text>
+  <text x="510" y="65" fill="#1a1a2e" font-size="10"><tspan font-weight="bold" fill="#7c3aed">PK</tspan> mfg_id</text>
+  <text x="510" y="82" fill="#1a1a2e" font-size="10">mfg_name</text>
+  <text x="510" y="99" fill="#1a1a2e" font-size="10">country</text>
+  <text x="510" y="116" fill="#1a1a2e" font-size="10">contact_phone</text>
+
+  <!-- 关系线 devices -> manufacturers -->
+  <line x1="440" y1="90" x2="490" y2="90" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow_er2)"/>
+  <text x="458" y="82" fill="#7c3aed" font-size="9">N:1</text>
+
+  <!-- inspections 实体 -->
+  <rect x="260" y="210" width="180" height="100" fill="#d97706" rx="8" opacity="0.12"/>
+  <rect x="270" y="210" width="160" height="30" fill="#d97706" rx="6"/>
+  <text x="350" y="230" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">inspections（巡检记录）</text>
+  <text x="280" y="255" fill="#1a1a2e" font-size="10"><tspan font-weight="bold" fill="#d97706">PK</tspan> inspect_id</text>
+  <text x="280" y="272" fill="#1a1a2e" font-size="10"><tspan fill="#dc2626" font-weight="bold">FK</tspan> device_id</text>
+  <text x="280" y="289" fill="#1a1a2e" font-size="10">inspect_date, result</text>
+
+  <!-- 关系线 devices -> inspections -->
+  <line x1="350" y1="180" x2="350" y2="210" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow_er3)"/>
+  <text x="360" y="200" fill="#dc2626" font-size="9">1:N</text>
+
+  <defs>
+    <marker id="arrow_er" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#dc2626"/></marker>
+    <marker id="arrow_er2" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7c3aed"/></marker>
+    <marker id="arrow_er3" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#dc2626"/></marker>
+  </defs>
+</svg>
+</figure>
+
 <span class="top-anchor" id="ch2-4"></span>
 <h3>2.4 数据库连接与基础操作</h3>
 <p>数据库安装完成后，应用程序需要通过连接驱动与数据库建立通信。本节介绍JDBC连接字符串的构成，以及命令行和程序代码中的基础操作。</p>
@@ -1337,6 +1397,22 @@ SELECT device_name, voltage_level, '重要设备' AS 备注 FROM devices;</code>
 <p>在生产环境中查询大表时，尽量避免使用<code>SELECT *</code>，而应明确列出需要的列。这不仅可以减少网络传输量，还能降低数据库的I/O开销，同时避免表结构变更对应用程序的影响。</p>
 </div>
 
+<div class="example-box">
+<div class="example-title">查询结果示例：SELECT device_name, device_type, status FROM devices</div>
+<p>以下为执行上述查询语句后，devices 表返回的结果集（基于2.3节插入的5条设备数据）：</p>
+<div class="table-wrap">
+<table class="data-table">
+<caption>查询结果：设备名称、类型和状态</caption>
+<tr><th>device_name</th><th>device_type</th><th>status</th></tr>
+<tr><td>1号主变</td><td>变压器</td><td>运行</td></tr>
+<tr><td>201断路器</td><td>断路器</td><td>运行</td></tr>
+<tr><td>CT-301</td><td>电流互感器</td><td>运行</td></tr>
+<tr><td>PT-201</td><td>电压互感器</td><td>检修</td></tr>
+<tr><td>2号主变</td><td>变压器</td><td>运行</td></tr>
+</table>
+</div>
+</div>
+
 <figure class="chart-figure">
 <figcaption>图3-1：SELECT语句执行逻辑</figcaption>
 <svg width="100%" height="100" viewBox="0 0 700 100" xmlns="http://www.w3.org/2000/svg">
@@ -1352,6 +1428,63 @@ SELECT device_name, voltage_level, '重要设备' AS 备注 FROM devices;</code>
   <rect x="500" y="35" width="120" height="40" fill="#d97706" rx="6"/>
   <text x="560" y="60" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">ORDER BY 排序</text>
   <defs><marker id="arrow3" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#666"/></marker></defs>
+</svg>
+</figure>
+
+<figure class="chart-figure">
+<figcaption>图3-1b：SQL语句完整逻辑执行顺序（书写顺序 vs 执行顺序）</figcaption>
+<svg width="100%" height="200" viewBox="0 0 780 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- 书写顺序 -->
+  <text x="390" y="18" text-anchor="middle" fill="var(--accent)" font-size="12" font-weight="bold">书写顺序（从上到下）</text>
+  <rect x="10" y="25" width="90" height="30" fill="#2563eb" rx="4"/>
+  <text x="55" y="44" text-anchor="middle" fill="#fff" font-size="10">SELECT</text>
+  <rect x="110" y="25" width="90" height="30" fill="#2563eb" rx="4"/>
+  <text x="155" y="44" text-anchor="middle" fill="#fff" font-size="10">FROM</text>
+  <rect x="210" y="25" width="90" height="30" fill="#2563eb" rx="4"/>
+  <text x="255" y="44" text-anchor="middle" fill="#fff" font-size="10">WHERE</text>
+  <rect x="310" y="25" width="90" height="30" fill="#2563eb" rx="4"/>
+  <text x="355" y="44" text-anchor="middle" fill="#fff" font-size="10">GROUP BY</text>
+  <rect x="410" y="25" width="90" height="30" fill="#2563eb" rx="4"/>
+  <text x="455" y="44" text-anchor="middle" fill="#fff" font-size="10">HAVING</text>
+  <rect x="510" y="25" width="90" height="30" fill="#2563eb" rx="4"/>
+  <text x="555" y="44" text-anchor="middle" fill="#fff" font-size="10">ORDER BY</text>
+  <rect x="610" y="25" width="90" height="30" fill="#2563eb" rx="4"/>
+  <text x="655" y="44" text-anchor="middle" fill="#fff" font-size="10">LIMIT</text>
+
+  <!-- 箭头 -->
+  <text x="390" y="85" text-anchor="middle" fill="var(--muted)" font-size="10">▼ 实际执行顺序完全不同 ▼</text>
+
+  <!-- 执行顺序 -->
+  <text x="390" y="105" text-anchor="middle" fill="var(--accent2)" font-size="12" font-weight="bold">执行顺序（数据库引擎内部）</text>
+
+  <rect x="10" y="112" width="90" height="30" fill="#dc2626" rx="4"/>
+  <text x="55" y="131" text-anchor="middle" fill="#fff" font-size="10">1. FROM</text>
+  <line x1="100" y1="127" x2="120" y2="127" stroke="#666" stroke-width="1.5" marker-end="url(#arrow_so)"/>
+
+  <rect x="120" y="112" width="90" height="30" fill="#dc2626" rx="4"/>
+  <text x="165" y="131" text-anchor="middle" fill="#fff" font-size="10">2. WHERE</text>
+  <line x1="210" y1="127" x2="230" y2="127" stroke="#666" stroke-width="1.5" marker-end="url(#arrow_so)"/>
+
+  <rect x="230" y="112" width="90" height="30" fill="#dc2626" rx="4"/>
+  <text x="275" y="131" text-anchor="middle" fill="#fff" font-size="10">3. GROUP BY</text>
+  <line x1="320" y1="127" x2="340" y2="127" stroke="#666" stroke-width="1.5" marker-end="url(#arrow_so)"/>
+
+  <rect x="340" y="112" width="90" height="30" fill="#dc2626" rx="4"/>
+  <text x="385" y="131" text-anchor="middle" fill="#fff" font-size="10">4. HAVING</text>
+  <line x1="430" y1="127" x2="450" y2="127" stroke="#666" stroke-width="1.5" marker-end="url(#arrow_so)"/>
+
+  <rect x="450" y="112" width="90" height="30" fill="#dc2626" rx="4"/>
+  <text x="495" y="131" text-anchor="middle" fill="#fff" font-size="10">5. SELECT</text>
+  <line x1="540" y1="127" x2="560" y2="127" stroke="#666" stroke-width="1.5" marker-end="url(#arrow_so)"/>
+
+  <rect x="560" y="112" width="90" height="30" fill="#dc2626" rx="4"/>
+  <text x="605" y="131" text-anchor="middle" fill="#fff" font-size="10">6. ORDER BY</text>
+  <line x1="650" y1="127" x2="670" y2="127" stroke="#666" stroke-width="1.5" marker-end="url(#arrow_so)"/>
+
+  <rect x="670" y="112" width="90" height="30" fill="#dc2626" rx="4"/>
+  <text x="715" y="131" text-anchor="middle" fill="#fff" font-size="10">7. LIMIT</text>
+
+  <defs><marker id="arrow_so" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#666"/></marker></defs>
 </svg>
 </figure>
 
@@ -1558,6 +1691,17 @@ FROM devices;</code></pre>
 <p>聚合函数会忽略NULL值。例如<code>AVG(peak_load)</code>只计算非NULL记录的平均值。如果需要将NULL视为0参与计算，应使用<code>AVG(COALESCE(peak_load, 0))</code>。COUNT(*)统计所有行，而COUNT(列名)只统计该列非NULL的行数。</p>
 </div>
 
+<div class="formula-block">
+<figcaption style="font-weight:700;color:var(--ink);margin-bottom:12px;text-align:left;">公式3-1：常用聚合函数数学定义</figcaption>
+<p style="text-indent:0;text-align:left;margin-bottom:6px;">设数据集 \(D = \{x_1, x_2, ..., x_n\}\) 为某列的 \(n\) 个非NULL值，则聚合函数定义如下：</p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;"><strong>计数函数：</strong> \(\text{COUNT}(D) = n\)，其中 \(n\) 为集合中元素的个数（忽略NULL值）。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;"><strong>求和函数：</strong> \(\text{SUM}(D) = \sum_{i=1}^{n} x_i\)，将所有元素相加。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;"><strong>平均值函数：</strong> \(\text{AVG}(D) = \frac{1}{n}\sum_{i=1}^{n} x_i = \frac{\text{SUM}(D)}{\text{COUNT}(D)}\)，即总和除以元素个数。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;"><strong>最大值函数：</strong> \(\text{MAX}(D) = \max(x_1, x_2, ..., x_n)\)，取所有元素中的最大值。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:0;"><strong>最小值函数：</strong> \(\text{MIN}(D) = \min(x_1, x_2, ..., x_n)\)，取所有元素中的最小值。</p>
+<div class="formula-caption">变量说明：\(D\) 为数据集合，\(n\) 为集合中非NULL元素个数，\(x_i\) 为第 \(i\) 个数据值</div>
+</div>
+
 <span class="top-anchor" id="ch3-5"></span>
 <h3>3.5 分组查询</h3>
 <p><code>GROUP BY</code>子句将数据按指定列分组，配合聚合函数实现分组统计。<code>HAVING</code>子句用于对分组后的结果进行过滤（类似WHERE，但作用于分组而非单行）。</p>
@@ -1570,7 +1714,22 @@ FROM devices;</code></pre>
 <pre><code>-- 按设备类型分组统计
 SELECT device_type, COUNT(*) AS 数量
 FROM devices
-GROUP BY device_type;
+GROUP BY device_type;</code></pre>
+
+<div class="example-box">
+<div class="example-title">查询结果示例：按设备类型分组统计</div>
+<p>以上 GROUP BY 查询将 devices 表中的5条记录按设备类型聚合为4组，输出结果如下：</p>
+<div class="table-wrap">
+<table class="data-table">
+<caption>查询结果：各设备类型的数量统计</caption>
+<tr><th>device_type</th><th>数量</th></tr>
+<tr><td>变压器</td><td>2</td></tr>
+<tr><td>断路器</td><td>1</td></tr>
+<tr><td>电流互感器</td><td>1</td></tr>
+<tr><td>电压互感器</td><td>1</td></tr>
+</table>
+</div>
+</div>
 
 -- 按变电站和电压等级分组
 SELECT station_id, voltage_level, COUNT(*) AS 数量
@@ -1727,6 +1886,23 @@ RIGHT JOIN manufacturers m ON d.manufacturer = m.mfg_name;</code></pre>
   <text x="465" y="150" fill="#666" font-size="10">A表全部</text>
 </svg>
 </figure>
+
+<div class="example-box">
+<div class="example-title">JOIN查询结果对比示例</div>
+<p>假设 devices 表有5条记录，manufacturers 表有5条记录，其中 devices 表中"PT-201"的 manufacturer 为"许继电气"（在 manufacturers 表中存在），而"1号主变"的 manufacturer 为"西门子"（也存在）。以下为三种 JOIN 的结果对比：</p>
+<div class="table-wrap">
+<table class="data-table">
+<caption>INNER JOIN 结果（仅匹配行）</caption>
+<tr><th>device_name</th><th>device_type</th><th>mfg_name</th><th>country</th></tr>
+<tr><td>1号主变</td><td>变压器</td><td>西门子</td><td>德国</td></tr>
+<tr><td>201断路器</td><td>断路器</td><td>ABB</td><td>瑞士</td></tr>
+<tr><td>CT-301</td><td>电流互感器</td><td>正泰电气</td><td>中国</td></tr>
+<tr><td>PT-201</td><td>电压互感器</td><td>许继电气</td><td>中国</td></tr>
+<tr><td>2号主变</td><td>变压器</td><td>特变电工</td><td>中国</td></tr>
+</table>
+</div>
+<p style="text-indent:0;margin-top:10px;">若某设备的 manufacturer 值在 manufacturers 表中不存在，则 INNER JOIN 不会返回该行；LEFT JOIN 会返回该设备行但 mfg_name 和 country 列为 NULL；RIGHT JOIN 会返回所有厂家行，无关联设备的厂家行中 device_name 为 NULL。</p>
+</div>
 
 <div class="callout">
 <div class="callout-title">JOIN优化建议</div>
@@ -2184,7 +2360,7 @@ FROM devices WHERE status = '运行';
 
 <div class="example-box">
 <div class="example-title">电网场景：月度电表数据批量导入</div>
-<p>某供电局每月从计量自动化系统导出数十万条电表读数CSV文件，，需要导入营销系统数据库。。通过LOAD DATA INFILE命令，配合分区表技术，30万条记录可在10秒内完成导入，比逐条INSERT效率提升100倍以上。导入前使用临时表进行数据清洗和校验，确认无误后再通过INSERT INTO SELECT迁移到正式表。</p>
+<p>某供电局每月从计量自动化系统导出数十万条电表读数CSV文件，需要导入营销系统数据库。通过LOAD DATA INFILE命令，配合分区表技术，30万条记录可在10秒内完成导入，比逐条INSERT效率提升100倍以上。导入前使用临时表进行数据清洗和校验，确认无误后再通过INSERT INTO SELECT迁移到正式表。</p>
 </div>
 
 <span class="top-anchor" id="ch5-4"></span>
@@ -2268,14 +2444,59 @@ COMMIT;</code></pre>
 </svg>
 </figure>
 
+<figure class="chart-figure">
+<figcaption>图5-2b：事务ACID特性关系图</figcaption>
+<svg width="100%" height="200" viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="240" y="70" width="160" height="60" fill="#2563eb" rx="8"/>
+  <text x="320" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">ACID 事务</text>
+
+  <rect x="40" y="20" width="120" height="50" fill="#059669" rx="6"/>
+  <text x="100" y="40" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">原子性</text>
+  <text x="100" y="57" text-anchor="middle" fill="#fff" font-size="9">Atomicity</text>
+  <line x1="160" y1="45" x2="240" y2="85" stroke="#059669" stroke-width="2"/>
+
+  <rect x="480" y="20" width="120" height="50" fill="#7c3aed" rx="6"/>
+  <text x="540" y="40" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">一致性</text>
+  <text x="540" y="57" text-anchor="middle" fill="#fff" font-size="9">Consistency</text>
+  <line x1="480" y1="45" x2="400" y2="85" stroke="#7c3aed" stroke-width="2"/>
+
+  <rect x="40" y="140" width="120" height="50" fill="#d97706" rx="6"/>
+  <text x="100" y="160" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">隔离性</text>
+  <text x="100" y="177" text-anchor="middle" fill="#fff" font-size="9">Isolation</text>
+  <line x1="160" y1="165" x2="240" y2="115" stroke="#d97706" stroke-width="2"/>
+
+  <rect x="480" y="140" width="120" height="50" fill="#dc2626" rx="6"/>
+  <text x="540" y="160" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">持久性</text>
+  <text x="540" y="177" text-anchor="middle" fill="#fff" font-size="9">Durability</text>
+  <line x1="480" y1="165" x2="400" y2="115" stroke="#dc2626" stroke-width="2"/>
+</svg>
+</figure>
+
 <div class="callout">
 <div class="callout-title">事务设计原则</div>
-<p>电网业务系统中的事务设计应遵循以下原则：：1)事务范围尽可能小，避免长时间锁定资源；2)在事务中避免用户交互（如弹窗确认等交互操作），防止事务悬挂；3)同一事务中避免混合读写操作和复杂计算；4)对于只读查询，使用<code>START TRANSACTION READ ONLY</code>（MySQL 8.0+）提升并发性能。</p>
+<p>电网业务系统中的事务设计应遵循以下原则：1)事务范围尽可能小，避免长时间锁定资源；2)在事务中避免用户交互（如弹窗确认等交互操作），防止事务悬挂；3)同一事务中避免混合读写操作和复杂计算；4)对于只读查询，使用<code>START TRANSACTION READ ONLY</code>（MySQL 8.0+）提升并发性能。</p>
 </div>
 
 <div class="example-box">
 <div class="example-title">电网场景：检修工单状态流转的事务控制</div>
 <p>某设备检修工单从"待执行"流转到"已完成"，涉及三个表更新：work_orders表更新工单状态、devices表更新设备状态为"运行"、inspections表插入新的巡检计划。这三个操作必须在一个事务中完成。若第三步失败，前两个操作应自动回滚，避免设备状态与工单状态不一致。</p>
+</div>
+
+<div class="example-box">
+<div class="example-title">MySQL事务隔离级别查看与设置</div>
+<p><strong>查看当前隔离级别：</strong></p>
+<pre><code>-- 查看全局隔离级别
+SELECT @@global.transaction_isolation;
+
+-- 查看当前会话隔离级别
+SELECT @@transaction_isolation;
+
+-- 设置会话隔离级别为 READ COMMITTED
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+-- 设置全局隔离级别（需SUPER权限，重启后生效）
+SET GLOBAL TRANSACTION ISOLATION LEVEL REPEATABLE READ;</code></pre>
+<p style="text-indent:0;">在电网调度系统中，由于多为OLTP（在线事务处理）场景，推荐使用MySQL默认的 <strong>REPEATABLE READ</strong> 隔离级别，该级别可以防止脏读和不可重复读，同时InnoDB通过Next-Key Lock机制解决了幻读问题。</p>
 </div>
 
 
@@ -2358,7 +2579,7 @@ TRUNCATE TABLE temp_table;</code></pre>
 
 <div class="example-box">
 <div class="example-title">电网场景：SCADA历史表按年分区</div>
-<p>某调度系统SCADA历史数据表每年新增超过1亿条记录。。为便于归档和查询，使用MySQL分区表按年拆分：<code>ALTER TABLE scada_history PARTITION BY RANGE (YEAR(record_time)) (PARTITION p2023 VALUES LESS THAN (2024), PARTITION p2024 VALUES LESS THAN (2025), PARTITION pmax VALUES LESS THAN MAXVALUE);</code>。查询某年数据时，MySQL会自动只扫描对应分区，大幅提升查询效率。</p>
+<p>某调度系统SCADA历史数据表每年新增超过1亿条记录。为便于归档和查询，使用MySQL分区表按年拆分：<code>ALTER TABLE scada_history PARTITION BY RANGE (YEAR(record_time)) (PARTITION p2023 VALUES LESS THAN (2024), PARTITION p2024 VALUES LESS THAN (2025), PARTITION pmax VALUES LESS THAN MAXVALUE);</code>。查询某年数据时，MySQL会自动只扫描对应分区，大幅提升查询效率。</p>
 </div>
 
 <figure class="chart-figure">
@@ -2432,6 +2653,17 @@ CREATE TABLE grid_equipment (
 <div class="example-box">
 <div class="example-title">电网场景：智能电表数据类型优化</div>
 <p>某计量系统最初使用DOUBLE存储电量值，在长期运行后发现累计浮点误差导致电费结算偏差。后将金额和电量字段统一改为DECIMAL(18,4)，彻底消除了浮点精度问题。同时，将电表地址（12位数字）从VARCHAR(20)改为CHAR(12)，既节省空间又提升比较效率。</p>
+</div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表6-2b：MySQL常用存储引擎对比</caption>
+<tr><th>存储引擎</th><th>事务支持</th><th>行级锁</th><th>外键支持</th><th>适用场景</th></tr>
+<tr><td>InnoDB</td><td>是</td><td>是</td><td>是</td><td>默认引擎，通用业务表、设备台账</td></tr>
+<tr><td>MyISAM</td><td>否</td><td>否（表锁）</td><td>否</td><td>只读查询表、日志归档表</td></tr>
+<tr><td>Memory</td><td>否</td><td>否（表锁）</td><td>否</td><td>临时表、缓存表、会话数据</td></tr>
+<tr><td>Archive</td><td>否</td><td>否</td><td>否</td><td>历史归档数据、SCADA老旧数据</td></tr>
+</table>
 </div>
 
 <span class="top-anchor" id="ch6-3"></span>
@@ -2551,7 +2783,7 @@ DROP INDEX idx_feeder_name ON feeders;</code></pre>
 
 <div class="example-box">
 <div class="example-title">电网场景：SCADA数据表索引优化</div>
-<p>某SCADA历史数据表有2亿条记录，，最初仅对device_id建了单列索引。查询"某设备某时段数据"时，，数据库先通过索引找到该设备所有记录，再逐行过滤时间范围，耗时超过30秒。添加复合索引<code>(device_id, record_time)</code>后，查询时间降至200毫秒，因为索引直接定位到设备和时间的交集范围。</p>
+<p>某SCADA历史数据表有2亿条记录，最初仅对device_id建了单列索引。查询"某设备某时段数据"时，数据库先通过索引找到该设备所有记录，再逐行过滤时间范围，耗时超过30秒。添加复合索引<code>(device_id, record_time)</code>后，查询时间降至200毫秒，因为索引直接定位到设备和时间的交集范围。</p>
 </div>
 
 <span class="top-anchor" id="ch6-4"></span>
@@ -2634,7 +2866,7 @@ SELECT @total AS 总记录数;</code></pre>
 
 <div class="callout">
 <div class="callout-title">视图的安全应用</div>
-<p>在电网多层级权限系统中，视图可用于数据行级隔离。例如，可以为县局用户创建只包含本县设备的视图，，并授予该视图的查询权限，而非底层表的直接访问权限：：<code>CREATE VIEW v_county_devices AS SELECT * FROM devices WHERE county_code = SESSION_USER_COUNTY();</code>。这样即使有用户编写<code>SELECT * FROM v_county_devices</code>，也只能看到自己权限范围内的数据。。</p>
+<p>在电网多层级权限系统中，视图可用于数据行级隔离。例如，可以为县局用户创建只包含本县设备的视图，并授予该视图的查询权限，而非底层表的直接访问权限：<code>CREATE VIEW v_county_devices AS SELECT * FROM devices WHERE county_code = SESSION_USER_COUNTY();</code>。这样即使有用户编写<code>SELECT * FROM v_county_devices</code>，也只能看到自己权限范围内的数据。</p>
 </div>
 
 <div class="example-box">
@@ -2774,6 +3006,18 @@ FROM monthly_load;</code></pre>
 <p>窗口函数需要对数据进行排序和分区计算，大数据量时可能消耗较多内存。建议在使用窗口函数的查询中，先通过WHERE或子查询缩小数据集，再应用窗口函数。同时，确保PARTITION BY和ORDER BY涉及的列上有合适的索引，以减少排序开销。</p>
 </div>
 
+<div class="formula-block">
+<figcaption style="font-weight:700;color:var(--ink);margin-bottom:12px;text-align:left;">公式7-1：窗口函数通用计算模型</figcaption>
+<p style="text-indent:0;text-align:left;margin-bottom:6px;">窗口函数为每一行计算一个值，该值基于当前行所在窗口（Window Frame）内的数据。其通用形式为：</p>
+<p style="text-indent:0;text-align:left;margin-bottom:6px;">\(f(x_i) = \text{AGG}\left(\{x_j \mid j \in W_i\}\right)\)</p>
+<p style="text-indent:0;text-align:left;margin-bottom:6px;">其中，窗口 \(W_i\) 由 <code>PARTITION BY</code> 和 <code>ORDER BY</code> 以及 <code>ROWS/RANGE</code> 子句共同定义。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:6px;"><strong>滑动窗口（Sliding Window）数学定义：</strong></p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;">给定有序序列 \(x_1, x_2, ..., x_n\)，窗口大小为 \(k\)，则第 \(i\) 个位置的滑动平均值：</p>
+<p style="text-indent:0;text-align:left;margin-bottom:6px;">\(\text{SMA}_k(i) = \frac{1}{k}\sum_{j=i-k+1}^{i} x_j \quad (\text{当 } i \geq k)\)</p>
+<p style="text-indent:0;text-align:left;margin-bottom:0;"><strong>LAG偏移函数：</strong> \(\text{LAG}(x_i, m) = x_{i-m}\)，返回当前行之前第 \(m\) 行的值，用于环比计算。</p>
+<div class="formula-caption">变量说明：\(x_i\) 为第 \(i\) 行的值，\(W_i\) 为第 \(i\) 行的窗口，\(k\) 为窗口大小，\(m\) 为偏移行数，\(\text{AGG}\) 为聚合函数（SUM/AVG/COUNT等），\(\text{SMA}\) 为简单滑动平均</div>
+</div>
+
 <span class="top-anchor" id="ch7-2"></span>
 <h3>7.2 公用表表达式CTE</h3>
 <p>公用表表达式（Common Table Expression，CTE）通过WITH子句定义临时结果集，使复杂查询更具可读性和可维护性。递归CTE能够处理层级数据，特别适合配电网拓扑分析、组织架构查询等场景。</p>
@@ -2849,6 +3093,40 @@ ORDER BY depth, feeder_id;                           -- 按层级深度排序</c
 <p>MySQL的递归CTE默认最大递归深度为1000层（由<code>cte_max_recursion_depth</code>参数控制）。对于配电网拓扑，通常几十层即可覆盖，但处理省级主干网时可能需要调整该参数。同时，务必确保递归有终止条件，否则可能导致无限递归和查询挂起。</p>
 </div>
 
+<figure class="chart-figure">
+<figcaption>图7-1b：配电网馈线拓扑树形结构</figcaption>
+<svg width="100%" height="240" viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg">
+  <!-- Level 0: 主干线A -->
+  <rect x="260" y="10" width="120" height="30" fill="#2563eb" rx="6"/>
+  <text x="320" y="30" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">主干线A (depth=0)</text>
+
+  <!-- Level 1: 分支线A1, A2 -->
+  <line x1="320" y1="40" x2="120" y2="70" stroke="#666" stroke-width="2"/>
+  <line x1="320" y1="40" x2="520" y2="70" stroke="#666" stroke-width="2"/>
+
+  <rect x="60" y="70" width="120" height="30" fill="#059669" rx="6"/>
+  <text x="120" y="90" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">分支线A1 (depth=1)</text>
+  <rect x="460" y="70" width="120" height="30" fill="#059669" rx="6"/>
+  <text x="520" y="90" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">分支线A2 (depth=1)</text>
+
+  <!-- Level 2: 子分支A1-1, A1-2 -->
+  <line x1="120" y1="100" x2="40" y2="130" stroke="#666" stroke-width="2"/>
+  <line x1="120" y1="100" x2="200" y2="130" stroke="#666" stroke-width="2"/>
+
+  <rect x="-20" y="130" width="120" height="30" fill="#d97706" rx="6"/>
+  <text x="40" y="150" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">子分支A1-1 (depth=2)</text>
+  <rect x="140" y="130" width="120" height="30" fill="#d97706" rx="6"/>
+  <text x="200" y="150" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">子分支A1-2 (depth=2)</text>
+
+  <!-- 主干线B -->
+  <rect x="260" y="170" width="120" height="30" fill="#7c3aed" rx="6"/>
+  <text x="320" y="190" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">主干线B (depth=0)</text>
+  <line x1="320" y1="200" x2="320" y2="220" stroke="#666" stroke-width="2"/>
+  <rect x="260" y="218" width="120" height="20" fill="#7c3aed" rx="4" opacity="0.6"/>
+  <text x="320" y="233" text-anchor="middle" fill="#fff" font-size="10">分支线B1 (depth=1)</text>
+</svg>
+</figure>
+
 <div class="example-box">
 <div class="example-title">电网场景：馈线故障影响范围分析</div>
 <p>某10kV馈线发生故障，需要快速定位该馈线下的所有配电变压器和用户数量。通过递归CTE从故障馈线ID出发，遍历所有下级分支线和末端设备，生成停电影响清单。该技术在实际配网抢修指挥系统中广泛应用，相比传统多次查询拼接方案，响应时间从秒级降至毫秒级。</p>
@@ -2857,6 +3135,16 @@ ORDER BY depth, feeder_id;                           -- 按层级深度排序</c
 <span class="top-anchor" id="ch7-3"></span>
 <h3>7.3 时间序列分析</h3>
 <p>电网系统中产生大量时间序列数据（如SCADA遥测、负荷曲线、电表读数等）。SQL提供丰富的时间函数和窗口函数，支持同比环比、滑动平均、时间填充等时间序列分析操作。</p>
+
+<div class="formula-block">
+<figcaption style="font-weight:700;color:var(--ink);margin-bottom:12px;text-align:left;">公式7-2：时间序列分析核心公式</figcaption>
+<p style="text-indent:0;text-align:left;margin-bottom:6px;">设时间序列 \(T = \{v_1, v_2, ..., v_n\}\) 按时间顺序排列，当前值为 \(v_t\)，则：</p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;"><strong>环比增长率（MoM）：</strong> \(\text{MoM}_t = \frac{v_t - v_{t-1}}{v_{t-1}} \times 100\%\)，即与前一周期相比的变化率。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;"><strong>同比增长率（YoY）：</strong> \(\text{YoY}_t = \frac{v_t - v_{t-12}}{v_{t-12}} \times 100\%\)，即与去年同期相比的变化率（月数据场景）。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;"><strong>k期滑动平均（SMA）：</strong> \(\text{SMA}_k(t) = \frac{1}{k}\sum_{i=t-k+1}^{t} v_i\)，用于平滑短期波动，观察长期趋势。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:0;"><strong>累计求和（Cumulative Sum）：</strong> \(\text{CUMSUM}(t) = \sum_{i=1}^{t} v_i\)，从起始到当前时刻的累计值。</p>
+<div class="formula-caption">变量说明：\(v_t\) 为当前时刻 \(t\) 的观测值，\(v_{t-1}\) 为前一周期值，\(v_{t-12}\) 为去年同期值（月数据），\(k\) 为滑动窗口大小，\(\text{SMA}\) 为简单移动平均</div>
+</div>
 
 <pre><code>-- 同比环比计算（使用LAG窗口函数）
 SELECT
@@ -2952,7 +3240,7 @@ ORDER BY d.dt;</code></pre>
 
 <span class="top-anchor" id="ch7-4"></span>
 <h3>7.4 性能优化</h3>
-<p>随着电网数据规模持续增长，SQL查询性能优化就成为数据库运维的核心技能。本节介绍执行计划分析、慢查询优化和索引策略，帮助读者定位和解决性能瓶颈。</p>
+<p>随着电网数据规模持续增长，SQL查询性能优化成为数据库运维的核心技能。本节介绍执行计划分析、慢查询优化和索引策略，帮助读者定位和解决性能瓶颈。</p>
 
 <div class="example-box">
 <div class="example-title">案例：慢查询分析与优化</div>
@@ -3011,7 +3299,7 @@ OPTIMIZE TABLE devices;</code></pre>
 
 <div class="example-box">
 <div class="example-title">电网场景：SCADA历史查询优化实战</div>
-<p>某查询"查询城东变电站2024年1月所有遥测数据"最初耗时45秒。。通过EXPLAIN分析发现type为ALL，rows超过2亿。优化步骤：1)确认device_id和record_time上有复合索引；2)将<code>WHERE station_id = 1</code>改为<code>WHERE device_id IN (SELECT device_id FROM devices WHERE station_id = 1)</code>；3)使用分区裁剪，只扫描2024年1月分区。优化后查询时间降至0.3秒。</p>
+<p>某查询"查询城东变电站2024年1月所有遥测数据"最初耗时45秒。通过EXPLAIN分析发现type为ALL，rows超过2亿。优化步骤：1)确认device_id和record_time上有复合索引；2)将<code>WHERE station_id = 1</code>改为<code>WHERE device_id IN (SELECT device_id FROM devices WHERE station_id = 1)</code>；3)使用分区裁剪，只扫描2024年1月分区。优化后查询时间降至0.3秒。</p>
 </div>
 
 <div class="callout">
@@ -3108,20 +3396,25 @@ JOIN devices d ON m.device_id = d.device_id
 WHERE m.oil_temp &gt;= 85
 ORDER BY m.oil_temp DESC;
 
--- 滑动窗口：计算7日移动平均油温
+-- 滑动窗口：计算7日移动平均油温（使用CTE两步完成）
+WITH daily_avg AS (
+    -- 第一步：计算每日平均油温
+    SELECT
+        DATE(record_time) AS record_date,
+        AVG(oil_temp) AS daily_avg_temp
+    FROM transformer_monitor
+    WHERE device_id = 1
+    GROUP BY DATE(record_time)
+)
 SELECT
-    DATE(record_time) AS 日期,
-    AVG(oil_temp) AS 日平均油温,
-    -- 注意：嵌套 AVG 在 MySQL 中不可用，需先通过子查询计算日平均值
-    -- 以下为概念示意，实际需改写为 CTE 或子查询
+    record_date AS 日期,
+    daily_avg_temp AS 日平均油温,
     AVG(daily_avg_temp) OVER (
         ORDER BY record_date
         ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
     ) AS 七日滑动平均
-FROM transformer_monitor
-WHERE device_id = 1
-GROUP BY DATE(record_time)
-ORDER BY 日期;</code></pre>
+FROM daily_avg
+ORDER BY record_date;</code></pre>
 
 <div class="table-wrap">
 <table class="data-table">
@@ -3133,6 +3426,21 @@ ORDER BY 日期;</code></pre>
 <tr><td>功率因数均值</td><td>AVG(power_factor)</td><td>评估电能质量</td></tr>
 <tr><td>七日滑动平均</td><td>AVG OVER 7日窗口</td><td>平滑短期波动，观察趋势</td></tr>
 </table>
+</div>
+
+<div class="example-box">
+<div class="example-title">变压器油温告警查询结果示例</div>
+<p>假设某日变压器监测数据包含多条油温记录，执行告警查询后，可能输出如下结果：</p>
+<div class="table-wrap">
+<table class="data-table">
+<caption>查询结果：油温超85℃的告警记录</caption>
+<tr><th>device_name</th><th>record_time</th><th>oil_temp</th><th>告警级别</th></tr>
+<tr><td>1号主变</td><td>2024-06-15 14:35:00</td><td>98.5</td><td>紧急告警</td></tr>
+<tr><td>1号主变</td><td>2024-06-15 15:10:00</td><td>92.3</td><td>一般告警</td></tr>
+<tr><td>2号主变</td><td>2024-06-15 13:45:00</td><td>87.1</td><td>一般告警</td></tr>
+</table>
+</div>
+<p style="text-indent:0;">通过 CASE WHEN 表达式，SQL 不仅返回原始数据，还自动为每条记录分配了告警级别，便于运维人员快速定位和处理最紧急的告警。</p>
 </div>
 
 <div class="example-box">
@@ -3336,6 +3644,17 @@ ORDER BY 电压等级 DESC;</code></pre>
 <p>月度报表可通过MySQL Event定时生成，或使用外部调度工具（如Linux crontab、Airflow）。生成后的报表数据存入报表专用表（如<code>monthly_load_report</code>），前端系统直接查询报表表而非实时计算原始数据，大幅提升报表加载速度。对于历史月份报表，采用"一次生成、多次查询"的策略。</p>
 </div>
 
+<div class="formula-block">
+<figcaption style="font-weight:700;color:var(--ink);margin-bottom:12px;text-align:left;">公式8-1：负荷分析核心指标定义</figcaption>
+<p style="text-indent:0;text-align:left;margin-bottom:6px;">设某变电站在一段时间内（如一个月）采样的有功功率序列为 \(P = \{p_1, p_2, ..., p_n\}\)，额定容量为 \(C\)，则：</p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;"><strong>月最大负荷：</strong> \(P_{\max} = \max(p_1, p_2, ..., p_n)\)，即当月所有采样点中有功功率的最大值。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;"><strong>月最小负荷：</strong> \(P_{\min} = \min(p_1, p_2, ..., p_n)\)，即当月所有采样点中有功功率的最小值。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;"><strong>月平均负荷：</strong> \(\bar{P} = \frac{1}{n}\sum_{i=1}^{n} p_i\)，即当月所有采样点的算术平均值。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:4px;"><strong>日最大负荷均值：</strong> \(\bar{P}_{\text{day\_max}} = \frac{1}{m}\sum_{j=1}^{m} P_{\max}^{(j)}\)，其中 \(P_{\max}^{(j)}\) 为第 \(j\) 天的日最大负荷，\(m\) 为当月天数。</p>
+<p style="text-indent:0;text-align:left;margin-bottom:0;"><strong>最大负载率：</strong> \(\eta_{\max} = \frac{P_{\max}}{C} \times 100\%\)，反映变电站容量的最大利用程度，是评估变电站是否需要扩容的核心指标。</p>
+<div class="formula-caption">变量说明：\(p_i\) 为第 \(i\) 个采样点的有功功率（MW），\(n\) 为当月采样点总数，\(C\) 为变电站额定容量（kVA或MVA），\(m\) 为当月天数，\(\eta\) 为负载率</div>
+</div>
+
 <div class="example-box">
 <div class="example-title">电网场景：迎峰度夏负荷预测校验</div>
 <p>每年夏季用电高峰前，调度部门需要根据历史负荷数据预测本年度最大负荷。通过SQL提取过去5年同期（6-8月）的负荷数据，计算各年度的月最大负荷、同比增长率和气温关联度，结合气象预报数据修正预测模型。这种基于SQL的历史数据分析为负荷预测提供了坚实的数据基础。</p>
@@ -3476,7 +3795,7 @@ const navLinks = document.querySelectorAll('.nav-sections a');
 const sections = document.querySelectorAll('.top-anchor');
 
 // onScroll disabled - single chapter mode
-function onScroll() { return; }
+
 // window.addEventListener('scroll', onScroll);
 
 // Sidebar chapter toggle
@@ -3615,16 +3934,7 @@ document.querySelectorAll('.nav-chapter-toggle').forEach(toggle => {
       item.addEventListener('click', function() {
         var el = result.element;
         // Check if element is inside a hidden chapter-content-block
-        if (window._chapterSystem) {
-          var blocks = window._chapterSystem.chapterBlocks;
-          for (var i = 0; i < blocks.length; i++) {
-            if (blocks[i].contains(el) && !blocks[i].classList.contains('active')) {
-              // Show the chapter first, then scroll
-              (function(idx, targetEl) {
-                window._chapterSystem.showChapter(idx);
-                // Wait for DOM update + display to take effect
-                setTimeout(function() {
-                  targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        );
                   highlightElement(targetEl);
                 }, 200);
               })(i, el);
@@ -3697,28 +4007,7 @@ document.querySelectorAll('.nav-chapter-toggle').forEach(toggle => {
 
 <style>
 /* ===== Dark Mode Toggle (floating) ===== */
-.dark-toggle-float {
-  position: fixed;
-  right: 20px;
-  top: 200px;
-  transform: none;
-  z-index: 9999;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--rule);
-  background: var(--surface);
-  color: var(--muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2em;
-  box-shadow: var(--shadow);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  outline: none;
-  font-family: inherit;
-}
+
 .dark-toggle-float:hover {
   background: var(--accent);
   color: #fff;
@@ -3728,222 +4017,81 @@ document.querySelectorAll('.nav-chapter-toggle').forEach(toggle => {
 .dark-toggle-float:active {
   transform: translateY(-50%) scale(0.95);
 }
-body.dark-mode .dark-toggle-float {
-  background: var(--surface);
-  border-color: var(--rule);
-  color: var(--warning);
-}
-body.dark-mode .dark-toggle-float:hover {
-  background: var(--warning);
-  color: #1a1a2e;
-  border-color: var(--warning);
-}
+html[data-theme="dark"] 
+
 @media (max-width: 768px) {
-  .dark-toggle-float {
-    right: 10px;
-    width: 40px;
-    height: 40px;
-  }
+  
 }
 </style>
-<button id="dark-toggle-float" class="dark-toggle-float" title="切换夜间模式">☽</button>
+
+
+
+
+
 <script>
+// ===== Theme Toggle =====
 (function() {
-  var isDark = false;
-  var btn = document.getElementById('dark-toggle-float');
-  function apply() {
-    if (isDark) {
-      document.body.classList.add('dark-mode');
-      btn.innerHTML = '☀';
-      btn.title = '切换日间模式';
+  const STORAGE_KEY = 'ai-study-theme';
+  const html = document.documentElement;
+  const toggleBtn = document.getElementById('themeToggle');
+
+  const savedTheme = localStorage.getItem(STORAGE_KEY);
+  if (savedTheme === 'dark') {
+    html.setAttribute('data-theme', 'dark');
+  } else {
+    html.removeAttribute('data-theme');
+  }
+
+  toggleBtn.addEventListener('click', function() {
+    if (html.hasAttribute('data-theme')) {
+      html.removeAttribute('data-theme');
+      localStorage.setItem(STORAGE_KEY, 'light');
     } else {
-      document.body.classList.remove('dark-mode');
-      btn.innerHTML = '☽';
-      btn.title = '切换夜间模式';
+      html.setAttribute('data-theme', 'dark');
+      localStorage.setItem(STORAGE_KEY, 'dark');
     }
-  }
-  btn.addEventListener('click', function() {
-    isDark = !isDark;
-    apply();
   });
-  // 默认暖色调
-  apply();
 })();
 </script>
-
 <script>
-/* ===== Chapter Navigation System ===== */
+
+// Sidebar navigation active state
 (function() {
-  var main = document.querySelector(".main");
-  if (!main) return;
+  const navLinks = document.querySelectorAll('.nav-sections a');
+  const anchors = document.querySelectorAll('.top-anchor');
 
-  var allH2s = Array.from(main.querySelectorAll("h2"));
-  if (allH2s.length === 0) return;
-
-  var chapters = [];
-  allH2s.forEach(function(h2) {
-    var prev = h2.previousElementSibling;
-    var chId = "";
-    if (prev && prev.classList.contains("top-anchor")) {
-      chId = prev.id;
-    }
-    if (chId && /^ch\d+$/.test(chId)) {
-      chapters.push({ id: chId, h2: h2, title: h2.textContent });
-    }
-  });
-
-  if (chapters.length === 0) return;
-
-  var chapterBlocks = [];
-  for (var i = 0; i < chapters.length; i++) {
-    var block = document.createElement("div");
-    block.className = "chapter-content-block";
-    block.dataset.ch = chapters[i].id;
-
-    var el = chapters[i].h2.previousElementSibling;
-    if (!el) el = chapters[i].h2;
-    var endEl = (i < chapters.length - 1) ? chapters[i + 1].h2.previousElementSibling : null;
-    if (!endEl) endEl = main.lastElementChild;
-
-    var nodes = [];
-    var n = el;
-    while (n) {
-      nodes.push(n);
-      if (n === endEl) break;
-      n = n.nextElementSibling;
-    }
-
-    nodes.forEach(function(node) { block.appendChild(node); });
-    chapterBlocks.push(block);
-  }
-
-  // Insert blocks in order
-  for (var j = chapterBlocks.length - 1; j >= 0; j--) {
-    main.insertBefore(chapterBlocks[j], main.firstChild);
-  }
-
-  var currentIndex = 0;
-  chapterBlocks[0].classList.add("active");
-
-  function countWords(block) {
-    var text = block.textContent || "";
-    var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
-    var english = text.replace(/[\u4e00-\u9fa5]/g, " ").split(/\s+/).filter(function(w) { return w.length > 0; }).length;
-    return chinese + english;
-  }
-
-  function readingTime(words) {
-    return Math.max(1, Math.round(words / 300));
-  }
-
-  var chapterWords = chapterBlocks.map(function(b) { return countWords(b); });
-  var totalWords = chapterWords.reduce(function(a, b) { return a + b; }, 0);
-  var totalTime = readingTime(totalWords);
-
-  function buildNavHTML() {
-    var prevTitle = currentIndex > 0 ? chapters[currentIndex - 1].title : "—";
-    var nextTitle = currentIndex < chapters.length - 1 ? chapters[currentIndex + 1].title : "—";
-    var prevDisabled = currentIndex === 0 ? " disabled" : "";
-    var nextDisabled = currentIndex === chapters.length - 1 ? " disabled" : "";
-    return "<div class=\"chapter-nav\">" +
-      "<a class=\"nav-btn prev-chapter" + prevDisabled + "\"><span class=\"nav-label\">← 上一章</span><span class=\"nav-title\">" + prevTitle + "</span></a>" +
-      "<a class=\"nav-btn next-chapter" + nextDisabled + "\"><span class=\"nav-label\">下一章 →</span><span class=\"nav-title\">" + nextTitle + "</span></a>" +
-      "</div>";
-  }
-
-  function buildStatsHTML() {
-    var cw = chapterWords[currentIndex];
-    var ct = readingTime(cw);
-    return "<div class=\"word-count-stats\">" +
-      "<div class=\"stats-title\">📊 统计信息</div>" +
-      "<div class=\"stats-row\"><span>本章字数</span><span>" + cw + " 字</span></div>" +
-      "<div class=\"stats-row\"><span>本章预计阅读</span><span>" + ct + " 分钟</span></div>" +
-      "<div class=\"stats-row\"><span>全文字数</span><span>" + totalWords + " 字</span></div>" +
-      "<div class=\"stats-row\"><span>全文预计阅读</span><span>" + totalTime + " 分钟</span></div>" +
-      "</div>";
-  }
-
-  // Insert nav + stats
-  var navContainer = document.createElement("div");
-  navContainer.className = "chapter-nav-container";
-  navContainer.innerHTML = buildStatsHTML() + buildNavHTML();
-  main.appendChild(navContainer);
-
-  function showChapter(index) {
-    if (index < 0 || index >= chapterBlocks.length) return;
-    currentIndex = index;
-    chapterBlocks.forEach(function(b, i) {
-      b.classList.toggle("active", i === index);
+  function onScroll() {
+    let current = '';
+    anchors.forEach(function(sec) {
+      const top = sec.getBoundingClientRect().top;
+      if (top <= 60) current = sec.id;
     });
-
-    // Update nav + stats
-    var cnt = main.querySelector(".chapter-nav-container");
-    if (cnt) {
-      cnt.innerHTML = buildStatsHTML() + buildNavHTML();
-    }
-
-    // Update sidebar
-    document.querySelectorAll(".nav-sections a").forEach(function(a) {
-      a.classList.remove("nav-active-chapter");
+    navLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+        const chapter = link.closest('.nav-chapter');
+        if (chapter) chapter.classList.add('open');
+      }
     });
-    var sidebarLink = document.querySelector(".nav-sections a[href=\"#" + chapters[index].id + "\"]");
-    if (sidebarLink) {
-      sidebarLink.classList.add("nav-active-chapter");
-      var chapterToggle = sidebarLink.closest(".nav-chapter");
-      if (chapterToggle) chapterToggle.classList.add("open");
-    }
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-    // Resize charts after switch
-    setTimeout(function() {
-      if (typeof resizeAllCharts === "function") resizeAllCharts();
-    }, 300);
   }
-
-  // Sidebar clicks
-  document.querySelectorAll(".nav-sections a[href^=\"#ch\"]").forEach(function(link) {
-    link.addEventListener("click", function(e) {
-      e.preventDefault();
-      var href = this.getAttribute("href").substring(1);
-      var idx = chapters.findIndex(function(c) { return c.id === href; });
-      if (idx >= 0) showChapter(idx);
-    });
-  });
-
-  // Nav button clicks
-  main.addEventListener("click", function(e) {
-    if (e.target.closest(".prev-chapter")) {
-      e.preventDefault();
-      if (currentIndex > 0) showChapter(currentIndex - 1);
-    }
-    if (e.target.closest(".next-chapter")) {
-      e.preventDefault();
-      if (currentIndex < chapters.length - 1) showChapter(currentIndex + 1);
-    }
-  });
-
-  // Hash handling
-  function checkHash() {
-    var hash = location.hash;
-    if (hash && /^#ch\d+$/.test(hash)) {
-      var id = hash.substring(1);
-      var idx = chapters.findIndex(function(c) { return c.id === id; });
-      if (idx >= 0) setTimeout(function() { showChapter(idx); }, 50);
-    }
-  }
-  window.addEventListener("hashchange", checkHash);
-  checkHash();
-
-  window._chapterSystem = {
-    chapters: chapters,
-    chapterBlocks: chapterBlocks,
-    showChapter: showChapter,
-    getCurrentIndex: function() { return currentIndex; }
-  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 })();
+
 </script>
-
-
+<script>
+// KaTeX auto-render for mathematical formulas
+document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement(document.body, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "\\[", right: "\\]", display: true},
+      {left: "\\(", right: "\\)", display: false}
+    ],
+    throwOnError: false
+  });
+});
+</script>
 </body>
 </html>

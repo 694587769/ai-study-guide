@@ -27,80 +27,111 @@
   --sidebar-w: 280px;
 }
 /* ===== Dark Mode ===== */
-body.dark-mode {
+html[data-theme="dark"] {
   --bg: #1a1a2e;
-  --bg2: #222240;
-  --surface: #252540;
-  --ink: #e0e0f0;
-  --muted: #9999aa;
-  --rule: #333355;
-  --accent: #6090ff;
-  --accent2: #9d6eff;
-  --accent-light: #1a2a44;
-  --accent2-light: #2a1a44;
-  --success: #34d399;
-  --warning: #fbbf24;
-  --danger: #f87171;
-  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+  --bg2: #2a2a40;
+  --surface: #1e293b;
+  --ink: #e2e8f0;
+  --muted: #94a3b8;
+  --rule: #334155;
+  --accent: #2563eb;
+  --accent2: #7c3aed;
+  --accent-light: #1e3a5f;
+  --accent2-light: #2d1b4e;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.25);
 }
-body.dark-mode .sidebar {
+/* ===== Theme Toggle Button ===== */
+.theme-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--muted);
+  transition: all 0.25s;
+  padding: 0;
+  line-height: 1;
+}
+.theme-toggle:hover {
+  background: var(--bg2);
+  color: var(--accent);
+  box-shadow: var(--shadow);
+}
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  transition: all 0.25s;
+}
+html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+html[data-theme="dark"] .theme-toggle .icon-sun { display: inline; }
+html:not([data-theme="dark"]) .theme-toggle .icon-sun { display: none; }
+html:not([data-theme="dark"]) .theme-toggle .icon-moon { display: inline; }
+
+html[data-theme="dark"] .sidebar {
   background: var(--surface);
   border-right-color: var(--rule);
 }
-body.dark-mode .nav-chapter-toggle:hover {
+html[data-theme="dark"] .nav-chapter-toggle:hover {
   background: var(--bg2);
 }
-body.dark-mode .content-section {
+html[data-theme="dark"] .content-section {
   background: var(--surface);
   border-color: var(--rule);
 }
-body.dark-mode pre {
+html[data-theme="dark"] pre {
   background: var(--bg2);
   border-color: var(--rule);
 }
-body.dark-mode code {
+html[data-theme="dark"] code {
   background: var(--bg2);
 }
-body.dark-mode table th {
+html[data-theme="dark"] table th {
   background: var(--bg2);
 }
-body.dark-mode table td, body.dark-mode table th {
+html[data-theme="dark"] table td, html[data-theme="dark"] table th {
   border-color: var(--rule);
 }
-body.dark-mode blockquote {
+html[data-theme="dark"] blockquote {
   background: var(--bg2);
   border-left-color: var(--accent);
 }
-body.dark-mode .example-box {
+html[data-theme="dark"] .example-box {
   background: var(--bg2);
   border-color: var(--rule);
 }
-body.dark-mode .formula-block {
+html[data-theme="dark"] .formula-block {
   background: var(--bg2);
   border-color: var(--rule);
 }
-body.dark-mode .chart-figure {
+html[data-theme="dark"] .chart-figure {
   background: var(--surface);
   border-color: var(--rule);
 }
-body.dark-mode .search-overlay {
+html[data-theme="dark"] .search-overlay {
   background: rgba(0,0,0,0.7);
 }
-body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
+html[data-theme="dark"] input, html[data-theme="dark"] select, html[data-theme="dark"] textarea {
   background: var(--bg);
   color: var(--ink);
   border-color: var(--rule);
 }
-body.dark-mode .top-anchor {
+html[data-theme="dark"] .top-anchor {
   color: var(--muted);
 }
-body.dark-mode hr {
+html[data-theme="dark"] hr {
   border-color: var(--rule);
 }
-body.dark-mode .toc a {
+html[data-theme="dark"] .toc a {
   color: var(--muted);
 }
-body.dark-mode .toc a:hover {
+html[data-theme="dark"] .toc a:hover {
   color: var(--accent);
 }
 
@@ -137,6 +168,7 @@ body {
   box-shadow: var(--shadow);
 }
 .sidebar-header {
+  position: relative;
   padding: 20px 20px 12px;
   border-bottom: 1px solid var(--rule);
 }
@@ -620,78 +652,33 @@ figcaption {
 
 
 /* ===== Chapter Navigation ===== */
-.chapter-content-block {
-  display: none;
-}
-.chapter-content-block.active {
-  display: block;
-}
+
+
 
 /* Navigation buttons */
-.chapter-nav {
-  display: flex; justify-content: space-between; align-items: center;
-  margin: 60px 0 40px; padding-top: 30px;
-  border-top: 2px solid var(--rule);
-}
-.chapter-nav .nav-btn {
-  padding: 12px 24px;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--ink);
-  text-decoration: none;
-  font-size: 14px; font-weight: 600;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-.chapter-nav .nav-btn:hover {
-  background: var(--accent); color: #fff; border-color: var(--accent);
-}
-.chapter-nav .nav-btn.disabled {
-  opacity: 0.35; pointer-events: none;
-}
-.chapter-nav .nav-label {
-  font-size: 12px; color: var(--muted); display: block;
-}
-.chapter-nav .nav-title {
-  font-size: 14px; font-weight: 600;
-}
-body.dark-mode .chapter-nav { border-top-color: var(--rule); }
-body.dark-mode .chapter-nav .nav-btn {
-  background: var(--surface); border-color: var(--rule); color: var(--ink);
-}
-body.dark-mode .chapter-nav .nav-btn:hover {
-  background: var(--accent); color: #fff; border-color: var(--accent);
-}
+
+
+
+
+
+
+html[data-theme="dark"] 
+html[data-theme="dark"] 
+html[data-theme="dark"] 
 
 /* Word Count Stats */
-.word-count-stats {
-  margin: 16px 0 0; padding: 20px 24px;
-  background: var(--bg2); border-radius: var(--radius);
-  border: 1px solid var(--rule);
-}
-.word-count-stats .stats-title {
-  font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 12px;
-}
-.word-count-stats .stats-row {
-  display: flex; justify-content: space-between;
-  font-size: 13px; color: var(--muted); margin-bottom: 8px;
-}
-.word-count-stats .stats-row:last-child {
-  margin-bottom: 0; font-weight: 600; color: var(--accent);
-}
-.word-count-stats .stats-row span:last-child {
-  font-family: 'GeistMono', monospace;
-}
-body.dark-mode .word-count-stats {
-    background: var(--bg2); border-color: var(--rule);
-  }
 
-  body.dark-mode .data-table tr:hover td {
+
+
+
+
+html[data-theme="dark"] 
+
+  html[data-theme="dark"] .data-table tr:hover td {
     background: #2a3a5c;
   }
 
-  body.dark-mode tr:hover {
+  html[data-theme="dark"] tr:hover {
     background: #2a2a3c;
   }
 
@@ -728,6 +715,11 @@ body.dark-mode .word-count-stats {
   <div class="sidebar-header">
     <h1>Java基础教程</h1>
     <div class="subtitle">Powered by Anqing Peng</div>
+    <button class="theme-toggle" id="themeToggle" title="切换夜间模式" aria-label="切换夜间模式">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+
   </div>
   <nav class="sidebar-nav" id="sidebarNav">
 
@@ -868,7 +860,7 @@ body.dark-mode .word-count-stats {
 <ul>
 <li><strong>跨平台性</strong>：Java源代码编译为字节码（.class文件），由JVM在不同操作系统上解释执行。同一份字节码可在Windows、Linux、macOS上运行，无需重新编译。</li>
 <li><strong>面向对象</strong>：Java支持封装、继承、多态三大核心特性，提供类、接口、抽象类等机制，使代码结构清晰、可复用性强。</li>
-<li><strong>自动内存管理（GC）</strong>：Java虚拟机内置垃圾回收器，自动回收不再使用的对象内存，开发者无需手动管理内存，有效避免内存泄漏和野指针问题。</li>
+<li><strong>自动内存管理（GC）</strong>：Java虚拟机内置垃圾回收器，自动回收不再使用的对象内存，开发者无需手动管理内存，有效避免内存泄漏和野指针问题。JVM提供了多种GC算法，包括Serial GC（适合单线程小应用）、Parallel GC（适合吞吐量优先场景）、G1 GC（适合大堆内存和低延迟场景）和ZGC（JDK 11+，超低延迟）。</li>
 <li><strong>多线程支持</strong>：Java内置丰富的多线程API（Thread、Runnable、ExecutorService），方便开发高并发应用，适合电网调度系统中大量并发数据采集场景。</li>
 <li><strong>强类型安全</strong>：Java在编译期进行严格的类型检查，配合泛型（Generics）和枚举（Enum），可在编码阶段发现大量潜在错误。</li>
 <li><strong>丰富的生态</strong>：Spring Framework、MyBatis、Apache Commons等成熟框架和工具库，使企业级开发效率大幅提升。</li>
@@ -945,8 +937,8 @@ body.dark-mode .word-count-stats {
 <caption>表1-4：Java与Python对比</caption>
 <tr><th>对比维度</th><th>Java</th><th>Python</th></tr>
 <tr><td>类型系统</td><td>强类型、静态类型</td><td>强类型、动态类型</td></tr>
-<tr><td>执行方式</td><td>编译为字节码 + JVM解释</td><td>解释执行（PVM）</td></tr>
-<tr><td>运行性能</td><td>较高，适合高并发</td><td>较慢，适合计算密集型</td></tr>
+<tr><td>执行方式</td><td>编译为字节码 + JVM解释执行（JIT优化）</td><td>解释执行（CPython解释器）</td></tr>
+<tr><td>运行性能</td><td>较高，适合高并发和计算密集型</td><td>较慢，GIL限制多线程，适合IO密集型</td></tr>
 <tr><td>代码量</td><td>较多，语法严格</td><td>较少，语法简洁</td></tr>
 <tr><td>学习难度</td><td>中等偏高</td><td>较低</td></tr>
 <tr><td>企业级生态</td><td>Spring、MyBatis、Maven</td><td>Django、Flask、pip</td></tr>
@@ -1150,6 +1142,25 @@ javac TransformerLoadCalculator.java
 // 运行
 java TransformerLoadCalculator</code></pre>
 
+<div class="formula-block">
+<div class="formula-caption" style="font-weight:700; color:var(--ink); margin-bottom:10px;">公式2-1：变压器负载率计算公式</div>
+<p style="text-indent:0; margin:0; font-size:16px; font-weight:600;">负载率 = (实际功率 / 额定容量) x 100%</p>
+<p style="text-indent:0; margin:8px 0 0; font-size:13px; color:var(--muted);">即：<strong>L = (P / S) x 100%</strong></p>
+<p style="text-indent:0; margin:8px 0 0; font-size:13px; color:var(--muted);">其中：<strong>L</strong> = 负载率（%），<strong>P</strong> = 实际有功功率（kW），<strong>S</strong> = 变压器额定容量（kVA）</p>
+<p style="text-indent:0; margin:4px 0 0; font-size:13px; color:var(--muted);">说明：负载率是衡量变压器运行状态的重要指标，一般控制在60%~80%为宜。负载率过高说明设备过载，存在安全隐患；负载率过低说明设备利用率不足，经济性较差。</p>
+</div>
+
+<div class="example-box">
+<div class="example-title">程序运行输出示例</div>
+<pre><code>========================================
+       变压器负载率计算
+========================================
+额定容量: 50000 kVA
+实际功率: 37500 kW
+负载率:   75.0%
+注意: 负载率偏高，建议巡检。</code></pre>
+</div>
+
 <div class="example-box">
 <div class="example-title">电网场景：Hello World——变电站问候程序</div>
 <pre><code>public class GridHelloWorld {
@@ -1224,6 +1235,38 @@ public class GridDataTypeDemo {
 <p>Java中两个整数相除会得到整数结果。例如 <code>50000 / 1000</code> 结果为 <code>50</code>（int类型），而 <code>50000 / 1000.0</code> 结果为 <code>50.0</code>（double类型）。在电网计算中涉及功率、电压等浮点数时，务必注意使用浮点除法。</p>
 </div>
 
+<figure class="chart-figure">
+<figcaption>图3-0：Java基本数据类型取值范围对比</figcaption>
+<svg width="100%" height="220" viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg">
+  <!-- byte -->
+  <rect x="50" y="20" width="12" height="16" fill="#2563eb" rx="2"/>
+  <text x="20" y="34" text-anchor="end" font-size="11" fill="var(--ink)">byte</text>
+  <text x="68" y="35" font-size="10" fill="var(--muted)">-128~127</text>
+  <!-- short -->
+  <rect x="50" y="48" width="24" height="16" fill="#7c3aed" rx="2"/>
+  <text x="20" y="62" text-anchor="end" font-size="11" fill="var(--ink)">short</text>
+  <text x="80" y="63" font-size="10" fill="var(--muted)">-32768~32767</text>
+  <!-- int -->
+  <rect x="50" y="76" width="48" height="16" fill="#059669" rx="2"/>
+  <text x="20" y="90" text-anchor="end" font-size="11" fill="var(--ink)">int</text>
+  <text x="104" y="91" font-size="10" fill="var(--muted)">-2^31~2^31-1 (约21亿)</text>
+  <!-- long -->
+  <rect x="50" y="104" width="80" height="16" fill="#d97706" rx="2"/>
+  <text x="20" y="118" text-anchor="end" font-size="11" fill="var(--ink)">long</text>
+  <text x="136" y="119" font-size="10" fill="var(--muted)">-2^63~2^63-1</text>
+  <!-- float -->
+  <rect x="50" y="132" width="36" height="16" fill="#dc2626" rx="2"/>
+  <text x="20" y="146" text-anchor="end" font-size="11" fill="var(--ink)">float</text>
+  <text x="92" y="147" font-size="10" fill="var(--muted)">约6~7位有效数字</text>
+  <!-- double -->
+  <rect x="50" y="160" width="64" height="16" fill="#0891b2" rx="2"/>
+  <text x="20" y="174" text-anchor="end" font-size="11" fill="var(--ink)">double</text>
+  <text x="120" y="175" font-size="10" fill="var(--muted)">约15位有效数字</text>
+  <!-- scale bar -->
+  <text x="320" y="200" text-anchor="middle" font-size="11" fill="var(--muted)">数据范围（对数尺度示意）</text>
+</svg>
+</figure>
+
 <span class="top-anchor" id="ch3-2"></span>
 <h3>3.2 运算符</h3>
 <p>Java提供了丰富的运算符，分为算术运算符、关系运算符、逻辑运算符、位运算符和赋值运算符。</p>
@@ -1267,6 +1310,22 @@ public class PowerCalcDemo {
         }
     }
 }</code></pre>
+
+<div class="formula-block">
+<div class="formula-caption" style="font-weight:700; color:var(--ink); margin-bottom:10px;">公式3-1：单相与三相有功功率计算公式</div>
+<p style="text-indent:0; margin:0; font-size:15px; font-weight:600;">单相有功功率：P = U x I x cos(phi)</p>
+<p style="text-indent:0; margin:8px 0 0; font-size:13px; color:var(--muted);">其中：<strong>P</strong> = 有功功率（kW），<strong>U</strong> = 电压（kV），<strong>I</strong> = 电流（A），<strong>cos(phi)</strong> = 功率因数（无量纲，取值范围0~1）</p>
+<p style="text-indent:0; margin:12px 0 0; font-size:15px; font-weight:600;">三相有功功率：P3 = sqrt(3) x U x I x cos(phi)</p>
+<p style="text-indent:0; margin:8px 0 0; font-size:13px; color:var(--muted);">其中：<strong>sqrt(3)</strong> ≈ 1.732，为三相系统的系数，<strong>U</strong>为线电压，<strong>I</strong>为线电流</p>
+<p style="text-indent:0; margin:4px 0 0; font-size:13px; color:var(--muted);">说明：三相功率是单相功率的sqrt(3)倍。在电网中，功率因数反映了电能的有效利用率，理想值为1.0（纯阻性负载），实际电网通常在0.85~0.95之间。无功补偿装置（如电容器组）用于提高功率因数。</p>
+</div>
+
+<div class="example-box">
+<div class="example-title">功率计算程序运行输出</div>
+<pre><code>有功功率: 93500.00 kW
+三相有功功率: 161947.33 kW
+201号断路器属于奇数组</code></pre>
+</div>
 
 <figure class="chart-figure">
 <figcaption>图3-1：Java运算符优先级金字塔</figcaption>
@@ -1334,6 +1393,21 @@ public class PowerCalcDemo {
 <p>Java中比较字符串内容应使用<code>equals()</code>方法，而非<code>==</code>运算符。<code>==</code>比较的是对象引用地址，<code>equals()</code>比较的是字符串内容。例如：<code>"220kV".equals(voltage)</code> 是正确的写法。</p>
 </div>
 
+<div class="table-wrap">
+<table class="data-table">
+<caption>表3-3-1：String、StringBuilder、StringBuffer对比</caption>
+<tr><th>类</th><th>可变性</th><th>线程安全</th><th>性能</th><th>适用场景</th></tr>
+<tr><td><code>String</code></td><td>不可变</td><td>安全</td><td>拼接操作性能差</td><td>内容不经常变化的字符串</td></tr>
+<tr><td><code>StringBuilder</code></td><td>可变</td><td>不安全</td><td>性能高</td><td>单线程下频繁拼接修改</td></tr>
+<tr><td><code>StringBuffer</code></td><td>可变</td><td>安全（synchronized）</td><td>性能中等</td><td>多线程下频繁拼接修改</td></tr>
+</table>
+</div>
+
+<div class="callout warn">
+<div class="callout-title">性能提示</div>
+<p>由于<code>String</code>不可变，每次使用<code>+</code>拼接字符串都会创建新对象。对于循环中频繁拼接的场景，建议使用<code>StringBuilder</code>而非<code>String + String</code>，可显著提升性能。</p>
+</div>
+
 <span class="top-anchor" id="ch3-4"></span>
 <h3>3.4 数组与集合框架</h3>
 <p>Java提供了数组和集合框架（Collections Framework）两种方式来存储多个数据元素。数组适合存储固定大小的同类型数据，集合框架提供了更灵活的数据结构。</p>
@@ -1373,6 +1447,18 @@ public class CollectionDemo {
         System.out.println("告警类型数: " + warningTypes.size());
     }
 }</code></pre>
+
+<div class="example-box">
+<div class="example-title">集合框架程序运行输出</div>
+<pre><code>站点数量: 3
+电压: 220.5 kV
+电压: 110.2 kV
+电压: 35.1 kV
+安庆站 负荷: 45000 kW
+合肥站 负荷: 62000 kW
+芜湖站 负荷: 38000 kW
+告警类型数: 2</code></pre>
+</div>
 
 <div class="table-wrap">
 <table class="data-table">
@@ -1456,6 +1542,17 @@ alarmCount.forEach((k, v) -&gt;
 <h3>4.2 循环结构</h3>
 <p>Java提供<code>for</code>、<code>while</code>、<code>do-while</code>和增强<code>for</code>循环四种循环结构。</p>
 
+<div class="table-wrap">
+<table class="data-table">
+<caption>表4-1-1：Java四种循环结构对比</caption>
+<tr><th>循环类型</th><th>语法</th><th>特点</th><th>适用场景</th></tr>
+<tr><td>for</td><td><code>for(初始化; 条件; 更新)</code></td><td>循环次数明确</td><td>已知循环次数，如遍历数组</td></tr>
+<tr><td>增强for</td><td><code>for(类型 变量 : 集合/数组)</code></td><td>简洁，无需索引</td><td>遍历所有元素，不需要下标</td></tr>
+<tr><td>while</td><td><code>while(条件)</code></td><td>先判断后执行</td><td>条件控制，循环次数未知</td></tr>
+<tr><td>do-while</td><td><code>do { ... } while(条件);</code></td><td>先执行后判断，至少执行一次</td><td>至少需要执行一次的场景</td></tr>
+</table>
+</div>
+
 <pre><code>public class LoopDemo {
     public static void main(String[] args) {
         // for 循环：遍历变电站编号
@@ -1497,6 +1594,7 @@ for (int i = 0; i &lt; hourlyLoad.length; i++) {
 }
 System.out.printf("负荷峰值: %.0f kW，出现在%d时%n",
     maxLoad, peakHour);</code></pre>
+<p style="text-indent:0; margin:8px 0 0; font-size:13px; color:var(--muted);">运行输出：<code>负荷峰值: 52000 kW，出现在15时</code></p>
 </div>
 
 <figure class="chart-figure">
@@ -1548,7 +1646,7 @@ System.out.printf("负荷峰值: %.0f kW，出现在%d时%n",
     }
 
     static double findMax(double[] arr) {
-        double max = Double.MIN_VALUE;
+        double max = Double.NEGATIVE_INFINITY;
         for (double v : arr) {
             if (v &lt;= 0) continue;
             if (v &gt; max) max = v;
@@ -1566,6 +1664,11 @@ System.out.printf("负荷峰值: %.0f kW，出现在%d时%n",
 <tr><td>return</td><td>退出当前方法</td><td>整个方法</td><td>计算完成后返回结果</td></tr>
 <tr><td>break label</td><td>退出标签所在循环</td><td>多层嵌套循环</td><td>多层搜索中直接退出外层</td></tr>
 </table>
+</div>
+
+<div class="callout warn">
+<div class="callout-title">Double.MIN_VALUE陷阱</div>
+<p><code>Double.MIN_VALUE</code>不是"最小的负数"，而是"最小的正数"（约4.9E-324），即最接近0的正值。在查找最大值时，应使用<code>Double.NEGATIVE_INFINITY</code>或<code>-Double.MAX_VALUE</code>作为初始值。同理，<code>Double.MAX_VALUE</code>是最大的正数，查找最小值时应使用<code>Double.POSITIVE_INFINITY</code>。</p>
 </div>
 
 <span class="top-anchor" id="ch4-4"></span>
@@ -1622,6 +1725,15 @@ class TemperatureOverflowException extends Exception {
 <tr><td>IOException</td><td>受检异常</td><td>IO操作失败</td><td>文件读写、网络通信中断</td></tr>
 <tr><td>SQLException</td><td>受检异常</td><td>数据库操作失败</td><td>数据库连接断开</td></tr>
 <tr><td>FileNotFoundException</td><td>受检异常</td><td>文件不存在</td><td>配置文件缺失</td></tr>
+</table>
+</div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表4-3-1：受检异常与运行时异常对比</caption>
+<tr><th>类型</th><th>编译检查</th><th>父类</th><th>特点</th><th>典型例子</th></tr>
+<tr><td>受检异常 (Checked Exception)</td><td>必须捕获或声明throws</td><td>Exception</td><td>可预期的错误，要求必须处理</td><td>IOException, SQLException</td></tr>
+<tr><td>运行时异常 (Runtime Exception)</td><td>不强制检查</td><td>RuntimeException</td><td>编程错误导致，不强制捕获</td><td>NullPointerException, ArrayIndexOutOfBoundsException</td></tr>
 </table>
 </div>
 
@@ -1933,6 +2045,26 @@ public class FactoryDemo {
 <div class="example-box">
 <div class="example-title">电网场景：设备工厂批量创建</div>
 <p>在配网自动化系统中，需要根据设备类型（断路器、隔离开关、变压器等）批量创建设备对象。使用工厂模式可以将创建逻辑集中管理，新增设备类型时只需增加新的工厂类，不影响已有代码。配合Spring框架的IoC容器，工厂模式可以更加优雅地实现。</p>
+</div>
+
+<div class="table-wrap">
+<table class="data-table">
+<caption>表5-5：SOLID五大设计原则</caption>
+<tr><th>原则</th><th>英文</th><th>核心思想</th><th>Java实践</th></tr>
+<tr><td>单一职责</td><td>SRP</td><td>一个类只负责一项职责</td><td>将数据采集和告警处理分离为不同类</td></tr>
+<tr><td>开闭原则</td><td>OCP</td><td>对扩展开放，对修改关闭</td><td>通过接口和抽象类扩展新设备类型</td></tr>
+<tr><td>里氏替换</td><td>LSP</td><td>子类可以替换父类</td><td>所有电网设备子类可替换GridDevice</td></tr>
+<tr><td>接口隔离</td><td>ISP</td><td>使用多个专门的接口</td><td>定义IControl、IMonitor等细分接口</td></tr>
+<tr><td>依赖倒置</td><td>DIP</td><td>依赖抽象而非具体实现</td><td>通过Spring依赖注入解耦</td></tr>
+</table>
+</div>
+
+<div class="example-box">
+<div class="example-title">电网场景：温度传感器告警的输出示例</div>
+<pre><code>[正常] TR-001 油温 68.5°C
+[预警] TR-002 油温 82.3°C
+[紧急] TR-003 油温 91.2°C 超过85°C！
+[预警] TR-001 油温 78.1°C</code></pre>
 </div>
 
 <!-- ========== CHAPTER 6 ========== -->
@@ -2515,17 +2647,12 @@ public class OilTempMonitor {
         monitor.addDevice("TR-003");
 
         // 模拟温度采集
-        double[][] tempData = {
-            {"TR-001", 68.5},
-            {"TR-002", 82.3},
-            {"TR-003", 91.2},
-            {"TR-001", 78.1},
-        };
-        // 使用循环批量更新（实际数据格式需调整）
-        for (double[] data : tempData) {
-            String id = (String) data[0];  // 简化示意
+        String[] deviceIds = {"TR-001", "TR-002", "TR-003", "TR-001"};
+        double[] temperatures = {68.5, 82.3, 91.2, 78.1};
+
+        for (int i = 0; i &lt; deviceIds.length; i++) {
             try {
-                monitor.updateTemperature(id, data[1]);
+                monitor.updateTemperature(deviceIds[i], temperatures[i]);
             } catch (DeviceNotFoundException e) {
                 System.out.println("异常: " + e.getMessage());
             }
@@ -2589,7 +2716,7 @@ public class LoadAnalysis {
         };
 
         // 计算统计指标
-        double sum = 0, max = Double.MIN_VALUE, min = Double.MAX_VALUE;
+        double sum = 0, max = Double.NEGATIVE_INFINITY, min = Double.POSITIVE_INFINITY;
         int peakHour = 0, valleyHour = 0;
 
         for (int i = 0; i &lt; hourlyLoad.length; i++) {
@@ -2626,10 +2753,91 @@ public class LoadAnalysis {
 </table>
 </div>
 
+<div class="formula-block">
+<div class="formula-caption" style="font-weight:700; color:var(--ink); margin-bottom:10px;">公式8-1：电力负荷分析核心指标公式</div>
+<p style="text-indent:0; margin:0; font-size:14px; font-weight:600;">日总电量：E = sum(L_i) （i = 0 到 23）</p>
+<p style="text-indent:0; margin:6px 0 0; font-size:13px; color:var(--muted);">其中：<strong>E</strong> = 日总电量（MWh），<strong>L_i</strong> = 第i小时的平均负荷（MW），对24个整点负荷值求和</p>
+<p style="text-indent:0; margin:12px 0 0; font-size:14px; font-weight:600;">平均负荷：L_avg = E / 24</p>
+<p style="text-indent:0; margin:6px 0 0; font-size:13px; color:var(--muted);">其中：<strong>L_avg</strong> = 日平均负荷（MW），<strong>E</strong> = 日总电量（MWh），<strong>24</strong> = 统计时段小时数</p>
+<p style="text-indent:0; margin:12px 0 0; font-size:14px; font-weight:600;">峰谷差：D = L_max - L_min</p>
+<p style="text-indent:0; margin:6px 0 0; font-size:13px; color:var(--muted);">其中：<strong>D</strong> = 峰谷差（MW），<strong>L_max</strong> = 最大负荷（MW），<strong>L_min</strong> = 最小负荷（MW）</p>
+<p style="text-indent:0; margin:12px 0 0; font-size:14px; font-weight:600;">负载率：R = (L_max / S) x 100%</p>
+<p style="text-indent:0; margin:6px 0 0; font-size:13px; color:var(--muted);">其中：<strong>R</strong> = 负载率（%），<strong>L_max</strong> = 最大负荷（MW），<strong>S</strong> = 设备额定容量（MVA）</p>
+<p style="text-indent:0; margin:4px 0 0; font-size:13px; color:var(--muted);">说明：峰谷差是衡量电网负荷波动的重要指标，峰谷差越大，电网调峰压力越大，需要更多的调峰电源（如抽水蓄能、燃气机组）来平衡。</p>
+</div>
+
+<div class="example-box">
+<div class="example-title">负荷分析程序运行输出</div>
+<pre><code>========== 负荷分析报告 ==========
+日总电量: 969000 MWh
+平均负荷: 40375 MW
+峰值负荷: 52000 MW（15时）
+谷值负荷: 26000 MW（3时）
+峰谷差:   26000 MW
+负载率:   104.0%
+==================================</code></pre>
+</div>
+
 <div class="example-box">
 <div class="example-title">电网场景：负荷分析在调度中的应用</div>
 <p>调度员每日查看负荷分析报告，了解前一天的负荷变化规律。峰值时段通常出现在上午10点和下午4点左右，对应工业生产和商业用电高峰。谷值出现在凌晨2-5点。调度员根据这些规律制定当日的发电计划，合理安排机组启停。</p>
 </div>
+
+<figure class="chart-figure">
+<figcaption>图8-2：24小时电网负荷曲线示意图</figcaption>
+<svg width="100%" height="300" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Grid -->
+  <g stroke="#ccc" stroke-width="1">
+    <!-- X axis ticks -->
+    <line x1="50" y1="250" x2="670" y2="250"/>
+    <line x1="50" y1="20" x2="50" y2="250"/>
+    <!-- Hours -->
+    <text x="50" y="270" text-anchor="middle" font-size="10" fill="#666">0</text>
+    <text x="100" y="270" text-anchor="middle" font-size="10" fill="#666">4</text>
+    <text x="175" y="270" text-anchor="middle" font-size="10" fill="#666">8</text>
+    <text x="275" y="270" text-anchor="middle" font-size="10" fill="#666">12</text>
+    <text x="375" y="270" text-anchor="middle" font-size="10" fill="#666">16</text>
+    <text x="475" y="270" text-anchor="middle" font-size="10" fill="#666">20</text>
+    <text x="650" y="270" text-anchor="middle" font-size="10" fill="#666">24</text>
+    <!-- Y axis labels -->
+    <text x="30" y="35" text-anchor="end" font-size="10" fill="#666">60</text>
+    <line x1="45" y1="30" x2="50" y2="30"/>
+    <text x="30" y="75" text-anchor="end" font-size="10" fill="#666">50</text>
+    <line x1="45" y1="70" x2="50" y2="70"/>
+    <text x="30" y="120" text-anchor="end" font-size="10" fill="#666">40</text>
+    <line x1="45" y1="115" x2="50" y2="115"/>
+    <text x="30" y="165" text-anchor="end" font-size="10" fill="#666">30</text>
+    <line x1="45" y1="160" x2="50" y2="160"/>
+    <text x="30" y="210" text-anchor="end" font-size="10" fill="#666">20</text>
+    <line x1="45" y1="205" x2="50" y2="205"/>
+    <text x="20" y="135" text-anchor="middle" font-size="12" fill="#666" transform="rotate(-90,25,135)">负荷 (MW)</text>
+    <text x="360" y="290" text-anchor="middle" font-size="12" fill="#666">时间 (小时)</text>
+  </g>
+  <!-- Load curve -->
+  <path d="M 50 160 Q 75 170 100 180 L 125 190 150 195 175 185 L 200 150 225 110 250 80 275 65 L 300 70 325 75 350 72 375 68 L 400 50 425 40 450 55 475 70 L 500 90 525 110 550 130 575 145 L 600 155 625 160 650 165" 
+        fill="none" stroke="#2563eb" stroke-width="3"/>
+  <!-- Data points -->
+  <circle cx="50" cy="160" r="4" fill="#2563eb"/>
+  <circle cx="100" cy="180" r="4" fill="#2563eb"/>
+  <circle cx="175" cy="80" r="4" fill="#2563eb"/>
+  <circle cx="250" cy="65" r="4" fill="#2563eb"/>
+  <circle cx="375" cy="68" r="4" fill="#2563eb"/>
+  <circle cx="425" cy="40" r="4" fill="#2563eb"/>
+  <circle cx="500" cy="90" r="4" fill="#2563eb"/>
+  <circle cx="650" cy="165" r="4" fill="#2563eb"/>
+  <!-- Peak label -->
+  <rect x="380" y="10" width="100" height="22" fill="#dc2626" rx="4"/>
+  <text x="430" y="25" text-anchor="middle" fill="#fff" font-size="11">峰值: 52MW</text>
+  <!-- Valley label -->
+  <rect x="80" y="195" width="100" height="22" fill="#059669" rx="4"/>
+  <text x="130" y="210" text-anchor="middle" fill="#fff" font-size="11">谷值: 26MW</text>
+  <!-- Legend -->
+  <rect x="520" y="20" width="120" height="36" fill="#f0f0f5" rx="4"/>
+  <line x1="535" y1="38" x2="555" y2="38" stroke="#2563eb" stroke-width="3"/>
+  <text x="565" y="42" font-size="11" fill="#333">24小时负荷曲线</text>
+</svg>
+<figcaption>SVG绘制的典型电网日负荷曲线，呈现明显的双峰特征</figcaption>
+</figure>
 
 <span class="top-anchor" id="ch8-3"></span>
 <h3>8.3 配电网拓扑分析与路径搜索</h3>
@@ -2695,6 +2903,11 @@ public class GridTopologyAnalysis {
     }
 }</code></pre>
 
+<div class="example-box">
+<div class="example-title">配电网拓扑搜索程序运行输出</div>
+<pre><code>供电路径: 变电站 → 开关A → 开关C → 开关D → 用户T</code></pre>
+</div>
+
 <div class="table-wrap">
 <table class="data-table">
 <caption>表8-3：配网拓扑分析核心概念</caption>
@@ -2712,7 +2925,7 @@ public class GridTopologyAnalysis {
 </div>
 
 <figure class="chart-figure">
-<figcaption>图8-2：配电网简化拓扑结构</figcaption>
+<figcaption>图8-3：配电网简化拓扑结构</figcaption>
 <svg width="100%" height="180" viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg">
   <circle cx="80" cy="90" r="24" fill="#2563eb"/>
   <text x="80" y="95" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">变电站</text>
@@ -2862,6 +3075,26 @@ public class DeviceManager {
 </div>
 
 <div class="example-box">
+<div class="example-title">设备台账管理系统运行输出</div>
+<pre><code>新增: [1] 1号主变 | 变压器 | 220kV | 在运 | 2018-06-15
+新增: [2] 201断路器 | 断路器 | 110kV | 在运 | 2019-03-20
+新增: [3] CT-301 | 电流互感器 | 10kV | 在运 | 2020-08-10
+========== 设备台账 ==========
+[1] 1号主变 | 变压器 | 220kV | 在运 | 2018-06-15
+[2] 201断路器 | 断路器 | 110kV | 在运 | 2019-03-20
+[3] CT-301 | 电流互感器 | 10kV | 在运 | 2020-08-10
+共 3 条记录
+===============================
+更新: [2] 201断路器 状态 在运→检修
+删除: [3] CT-301 | 电流互感器 | 10kV | 在运 | 2020-08-10
+========== 设备台账 ==========
+[1] 1号主变 | 变压器 | 220kV | 在运 | 2018-06-15
+[2] 201断路器 | 断路器 | 110kV | 检修 | 2019-03-20
+共 2 条记录
+===============================</code></pre>
+</div>
+
+<div class="example-box">
 <div class="example-title">电网场景：设备台账管理系统功能</div>
 <p>完整的设备台账管理系统通常使用Spring Boot + MyBatis技术栈，将设备数据持久化到MySQL或Oracle数据库中，通过RESTful API提供增删改查接口，前端使用Vue.js或React构建管理界面。本案例使用内存中的ArrayList模拟数据库操作，便于理解CRUD的核心逻辑。在生产环境中，还需添加用户权限验证、数据校验、操作日志等功能。</p>
 </div>
@@ -2882,7 +3115,7 @@ const navLinks = document.querySelectorAll('.nav-sections a');
 const sections = document.querySelectorAll('.top-anchor');
 
 // onScroll disabled - single chapter mode
-function onScroll() { return; }
+
 // window.addEventListener('scroll', onScroll);
 
 // Sidebar chapter toggle
@@ -3021,16 +3254,7 @@ document.querySelectorAll('.nav-chapter-toggle').forEach(toggle => {
       item.addEventListener('click', function() {
         var el = result.element;
         // Check if element is inside a hidden chapter-content-block
-        if (window._chapterSystem) {
-          var blocks = window._chapterSystem.chapterBlocks;
-          for (var i = 0; i < blocks.length; i++) {
-            if (blocks[i].contains(el) && !blocks[i].classList.contains('active')) {
-              // Show the chapter first, then scroll
-              (function(idx, targetEl) {
-                window._chapterSystem.showChapter(idx);
-                // Wait for DOM update + display to take effect
-                setTimeout(function() {
-                  targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        );
                   highlightElement(targetEl);
                 }, 200);
               })(i, el);
@@ -3103,28 +3327,7 @@ document.querySelectorAll('.nav-chapter-toggle').forEach(toggle => {
 
 <style>
 /* ===== Dark Mode Toggle (floating) ===== */
-.dark-toggle-float {
-  position: fixed;
-  right: 20px;
-  top: 200px;
-  transform: none;
-  z-index: 9999;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--rule);
-  background: var(--surface);
-  color: var(--muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2em;
-  box-shadow: var(--shadow);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  outline: none;
-  font-family: inherit;
-}
+
 .dark-toggle-float:hover {
   background: var(--accent);
   color: #fff;
@@ -3134,222 +3337,68 @@ document.querySelectorAll('.nav-chapter-toggle').forEach(toggle => {
 .dark-toggle-float:active {
   transform: translateY(-50%) scale(0.95);
 }
-body.dark-mode .dark-toggle-float {
-  background: var(--surface);
-  border-color: var(--rule);
-  color: var(--warning);
-}
-body.dark-mode .dark-toggle-float:hover {
-  background: var(--warning);
-  color: #1a1a2e;
-  border-color: var(--warning);
-}
+html[data-theme="dark"] 
+
 @media (max-width: 768px) {
-  .dark-toggle-float {
-    right: 10px;
-    width: 40px;
-    height: 40px;
-  }
+  
 }
 </style>
-<button id="dark-toggle-float" class="dark-toggle-float" title="切换夜间模式">☽</button>
+
+
+
+
+
 <script>
+// ===== Theme Toggle =====
 (function() {
-  var isDark = false;
-  var btn = document.getElementById('dark-toggle-float');
-  function apply() {
-    if (isDark) {
-      document.body.classList.add('dark-mode');
-      btn.innerHTML = '☀';
-      btn.title = '切换日间模式';
+  const STORAGE_KEY = 'ai-study-theme';
+  const html = document.documentElement;
+  const toggleBtn = document.getElementById('themeToggle');
+
+  const savedTheme = localStorage.getItem(STORAGE_KEY);
+  if (savedTheme === 'dark') {
+    html.setAttribute('data-theme', 'dark');
+  } else {
+    html.removeAttribute('data-theme');
+  }
+
+  toggleBtn.addEventListener('click', function() {
+    if (html.hasAttribute('data-theme')) {
+      html.removeAttribute('data-theme');
+      localStorage.setItem(STORAGE_KEY, 'light');
     } else {
-      document.body.classList.remove('dark-mode');
-      btn.innerHTML = '☽';
-      btn.title = '切换夜间模式';
+      html.setAttribute('data-theme', 'dark');
+      localStorage.setItem(STORAGE_KEY, 'dark');
     }
-  }
-  btn.addEventListener('click', function() {
-    isDark = !isDark;
-    apply();
   });
-  // 默认暖色调
-  apply();
 })();
 </script>
-
 <script>
-/* ===== Chapter Navigation System ===== */
+
+// Sidebar navigation active state
 (function() {
-  var main = document.querySelector(".main");
-  if (!main) return;
+  const navLinks = document.querySelectorAll('.nav-sections a');
+  const anchors = document.querySelectorAll('.top-anchor');
 
-  var allH2s = Array.from(main.querySelectorAll("h2"));
-  if (allH2s.length === 0) return;
-
-  var chapters = [];
-  allH2s.forEach(function(h2) {
-    var prev = h2.previousElementSibling;
-    var chId = "";
-    if (prev && prev.classList.contains("top-anchor")) {
-      chId = prev.id;
-    }
-    if (chId && /^ch\d+$/.test(chId)) {
-      chapters.push({ id: chId, h2: h2, title: h2.textContent });
-    }
-  });
-
-  if (chapters.length === 0) return;
-
-  var chapterBlocks = [];
-  for (var i = 0; i < chapters.length; i++) {
-    var block = document.createElement("div");
-    block.className = "chapter-content-block";
-    block.dataset.ch = chapters[i].id;
-
-    var el = chapters[i].h2.previousElementSibling;
-    if (!el) el = chapters[i].h2;
-    var endEl = (i < chapters.length - 1) ? chapters[i + 1].h2.previousElementSibling : null;
-    if (!endEl) endEl = main.lastElementChild;
-
-    var nodes = [];
-    var n = el;
-    while (n) {
-      nodes.push(n);
-      if (n === endEl) break;
-      n = n.nextElementSibling;
-    }
-
-    nodes.forEach(function(node) { block.appendChild(node); });
-    chapterBlocks.push(block);
-  }
-
-  // Insert blocks in order
-  for (var j = chapterBlocks.length - 1; j >= 0; j--) {
-    main.insertBefore(chapterBlocks[j], main.firstChild);
-  }
-
-  var currentIndex = 0;
-  chapterBlocks[0].classList.add("active");
-
-  function countWords(block) {
-    var text = block.textContent || "";
-    var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
-    var english = text.replace(/[\u4e00-\u9fa5]/g, " ").split(/\s+/).filter(function(w) { return w.length > 0; }).length;
-    return chinese + english;
-  }
-
-  function readingTime(words) {
-    return Math.max(1, Math.round(words / 300));
-  }
-
-  var chapterWords = chapterBlocks.map(function(b) { return countWords(b); });
-  var totalWords = chapterWords.reduce(function(a, b) { return a + b; }, 0);
-  var totalTime = readingTime(totalWords);
-
-  function buildNavHTML() {
-    var prevTitle = currentIndex > 0 ? chapters[currentIndex - 1].title : "—";
-    var nextTitle = currentIndex < chapters.length - 1 ? chapters[currentIndex + 1].title : "—";
-    var prevDisabled = currentIndex === 0 ? " disabled" : "";
-    var nextDisabled = currentIndex === chapters.length - 1 ? " disabled" : "";
-    return "<div class=\"chapter-nav\">" +
-      "<a class=\"nav-btn prev-chapter" + prevDisabled + "\"><span class=\"nav-label\">← 上一章</span><span class=\"nav-title\">" + prevTitle + "</span></a>" +
-      "<a class=\"nav-btn next-chapter" + nextDisabled + "\"><span class=\"nav-label\">下一章 →</span><span class=\"nav-title\">" + nextTitle + "</span></a>" +
-      "</div>";
-  }
-
-  function buildStatsHTML() {
-    var cw = chapterWords[currentIndex];
-    var ct = readingTime(cw);
-    return "<div class=\"word-count-stats\">" +
-      "<div class=\"stats-title\">📊 统计信息</div>" +
-      "<div class=\"stats-row\"><span>本章字数</span><span>" + cw + " 字</span></div>" +
-      "<div class=\"stats-row\"><span>本章预计阅读</span><span>" + ct + " 分钟</span></div>" +
-      "<div class=\"stats-row\"><span>全文字数</span><span>" + totalWords + " 字</span></div>" +
-      "<div class=\"stats-row\"><span>全文预计阅读</span><span>" + totalTime + " 分钟</span></div>" +
-      "</div>";
-  }
-
-  // Insert nav + stats
-  var navContainer = document.createElement("div");
-  navContainer.className = "chapter-nav-container";
-  navContainer.innerHTML = buildStatsHTML() + buildNavHTML();
-  main.appendChild(navContainer);
-
-  function showChapter(index) {
-    if (index < 0 || index >= chapterBlocks.length) return;
-    currentIndex = index;
-    chapterBlocks.forEach(function(b, i) {
-      b.classList.toggle("active", i === index);
+  function onScroll() {
+    let current = '';
+    anchors.forEach(function(sec) {
+      const top = sec.getBoundingClientRect().top;
+      if (top <= 60) current = sec.id;
     });
-
-    // Update nav + stats
-    var cnt = main.querySelector(".chapter-nav-container");
-    if (cnt) {
-      cnt.innerHTML = buildStatsHTML() + buildNavHTML();
-    }
-
-    // Update sidebar
-    document.querySelectorAll(".nav-sections a").forEach(function(a) {
-      a.classList.remove("nav-active-chapter");
+    navLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+        const chapter = link.closest('.nav-chapter');
+        if (chapter) chapter.classList.add('open');
+      }
     });
-    var sidebarLink = document.querySelector(".nav-sections a[href=\"#" + chapters[index].id + "\"]");
-    if (sidebarLink) {
-      sidebarLink.classList.add("nav-active-chapter");
-      var chapterToggle = sidebarLink.closest(".nav-chapter");
-      if (chapterToggle) chapterToggle.classList.add("open");
-    }
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-    // Resize charts after switch
-    setTimeout(function() {
-      if (typeof resizeAllCharts === "function") resizeAllCharts();
-    }, 300);
   }
-
-  // Sidebar clicks
-  document.querySelectorAll(".nav-sections a[href^=\"#ch\"]").forEach(function(link) {
-    link.addEventListener("click", function(e) {
-      e.preventDefault();
-      var href = this.getAttribute("href").substring(1);
-      var idx = chapters.findIndex(function(c) { return c.id === href; });
-      if (idx >= 0) showChapter(idx);
-    });
-  });
-
-  // Nav button clicks
-  main.addEventListener("click", function(e) {
-    if (e.target.closest(".prev-chapter")) {
-      e.preventDefault();
-      if (currentIndex > 0) showChapter(currentIndex - 1);
-    }
-    if (e.target.closest(".next-chapter")) {
-      e.preventDefault();
-      if (currentIndex < chapters.length - 1) showChapter(currentIndex + 1);
-    }
-  });
-
-  // Hash handling
-  function checkHash() {
-    var hash = location.hash;
-    if (hash && /^#ch\d+$/.test(hash)) {
-      var id = hash.substring(1);
-      var idx = chapters.findIndex(function(c) { return c.id === id; });
-      if (idx >= 0) setTimeout(function() { showChapter(idx); }, 50);
-    }
-  }
-  window.addEventListener("hashchange", checkHash);
-  checkHash();
-
-  window._chapterSystem = {
-    chapters: chapters,
-    chapterBlocks: chapterBlocks,
-    showChapter: showChapter,
-    getCurrentIndex: function() { return currentIndex; }
-  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 })();
+
 </script>
-
-
 </body>
 </html>

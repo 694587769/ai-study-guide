@@ -26,80 +26,111 @@
   --sidebar-w: 280px;
 }
 /* ===== Dark Mode ===== */
-body.dark-mode {
+html[data-theme="dark"] {
   --bg: #1a1a2e;
-  --bg2: #222240;
-  --surface: #252540;
-  --ink: #e0e0f0;
-  --muted: #9999aa;
-  --rule: #333355;
-  --accent: #6090ff;
-  --accent2: #9d6eff;
-  --accent-light: #1a2a44;
-  --accent2-light: #2a1a44;
-  --success: #34d399;
-  --warning: #fbbf24;
-  --danger: #f87171;
-  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+  --bg2: #2a2a40;
+  --surface: #1e293b;
+  --ink: #e2e8f0;
+  --muted: #94a3b8;
+  --rule: #334155;
+  --accent: #2563eb;
+  --accent2: #7c3aed;
+  --accent-light: #1e3a5f;
+  --accent2-light: #2d1b4e;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.25);
 }
-body.dark-mode .sidebar {
+/* ===== Theme Toggle Button ===== */
+.theme-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--muted);
+  transition: all 0.25s;
+  padding: 0;
+  line-height: 1;
+}
+.theme-toggle:hover {
+  background: var(--bg2);
+  color: var(--accent);
+  box-shadow: var(--shadow);
+}
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  transition: all 0.25s;
+}
+html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+html[data-theme="dark"] .theme-toggle .icon-sun { display: inline; }
+html:not([data-theme="dark"]) .theme-toggle .icon-sun { display: none; }
+html:not([data-theme="dark"]) .theme-toggle .icon-moon { display: inline; }
+
+html[data-theme="dark"] .sidebar {
   background: var(--surface);
   border-right-color: var(--rule);
 }
-body.dark-mode .nav-chapter-toggle:hover {
+html[data-theme="dark"] .nav-chapter-toggle:hover {
   background: var(--bg2);
 }
-body.dark-mode .content-section {
+html[data-theme="dark"] .content-section {
   background: var(--surface);
   border-color: var(--rule);
 }
-body.dark-mode pre {
+html[data-theme="dark"] pre {
   background: var(--bg2);
   border-color: var(--rule);
 }
-body.dark-mode code {
+html[data-theme="dark"] code {
   background: var(--bg2);
 }
-body.dark-mode table th {
+html[data-theme="dark"] table th {
   background: var(--bg2);
 }
-body.dark-mode table td, body.dark-mode table th {
+html[data-theme="dark"] table td, html[data-theme="dark"] table th {
   border-color: var(--rule);
 }
-body.dark-mode blockquote {
+html[data-theme="dark"] blockquote {
   background: var(--bg2);
   border-left-color: var(--accent);
 }
-body.dark-mode .example-box {
+html[data-theme="dark"] .example-box {
   background: var(--bg2);
   border-color: var(--rule);
 }
-body.dark-mode .formula-block {
+html[data-theme="dark"] .formula-block {
   background: var(--bg2);
   border-color: var(--rule);
 }
-body.dark-mode .chart-figure {
+html[data-theme="dark"] .chart-figure {
   background: var(--surface);
   border-color: var(--rule);
 }
-body.dark-mode .search-overlay {
+html[data-theme="dark"] .search-overlay {
   background: rgba(0,0,0,0.7);
 }
-body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
+html[data-theme="dark"] input, html[data-theme="dark"] select, html[data-theme="dark"] textarea {
   background: var(--bg);
   color: var(--ink);
   border-color: var(--rule);
 }
-body.dark-mode .top-anchor {
+html[data-theme="dark"] .top-anchor {
   color: var(--muted);
 }
-body.dark-mode hr {
+html[data-theme="dark"] hr {
   border-color: var(--rule);
 }
-body.dark-mode .toc a {
+html[data-theme="dark"] .toc a {
   color: var(--muted);
 }
-body.dark-mode .toc a:hover {
+html[data-theme="dark"] .toc a:hover {
   color: var(--accent);
 }
 
@@ -136,6 +167,7 @@ body {
   box-shadow: var(--shadow);
 }
 .sidebar-header {
+  position: relative;
   padding: 20px 20px 12px;
   border-bottom: 1px solid var(--rule);
 }
@@ -619,78 +651,33 @@ figcaption {
 
 
 /* ===== Chapter Navigation ===== */
-.chapter-content-block {
-  display: none;
-}
-.chapter-content-block.active {
-  display: block;
-}
+
+
 
 /* Navigation buttons */
-.chapter-nav {
-  display: flex; justify-content: space-between; align-items: center;
-  margin: 60px 0 40px; padding-top: 30px;
-  border-top: 2px solid var(--rule);
-}
-.chapter-nav .nav-btn {
-  padding: 12px 24px;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--ink);
-  text-decoration: none;
-  font-size: 14px; font-weight: 600;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-.chapter-nav .nav-btn:hover {
-  background: var(--accent); color: #fff; border-color: var(--accent);
-}
-.chapter-nav .nav-btn.disabled {
-  opacity: 0.35; pointer-events: none;
-}
-.chapter-nav .nav-label {
-  font-size: 12px; color: var(--muted); display: block;
-}
-.chapter-nav .nav-title {
-  font-size: 14px; font-weight: 600;
-}
-body.dark-mode .chapter-nav { border-top-color: var(--rule); }
-body.dark-mode .chapter-nav .nav-btn {
-  background: var(--surface); border-color: var(--rule); color: var(--ink);
-}
-body.dark-mode .chapter-nav .nav-btn:hover {
-  background: var(--accent); color: #fff; border-color: var(--accent);
-}
+
+
+
+
+
+
+html[data-theme="dark"] 
+html[data-theme="dark"] 
+html[data-theme="dark"] 
 
 /* Word Count Stats */
-.word-count-stats {
-  margin: 16px 0 0; padding: 20px 24px;
-  background: var(--bg2); border-radius: var(--radius);
-  border: 1px solid var(--rule);
-}
-.word-count-stats .stats-title {
-  font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 12px;
-}
-.word-count-stats .stats-row {
-  display: flex; justify-content: space-between;
-  font-size: 13px; color: var(--muted); margin-bottom: 8px;
-}
-.word-count-stats .stats-row:last-child {
-  margin-bottom: 0; font-weight: 600; color: var(--accent);
-}
-.word-count-stats .stats-row span:last-child {
-  font-family: 'GeistMono', monospace;
-}
-body.dark-mode .word-count-stats {
-    background: var(--bg2); border-color: var(--rule);
-  }
 
-  body.dark-mode .data-table tr:hover td {
+
+
+
+
+html[data-theme="dark"] 
+
+  html[data-theme="dark"] .data-table tr:hover td {
     background: #2a3a5c;
   }
 
-  body.dark-mode tr:hover {
+  html[data-theme="dark"] tr:hover {
     background: #2a2a3c;
   }
 
@@ -727,6 +714,11 @@ body.dark-mode .word-count-stats {
   <div class="sidebar-header">
     <h1>Python基础教程</h1>
     <div class="subtitle">Powered by Anqing Peng</div>
+    <button class="theme-toggle" id="themeToggle" title="切换夜间模式" aria-label="切换夜间模式">
+      <span class="icon-sun">&#9788;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+
   </div>
   <nav class="sidebar-nav" id="sidebarNav">
 
@@ -1123,6 +1115,31 @@ else:
 
 <p>运行这段代码，将输出变压器的负载率并根据负载率给出对应的运维建议。这个简单的示例展示了Python程序的几个基本要素：变量定义、数学运算、格式化输出和条件判断。</p>
 
+<div class="formula-block">
+<div class="katex-display">
+<strong>变压器负载率计算公式</strong><br><br>
+<code>η = (P<sub>actual</sub> / S<sub>rated</sub>) × 100%</code>
+</div>
+<div class="formula-caption">
+<strong>公式说明：</strong>负载率是衡量变压器实际运行负荷与额定容量比值的重要指标。<br>
+<strong>变量解释：</strong><code>η</code> — 负载率（%）；<code>P<sub>actual</sub></code> — 变压器实际有功功率（kW）；<code>S<sub>rated</sub></code> — 变压器额定容量（kVA）。<br>
+<strong>电网标准：</strong>一般要求变压器负载率不超过80%，超过85%需加强监测，超过95%应立即采取措施。<br>
+<strong>注意：</strong>计算时需确保实际功率与额定容量的单位一致（均为kW或kVA）。
+</div>
+</div>
+
+<div class="example-box">
+<div class="example-title">代码运行结果</div>
+<pre><code>========================================
+变压器负载率计算
+========================================
+额定容量: 50000 kVA
+实际功率: 37500 kW
+负载率: 75.0%
+注意: 负载率偏高，建议巡检。</code></pre>
+<p>运行结果显示变压器负载率为75.0%，处于"注意"级别，建议安排巡检计划。通过这个简单示例可以看出，Python可以快速将电力设备参数转化为可操作的运维建议。</p>
+</div>
+
 <div class="table-wrap">
 <table class="data-table">
 <caption>表2-1：主流Python开发环境对比</caption>
@@ -1283,6 +1300,27 @@ if device_id % 2 == 0:
 else:
     print(f"设备{device_id}属于B组巡检")</code></pre>
 
+<div class="formula-block">
+<div class="katex-display">
+<strong>功率三角形计算公式</strong><br><br>
+<code>S = √(P² + Q²)</code><br>
+<code>cosφ = P / S</code>
+</div>
+<div class="formula-caption">
+<strong>公式说明：</strong>在交流电力系统中，视在功率、有功功率和无功功率构成功率三角形关系。<br>
+<strong>变量解释：</strong><code>S</code> — 视在功率（kVA），表示电源提供的总功率；<code>P</code> — 有功功率（kW），表示实际做功的功率；<code>Q</code> — 无功功率（kvar），表示电磁场交换的功率。<br>
+<strong>cosφ</strong> — 功率因数，取值范围0~1，越接近1表示电能利用效率越高。电网要求功率因数不低于0.90。<br>
+<strong>物理意义：</strong>用<code>**</code>（幂运算符）和<code>**0.5</code>（等价于开平方根）即可完成功率计算，无需导入math模块。
+</div>
+</div>
+
+<div class="example-box">
+<div class="example-title">代码运行结果</div>
+<pre><code>视在功率: 1044.03 kVA
+功率因数: 0.958
+设备1027属于B组巡检</code></pre>
+</div>
+
 <h4>3.2.2 比较运算符</h4>
 <pre><code># 电压合格率判断
 voltage = 228  # 实测电压（V）
@@ -1297,6 +1335,25 @@ if -7 <= deviation <= 7:
     print("电压合格")
 else:
     print("电压越限，需调整")</code></pre>
+
+<div class="formula-block">
+<div class="katex-display">
+<strong>电压偏差计算公式</strong><br><br>
+<code>ΔV% = (V<sub>measured</sub> - V<sub>rated</sub>) / V<sub>rated</sub> × 100%</code>
+</div>
+<div class="formula-caption">
+<strong>公式说明：</strong>电压偏差是衡量供电质量的核心指标，反映实际电压偏离额定电压的程度。<br>
+<strong>变量解释：</strong><code>ΔV%</code> — 电压偏差百分比；<code>V<sub>measured</sub></code> — 实测电压（V）；<code>V<sub>rated</sub></code> — 额定电压（V）。<br>
+<strong>电网标准：</strong>根据GB/T 12325-2008，10kV及以下三相供电电压允许偏差为额定电压的±7%；220V单相供电电压允许偏差为+7%、-10%。<br>
+<strong>Python技巧：</strong>使用链式比较<code>-7 <= deviation <= 7</code>可一次性判断上下限，比分别写两个条件更简洁高效。
+</div>
+</div>
+
+<div class="example-box">
+<div class="example-title">代码运行结果</div>
+<pre><code>电压偏差: 3.6%
+电压合格</code></pre>
+</div>
 
 <div class="table-wrap">
 <table class="data-table">
@@ -1368,6 +1425,14 @@ is_online = False
 if not is_online:
     print("设备离线，请检查通信链路")</code></pre>
 
+<div class="example-box">
+<div class="example-title">逻辑运算符运行结果</div>
+<pre><code>警告：变压器温度异常
+建议安排巡检
+设备离线，请检查通信链路</code></pre>
+<p>逻辑运算符<code>and</code>、<code>or</code>、<code>not</code>支持短路求值：<code>and</code>遇到第一个False即停止，<code>or</code>遇到第一个True即停止。在电网多条件判断中非常实用。</p>
+</div>
+
 <span class="top-anchor" id="ch3-3"></span>
 <h3>3.3 字符串操作</h3>
 <p>字符串是Python中最常用的数据类型之一，在电网数据处理中，设备名称、变电站名称、告警信息等均以字符串形式存储。</p>
@@ -1391,6 +1456,17 @@ print(alarm.replace("警告", "ALARM"))  # 替换
 # 设备编号拼接
 devices = ["#001", "#002", "#003"]
 print("、".join(devices))  # 输出：#001、#002、#003</code></pre>
+
+<div class="example-box">
+<div class="example-title">字符串操作运行结果</div>
+<pre><code>城东
+11
+True
+1号主变当前油温：75.6℃
+变压器油温过高警告
+变压器油温过高ALARM
+#001、#002、#003</code></pre>
+</div>
 
 <div class="example-box">
 <div class="example-title">电网场景：解析设备命名规则</div>
@@ -1534,6 +1610,44 @@ for line in lines:
 </table>
 </div>
 
+<figure class="chart-figure">
+<figcaption>图3-3：Python类型转换关系图</figcaption>
+<svg width="100%" height="260" viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg">
+  <rect x="220" y="10" width="200" height="40" fill="#2563eb" rx="6"/>
+  <text x="320" y="35" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">类型转换关系</text>
+  <line x1="320" y1="50" x2="320" y2="60" stroke="#666" stroke-width="1.5"/>
+  <rect x="60" y="80" width="120" height="40" fill="#059669" rx="6"/>
+  <text x="120" y="100" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">str 字符串</text>
+  <text x="120" y="115" text-anchor="middle" fill="#fff" font-size="10">str(220) → "220"</text>
+  <rect x="250" y="80" width="120" height="40" fill="#d97706" rx="6"/>
+  <text x="310" y="100" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">int 整数</text>
+  <text x="310" y="115" text-anchor="middle" fill="#fff" font-size="10">int("110") → 110</text>
+  <rect x="440" y="80" width="120" height="40" fill="#7c3aed" rx="6"/>
+  <text x="500" y="100" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">float 浮点数</text>
+  <text x="500" y="115" text-anchor="middle" fill="#fff" font-size="10">float("35.5") → 35.5</text>
+  <line x1="180" y1="100" x2="250" y2="100" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="215" y="92" text-anchor="middle" fill="#dc2626" font-size="9">int()</text>
+  <line x1="370" y1="100" x2="440" y2="100" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="405" y="92" text-anchor="middle" fill="#dc2626" font-size="9">float()</text>
+  <line x1="250" y1="120" x2="180" y2="120" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="215" y="135" text-anchor="middle" fill="#0891b2" font-size="9">str()</text>
+  <line x1="440" y1="120" x2="370" y2="120" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="405" y="135" text-anchor="middle" fill="#0891b2" font-size="9">str()</text>
+  <rect x="60" y="160" width="120" height="40" fill="#dc2626" rx="6"/>
+  <text x="120" y="180" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">list 列表</text>
+  <text x="120" y="195" text-anchor="middle" fill="#fff" font-size="10">list("abc") → ["a","b","c"]</text>
+  <rect x="250" y="160" width="120" height="40" fill="#dc2626" rx="6"/>
+  <text x="310" y="180" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">tuple 元组</text>
+  <text x="310" y="195" text-anchor="middle" fill="#fff" font-size="10">tuple([1,2]) → (1,2)</text>
+  <rect x="440" y="160" width="120" height="40" fill="#dc2626" rx="6"/>
+  <text x="500" y="180" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">dict 字典</text>
+  <text x="500" y="195" text-anchor="middle" fill="#fff" font-size="10">dict([("k","v")])</text>
+  <line x1="180" y1="180" x2="250" y2="180" stroke="#666" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="370" y1="180" x2="440" y2="180" stroke="#666" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="320" y="235" text-anchor="middle" fill="#666" font-size="11">箭头方向 = 转换方向 | 虚线 = 可互相转换</text>
+</svg>
+</figure>
+
 <div class="example-box">
 <div class="example-title">电网场景：解析SCADA遥测字符串</div>
 <p>SCADA系统常以逗号分隔的字符串格式上报遥测数据，如"2024-07-06,110kV城东线,Load,85.6,MW"。需要将其解析为结构化的字典，便于后续分析。</p>
@@ -1609,6 +1723,19 @@ def check_status(H2, C2H2, total_hc):
 
 result = check_status(H2, C2H2, total_hc)
 print(f"变压器状态评估: {result}")</code></pre>
+
+<div class="example-box">
+<div class="example-title">Three-ratio法诊断输出示例</div>
+<pre><code>油中溶解气体分析 (DGA):
+  H2含量: 180 ppm
+  C2H2含量: 25 ppm
+  CH4: 80 ppm, C2H4: 120 ppm, C2H6: 60 ppm
+总烃: 285 ppm
+
+编码结果: 1 0 2
+诊断结论: 高温过热（>700°C）</code></pre>
+<p>注：以上为Three-ratio法（IEC 60599）的典型诊断输出，编码规则为：第一位为CH4/H2比值编码，第二位为C2H4/C2H6比值编码，第三位为C2H2/C2H4比值编码。</p>
+</div>
 </div>
 
 <span class="top-anchor" id="ch4-2"></span>
@@ -1628,6 +1755,20 @@ for i in range(len(rated_currents)):
 for idx, (rated, actual) in enumerate(zip(rated_currents, actual_currents), 1):
     load_rate = actual / rated * 100
     print(f"线路{idx}: {actual}/{rated}A = {load_rate:.1f}%")</code></pre>
+
+<div class="example-box">
+<div class="example-title">代码运行结果</div>
+<pre><code>线路1: 负载率 75.0% [正常]
+线路2: 负载率 86.7% [正常]
+线路3: 负载率 92.0% [正常]
+线路4: 负载率 87.5% [正常]
+线路5: 负载率 114.3% [超载]
+线路1: 150/200A = 75.0%
+线路2: 260/300A = 86.7%
+线路3: 230/250A = 92.0%
+线路4: 350/400A = 87.5%
+线路5: 400/350A = 114.3%</code></pre>
+</div>
 
 <h4>4.2.1 range()函数</h4>
 <pre><code># range(start, stop, step)
@@ -1889,6 +2030,13 @@ rate2 = calc_load_rate(42000, 50000)
 print(f"变压器1负载率: {rate1:.1f}%")
 print(f"变压器2负载率: {rate2:.1f}%")</code></pre>
 
+<div class="example-box">
+<div class="example-title">代码运行结果</div>
+<pre><code>变压器1负载率: 75.0%
+变压器2负载率: 84.0%</code></pre>
+<p>函数<code>calc_load_rate</code>接收实参后按公式计算并返回结果。使用类型注解<code>float</code>可以让IDE提供更好的代码补全和类型检查。</p>
+</div>
+
 <div class="callout">
 <div class="callout-title">文档字符串（Docstring）</div>
 <p>函数体第一行使用三引号括起来的字符串称为文档字符串，用于描述函数的功能、参数和返回值。这是一种良好的编程习惯，可以使用<code>help(calc_load_rate)</code>查看函数文档。在电网项目中，清晰的文档字符串有助于团队协作和代码维护。</p>
@@ -1916,6 +2064,20 @@ print(f"线损: {loss1:.0f} W")
 # 关键字参数调用（推荐，更清晰）
 loss2 = calc_line_loss(current=200, resistance=0.17, length=15)
 print(f"线损: {loss2:.0f} W")</code></pre>
+
+<div class="formula-block">
+<div class="katex-display">
+<strong>三相线路功率损耗计算公式</strong><br><br>
+<code>P<sub>loss</sub> = 3 × I² × R × L</code>
+</div>
+<div class="formula-caption">
+<strong>公式说明：</strong>该公式计算三相交流输电线路的电阻性功率损耗（焦耳热损耗），是评估线路经济运行的重要指标。<br>
+<strong>变量解释：</strong><code>P<sub>loss</sub></code> — 线路功率损耗（W）；<code>I</code> — 线路电流（A）；<code>R</code> — 单位长度电阻（Ω/km）；<code>L</code> — 线路长度（km）。<br>
+<strong>系数3：</strong>代表三相系统，每相都产生相同的损耗，因此总损耗为单相的3倍。<br>
+<strong>物理意义：</strong>损耗与电流的平方成正比（<code>I²</code>），因此降低线路电流（如提高电压等级）是减少线损的最有效手段。<br>
+<strong>代码示例结果：</strong>当电流200A、电阻0.17Ω/km、长度15km时，线损为<code>306,000W</code>（即306kW）。
+</div>
+</div>
 
 <h4>5.2.2 默认参数</h4>
 <pre><code># 默认参数：电压合格率计算
@@ -2036,6 +2198,20 @@ def calc_voltage_drop(i, r, x, cos_phi):
 # from power_utils import calc_apparent_power, calc_power_factor
 # S = calc_apparent_power(1000, 300)
 # pf = calc_power_factor(1000, S)</code></pre>
+
+<div class="formula-block">
+<div class="katex-display">
+<strong>线路电压降计算公式</strong><br><br>
+<code>ΔU = I × (R·cosφ + X·sinφ)</code>
+</div>
+<div class="formula-caption">
+<strong>公式说明：</strong>该公式计算交流线路中由电阻和电抗共同引起的电压降，是电力系统设计和运行分析的基础公式。<br>
+<strong>变量解释：</strong><code>ΔU</code> — 线路电压降（V）；<code>I</code> — 线路电流（A）；<code>R</code> — 线路总电阻（Ω）；<code>X</code> — 线路总电抗（Ω）；<code>cosφ</code> — 功率因数。<br>
+<strong>sinφ 计算：</strong>由三角恒等式 <code>sinφ = √(1 - cos²φ)</code> 推导，无需额外传入参数。<br>
+<strong>物理意义：</strong>电压降由电阻分量（<code>I·R·cosφ</code>）和电抗分量（<code>I·X·sinφ</code>）两部分组成，分别对应有功和无功功率引起的压降。<br>
+<strong>电网标准：</strong>根据DL/T 5222-2005，35kV及以上线路电压降不宜超过额定电压的5%。
+</div>
+</div>
 </div>
 
 <div class="table-wrap">
@@ -2200,6 +2376,15 @@ with open("transformer_data.csv", "r", encoding="utf-8-sig") as f:
         print(f"  {row['时间']} | 油温: {row['油温']}℃ | 负载率: {row['负载率']}% | {row['状态']}")</code></pre>
 
 <div class="example-box">
+<div class="example-title">代码运行结果</div>
+<pre><code>变压器温度变化趋势：
+  2024-01-15 08:00 | 油温: 72.5℃ | 负载率: 75.0% | 正常
+  2024-01-15 09:00 | 油温: 73.0℃ | 负载率: 78.0% | 正常
+  2024-01-15 10:00 | 油温: 75.5℃ | 负载率: 82.0% | 注意
+  2024-01-15 11:00 | 油温: 78.0℃ | 负载率: 85.0% | 警告</code></pre>
+</div>
+
+<div class="example-box">
 <div class="example-title">电网场景：批量处理SCADA导出数据</div>
 <p>SCADA系统通常支持导出CSV格式的历史数据。以下代码读取导出的电压数据，筛选出电压越限的时间点：</p>
 <pre><code>import csv
@@ -2224,11 +2409,21 @@ print(f"发现{len(violations)}条电压越限记录：")
 for v in violations:
     direction = "偏高" if v["电压"] > 220 else "偏低"
     print(f"  {v['时间']} | {v['电压']}V ({direction}{v['偏差']})")</code></pre>
+
+<div class="example-box">
+<div class="example-title">SCADA电压越限检测输出示例</div>
+<pre><code>发现4条电压越限记录：
+  2024-01-15 10:00 | 245.0V (偏高11.4%)
+  2024-01-15 15:00 | 195.0V (偏低-11.4%)
+  2024-01-15 19:00 | 248.0V (偏高12.7%)
+  2024-01-15 21:00 | 192.0V (偏低-12.7%)</code></pre>
+<p>输出解读：上午10时和晚上19时出现电压偏高（可能为无功补偿不足），下午15时和晚上21时出现电压偏低（可能为负荷高峰导致），需要调整变压器分接头或无功补偿策略。</p>
+</div>
 </div>
 
 <span class="top-anchor" id="ch6-3"></span>
 <h3>6.3 JSON文件处理</h3>
-<p>JSON（JavaScript Object Notation）是一种轻量级数据交换格式，广泛用于API接口和配置文件。Python的<code>JSON</code>模块提供了完整的JSON处理能力。</p>
+<p>JSON（JavaScript Object Notation）是一种轻量级数据交换格式，广泛用于API接口和配置文件。Python的<code>json</code>模块提供了完整的JSON处理能力。</p>
 
 <pre><code>import json
 
@@ -2260,11 +2455,11 @@ config = {
     ]
 }
 
-with open("station_config.JSON", "w", encoding="utf-8") as f:
+with open("station_config.json", "w", encoding="utf-8") as f:
     json.dump(config, f, ensure_ascii=False, indent=2)
 
 # 读取JSON：加载配置
-with open("station_config.JSON", "r", encoding="utf-8") as f:
+with open("station_config.json", "r", encoding="utf-8") as f:
     loaded_config = json.load(f)
 
 print(f"变电站: {loaded_config['station_name']}")
@@ -2297,6 +2492,15 @@ from collections import Counter
 type_counts = Counter(d["type"] for d in data["devices"])
 print(f"设备统计: {dict(type_counts)}")
 print(f"运行中设备: {sum(1 for d in data['devices'] if d['status']=='运行')}台")</code></pre>
+
+<div class="example-box">
+<div class="example-title">JSON台账解析输出示例</div>
+<pre><code>变电站: 城东变
+总设备数: 6 台
+设备统计: {'变压器': 2, '断路器': 4}
+运行中设备: 5 台</code></pre>
+<p>使用JSON格式存储设备台账可以清晰表示层次关系，便于Python解析，可快速生成设备运行统计表。</p>
+</div>
 </div>
 
 <span class="top-anchor" id="ch6-4"></span>
@@ -2351,6 +2555,17 @@ print(f"{'站名':<10} {'行数':>6} {'状态':<12}")
 print("-" * 30)
 for r in results:
     print(f"{r['站名']:<10} {r['数据行数']:>6} {r['状态']:<12}")</code></pre>
+
+<div class="example-box">
+<div class="example-title">批量数据处理输出示例</div>
+<pre><code>站名         行数 状态
+------------------------------
+城东变        345 成功
+城南变        278 成功
+城西变          0 文件缺失
+城北变        412 成功</code></pre>
+<p>使用异常处理机制，即使城西变的数据文件缺失，其他三个变电站的数据处理仍然正常完成，保证了批处理任务的健壮性。</p>
+</div>
 </div>
 
 <div class="table-wrap">
@@ -2422,6 +2637,36 @@ for r in results:
 <tr><td>Latin-1</td><td>不支持中文</td><td>1字节/字符</td><td>覆盖西欧语言</td><td>部分欧洲进口设备日志</td></tr>
 </table>
 </div>
+
+<figure class="chart-figure">
+<figcaption>图6-3：数据文件处理管道示意图</figcaption>
+<svg width="100%" height="200" viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="20" width="100" height="50" fill="#2563eb" rx="6"/>
+  <text x="60" y="42" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">原始数据</text>
+  <text x="60" y="58" text-anchor="middle" fill="#fff" font-size="9">CSV/JSON/TXT</text>
+  <polygon points="115,45 130,35 130,55" fill="#666"/>
+  <rect x="135" y="20" width="100" height="50" fill="#059669" rx="6"/>
+  <text x="185" y="42" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">编码检测</text>
+  <text x="185" y="58" text-anchor="middle" fill="#fff" font-size="9">UTF-8/GBK</text>
+  <polygon points="240,45 255,35 255,55" fill="#666"/>
+  <rect x="260" y="20" width="100" height="50" fill="#d97706" rx="6"/>
+  <text x="310" y="42" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">数据解析</text>
+  <text x="310" y="58" text-anchor="middle" fill="#fff" font-size="9">csv.DictReader</text>
+  <polygon points="365,45 380,35 380,55" fill="#666"/>
+  <rect x="385" y="20" width="100" height="50" fill="#7c3aed" rx="6"/>
+  <text x="435" y="42" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">数据清洗</text>
+  <text x="435" y="58" text-anchor="middle" fill="#fff" font-size="9">去重/填充/转换</text>
+  <polygon points="490,45 505,35 505,55" fill="#666"/>
+  <rect x="510" y="20" width="100" height="50" fill="#dc2626" rx="6"/>
+  <text x="560" y="42" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">结果输出</text>
+  <text x="560" y="58" text-anchor="middle" fill="#fff" font-size="9">报告/图表/数据库</text>
+  <rect x="80" y="100" width="480" height="36" fill="#f0f0f5" rx="6" stroke="#666"/>
+  <text x="320" y="123" text-anchor="middle" fill="#333" font-size="12">异常处理层（try-except-finally）贯穿整个管道</text>
+  <line x1="80" y1="100" x2="80" y2="70" stroke="#666" stroke-width="1" stroke-dasharray="4,2"/>
+  <line x1="560" y1="100" x2="560" y2="70" stroke="#666" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="320" y="165" text-anchor="middle" fill="#666" font-size="11">典型电网应用：SCADA数据导出 → 编码转换 → 数值提取 → 异常过滤 → 生成巡检报告</text>
+</svg>
+</figure>
 
 <div class="example-box">
 <div class="example-title">电网场景：批量转换历史数据文件编码</div>
@@ -2522,6 +2767,14 @@ print(f"设备编号: {device.group(1)}")
 # 提取所有数值
 values = re.findall(r'\d+\.?\d*', log_entry)
 print(f"提取的数值: {values}")</code></pre>
+
+<div class="example-box">
+<div class="example-title">代码运行结果</div>
+<pre><code>时间戳: 2024-01-15 09:30:45
+设备编号: TR-001
+提取的数值: ['2024', '01', '15', '09', '30', '45', '001', '72.5', '85.0']</code></pre>
+<p>注意：<code>findall</code>返回的数值列表包含了日期、时间、设备编号中的数字部分，实际使用时需要根据位置或上下文进行筛选。</p>
+</div>
 </div>
 
 <span class="top-anchor" id="ch7-2"></span>
@@ -2628,6 +2881,16 @@ def validate_device_id(device_id):
 test_ids = ["TR-2024-001", "CB-110-005", "PT-220-003", "XX-123-456", "TR-24-001"]
 for tid in test_ids:
     print(validate_device_id(tid))</code></pre>
+
+<div class="example-box">
+<div class="example-title">代码运行结果</div>
+<pre><code>有效: TR-2024-001 (变压器)
+有效: CB-110-005 (断路器)
+有效: PT-220-003 (电压互感器)
+无效: XX-123-456
+无效: TR-24-001</code></pre>
+<p>解析：<code>XX-123-456</code>未匹配任何已知设备类型模式；<code>TR-24-001</code>年份为2位而非4位，不符合<code>\d{4}</code>要求。</p>
+</div>
 </div>
 
 <span class="top-anchor" id="ch7-3"></span>
@@ -3125,6 +3388,22 @@ plt.show()</code></pre>
 </svg>
 </figure>
 
+<figure class="chart-figure">
+<figcaption>图8-1b：Matplotlib图形结构解析</figcaption>
+<svg width="100%" height="280" viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+  <rect x="30" y="20" width="540" height="220" fill="#fafafa" stroke="#2563eb" stroke-width="2" rx="4"/>
+  <text x="300" y="14" text-anchor="middle" fill="#2563eb" font-size="13" font-weight="bold">Figure（画布）</text>
+  <rect x="50" y="40" width="500" height="180" fill="#fff" stroke="#059669" stroke-width="1.5" rx="3"/>
+  <text x="300" y="34" text-anchor="middle" fill="#059669" font-size="11" font-weight="bold">Axes（坐标轴区域）</text>
+  <polyline points="70,180 100,170 150,140 200,120 250,100 300,80 350,70 400,75 450,85 500,100 520,110" fill="none" stroke="#dc2626" stroke-width="2"/>
+  <text x="300" y="120" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="bold">plot() — 数据曲线</text>
+  <text x="300" y="210" text-anchor="middle" fill="#666" font-size="10">xlabel() — X轴标签</text>
+  <text x="85" y="130" text-anchor="middle" fill="#666" font-size="10" transform="rotate(-90,85,130)">ylabel() — Y轴标签</text>
+  <text x="300" y="250" text-anchor="middle" fill="#7c3aed" font-size="11" font-weight="bold">title() — 图表标题</text>
+  <text x="300" y="270" text-anchor="middle" fill="#666" font-size="10">legend() — 图例 | grid() — 网格 | savefig() — 保存</text>
+</svg>
+</figure>
+
 <span class="top-anchor" id="ch8-2"></span>
 <h3>8.2 Seaborn统计绘图</h3>
 <p>Seaborn是基于Matplotlib的高级统计绘图库，提供了更美观的默认样式和更简洁的API，特别适合统计数据的可视化分析。安装命令：<code>pip install seaborn</code>。</p>
@@ -3227,7 +3506,7 @@ plt.show()</code></pre>
 
 <div class="callout warn">
 <div class="callout-title">turtle模块说明</div>
-<p>turtle模块是Python标准库的一部分，无需额外安装。在Jupyter Notebook中需先执行 <code>%Matplotlib inline</code> 或使用 <code>turtle.Screen()</code> 的替代方案。以下代码在标准Python环境中可直接运行。</p>
+<p>turtle模块是Python标准库的一部分，无需额外安装。在Jupyter Notebook中需先执行 <code>%matplotlib inline</code> 或使用 <code>turtle.Screen()</code> 的替代方案。以下代码在标准Python环境中可直接运行。</p>
 </div>
 
 <h4>8.3.1 基本图形</h4>
@@ -3263,12 +3542,27 @@ t.end_fill()
 t.hideturtle()
 turtle.done()</code></pre>
 
+<figure class="chart-figure">
+<figcaption>图8-3：Turtle绘制的导线截面示意图</figcaption>
+<svg width="100%" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="150" cy="100" r="60" fill="none" stroke="#333" stroke-width="2"/>
+  <circle cx="150" cy="100" r="30" fill="none" stroke="#dc2626" stroke-width="2"/>
+  <circle cx="150" cy="100" r="5" fill="#2563eb" stroke="none"/>
+  <text x="150" y="180" text-anchor="middle" fill="#333" font-size="11">外圈: 导线外径 | 红圈: 导体内芯 | 蓝点: 中心</text>
+</svg>
+</figure>
+
+<div class="example-box">
+<div class="example-title">Turtle绘图输出说明</div>
+<p>运行上述代码，Turtle将在独立窗口中绘制出导线截面示意图。图中包含三个同心元素：外圈代表导线外径（黑色）、内圈代表导体内芯（红色）、中心点代表导线中心（蓝色）。这种可视化方式适合用于制作电网设备培训教材中的示意图。</p>
+</div>
+
 <div class="callout">
 <div class="callout-title">输出说明</div>
 <p>上述代码使用turtle绘制了导线截面示意图：外圈表示绝缘层（大圆），红色内圈表示导体层（中圆），蓝色中心表示导线线芯（小圆）。turtle绘图通过坐标定位和基本几何图形组合，可以绘制出电网设备原理示意图。</p>
 </div>
 
-<h4>7.3.2 递归图形（分形树）</h4>
+<h4>8.3.2 递归图形（分形树）</h4>
 <p>递归是turtle绘图的经典应用，可用于绘制分形树、科赫雪花等自相似图形，在电网中可用于分析线路拓扑的分形特征。</p>
 
 <pre><code>import turtle
@@ -3390,7 +3684,7 @@ plt.rcParams.update({
     'savefig.bbox_inches': 'tight'
 })</code></pre>
 
-<h4>7.4.3 保存图片</h4>
+<h4>8.4.3 保存图片</h4>
 <p>使用 <code>savefig()</code> 将图表保存为文件，支持PNG、PDF、SVG等格式：</p>
 
 <pre><code>plt.figure(figsize=(10, 5))
@@ -3717,6 +4011,21 @@ print(f"\n负荷曲线特征: 典型双峰曲线，早高峰{stats['最大负荷
       f"低谷出现在{stats['最小负荷时刻']}为{stats['最小负荷']}MW。")
 </code></pre>
 
+<div class="formula-block">
+<div class="katex-display">
+<strong>电力负荷分析核心公式</strong><br><br>
+<code>负荷率 = (P<sub>avg</sub> / P<sub>max</sub>) × 100%</code><br>
+<code>峰谷差率 = (P<sub>max</sub> - P<sub>min</sub>) / P<sub>max</sub> × 100%</code><br>
+<code>异常判定：|ΔP| / P<sub>prev</sub> > 15%</code>
+</div>
+<div class="formula-caption">
+<strong>公式说明：</strong>负荷率反映电网设备利用效率，峰谷差率反映负荷波动幅度。<br>
+<strong>变量解释：</strong><code>P<sub>avg</sub></code> — 平均负荷（MW）；<code>P<sub>max</sub></code> — 最大负荷（MW）；<code>P<sub>min</sub></code> — 最小负荷（MW）；<code>ΔP</code> — 相邻时刻负荷变化量；<code>P<sub>prev</sub></code> — 前一时刻负荷值。<br>
+<strong>电网标准：</strong>负荷率越接近100%说明设备利用率越高；峰谷差率越小说明负荷越平稳，有利于电网经济运行。<br>
+<strong>Python实现：</strong>使用<code>max()</code>、<code>min()</code>、<code>sum()</code>内置函数配合列表推导式即可高效完成所有统计计算。
+</div>
+</div>
+
 <span class="top-anchor" id="ch9-3"></span>
 <h3>9.3 线路巡检数据批量处理</h3>
 <p>本案例模拟电网运维中最常见的场景——批量处理多条线路的巡检数据，按电压等级分组统计，识别需要重点关注的高风险线路。</p>
@@ -3938,10 +4247,10 @@ print(manager.export_report())
 <table class="data-table">
 <caption>表9-1：典型案例知识点汇总</caption>
 <tr><th>案例</th><th>核心知识点</th><th>数据格式</th><th>输出结果</th></tr>
-<tr><td>8.1 变压器温度监测</td><td>列表、字典、函数、条件判断</td><td>列表嵌套字典</td><td>日报报告、状态评估</td></tr>
-<tr><td>8.2 电力负荷统计</td><td>列表操作、数学统计、异常检测</td><td>96点负荷数组</td><td>负荷指标、异常标记</td></tr>
-<tr><td>8.3 巡检数据批量处理</td><td>循环遍历、条件评分、分组统计</td><td>设备字典列表</td><td>风险评级、分组报告</td></tr>
-<tr><td>8.4 设备台账自动化</td><td>面向对象、类设计、CRUD操作</td><td>设备对象列表</td><td>台账报表、统计汇总</td></tr>
+<tr><td>9.1 变压器温度监测</td><td>列表、字典、函数、条件判断</td><td>列表嵌套字典</td><td>日报报告、状态评估</td></tr>
+<tr><td>9.2 电力负荷统计</td><td>列表操作、数学统计、异常检测</td><td>96点负荷数组</td><td>负荷指标、异常标记</td></tr>
+<tr><td>9.3 巡检数据批量处理</td><td>循环遍历、条件评分、分组统计</td><td>设备字典列表</td><td>风险评级、分组报告</td></tr>
+<tr><td>9.4 设备台账自动化</td><td>面向对象、类设计、CRUD操作</td><td>设备对象列表</td><td>台账报表、统计汇总</td></tr>
 </table>
 </div>
 
@@ -4004,7 +4313,7 @@ const navLinks = document.querySelectorAll('.nav-sections a');
 const sections = document.querySelectorAll('.top-anchor');
 
 // onScroll disabled - single chapter mode
-function onScroll() { return; }
+
 // window.addEventListener('scroll', onScroll);
 onScroll();
 
@@ -4136,16 +4445,7 @@ onScroll();
       item.addEventListener('click', function() {
         var el = result.element;
         // Check if element is inside a hidden chapter-content-block
-        if (window._chapterSystem) {
-          var blocks = window._chapterSystem.chapterBlocks;
-          for (var i = 0; i < blocks.length; i++) {
-            if (blocks[i].contains(el) && !blocks[i].classList.contains('active')) {
-              // Show the chapter first, then scroll
-              (function(idx, targetEl) {
-                window._chapterSystem.showChapter(idx);
-                // Wait for DOM update + display to take effect
-                setTimeout(function() {
-                  targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        );
                   highlightElement(targetEl);
                 }, 200);
               })(i, el);
@@ -4218,28 +4518,7 @@ onScroll();
 
 <style>
 /* ===== Dark Mode Toggle (floating) ===== */
-.dark-toggle-float {
-  position: fixed;
-  right: 20px;
-  top: 200px;
-  transform: none;
-  z-index: 9999;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--rule);
-  background: var(--surface);
-  color: var(--muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2em;
-  box-shadow: var(--shadow);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  outline: none;
-  font-family: inherit;
-}
+
 .dark-toggle-float:hover {
   background: var(--accent);
   color: #fff;
@@ -4249,222 +4528,68 @@ onScroll();
 .dark-toggle-float:active {
   transform: translateY(-50%) scale(0.95);
 }
-body.dark-mode .dark-toggle-float {
-  background: var(--surface);
-  border-color: var(--rule);
-  color: var(--warning);
-}
-body.dark-mode .dark-toggle-float:hover {
-  background: var(--warning);
-  color: #1a1a2e;
-  border-color: var(--warning);
-}
+html[data-theme="dark"] 
+
 @media (max-width: 768px) {
-  .dark-toggle-float {
-    right: 10px;
-    width: 40px;
-    height: 40px;
-  }
+  
 }
 </style>
-<button id="dark-toggle-float" class="dark-toggle-float" title="切换夜间模式">☽</button>
+
+
+
+
+
 <script>
+// ===== Theme Toggle =====
 (function() {
-  var isDark = false;
-  var btn = document.getElementById('dark-toggle-float');
-  function apply() {
-    if (isDark) {
-      document.body.classList.add('dark-mode');
-      btn.innerHTML = '☀';
-      btn.title = '切换日间模式';
+  const STORAGE_KEY = 'ai-study-theme';
+  const html = document.documentElement;
+  const toggleBtn = document.getElementById('themeToggle');
+
+  const savedTheme = localStorage.getItem(STORAGE_KEY);
+  if (savedTheme === 'dark') {
+    html.setAttribute('data-theme', 'dark');
+  } else {
+    html.removeAttribute('data-theme');
+  }
+
+  toggleBtn.addEventListener('click', function() {
+    if (html.hasAttribute('data-theme')) {
+      html.removeAttribute('data-theme');
+      localStorage.setItem(STORAGE_KEY, 'light');
     } else {
-      document.body.classList.remove('dark-mode');
-      btn.innerHTML = '☽';
-      btn.title = '切换夜间模式';
+      html.setAttribute('data-theme', 'dark');
+      localStorage.setItem(STORAGE_KEY, 'dark');
     }
-  }
-  btn.addEventListener('click', function() {
-    isDark = !isDark;
-    apply();
   });
-  // 默认暖色调
-  apply();
 })();
 </script>
-
 <script>
-/* ===== Chapter Navigation System ===== */
+
+// Sidebar navigation active state
 (function() {
-  var main = document.querySelector(".main");
-  if (!main) return;
+  const navLinks = document.querySelectorAll('.nav-sections a');
+  const anchors = document.querySelectorAll('.top-anchor');
 
-  var allH2s = Array.from(main.querySelectorAll("h2"));
-  if (allH2s.length === 0) return;
-
-  var chapters = [];
-  allH2s.forEach(function(h2) {
-    var prev = h2.previousElementSibling;
-    var chId = "";
-    if (prev && prev.classList.contains("top-anchor")) {
-      chId = prev.id;
-    }
-    if (chId && /^ch\d+$/.test(chId)) {
-      chapters.push({ id: chId, h2: h2, title: h2.textContent });
-    }
-  });
-
-  if (chapters.length === 0) return;
-
-  var chapterBlocks = [];
-  for (var i = 0; i < chapters.length; i++) {
-    var block = document.createElement("div");
-    block.className = "chapter-content-block";
-    block.dataset.ch = chapters[i].id;
-
-    var el = chapters[i].h2.previousElementSibling;
-    if (!el) el = chapters[i].h2;
-    var endEl = (i < chapters.length - 1) ? chapters[i + 1].h2.previousElementSibling : null;
-    if (!endEl) endEl = main.lastElementChild;
-
-    var nodes = [];
-    var n = el;
-    while (n) {
-      nodes.push(n);
-      if (n === endEl) break;
-      n = n.nextElementSibling;
-    }
-
-    nodes.forEach(function(node) { block.appendChild(node); });
-    chapterBlocks.push(block);
-  }
-
-  // Insert blocks in order
-  for (var j = chapterBlocks.length - 1; j >= 0; j--) {
-    main.insertBefore(chapterBlocks[j], main.firstChild);
-  }
-
-  var currentIndex = 0;
-  chapterBlocks[0].classList.add("active");
-
-  function countWords(block) {
-    var text = block.textContent || "";
-    var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
-    var english = text.replace(/[\u4e00-\u9fa5]/g, " ").split(/\s+/).filter(function(w) { return w.length > 0; }).length;
-    return chinese + english;
-  }
-
-  function readingTime(words) {
-    return Math.max(1, Math.round(words / 300));
-  }
-
-  var chapterWords = chapterBlocks.map(function(b) { return countWords(b); });
-  var totalWords = chapterWords.reduce(function(a, b) { return a + b; }, 0);
-  var totalTime = readingTime(totalWords);
-
-  function buildNavHTML() {
-    var prevTitle = currentIndex > 0 ? chapters[currentIndex - 1].title : "—";
-    var nextTitle = currentIndex < chapters.length - 1 ? chapters[currentIndex + 1].title : "—";
-    var prevDisabled = currentIndex === 0 ? " disabled" : "";
-    var nextDisabled = currentIndex === chapters.length - 1 ? " disabled" : "";
-    return "<div class=\"chapter-nav\">" +
-      "<a class=\"nav-btn prev-chapter" + prevDisabled + "\"><span class=\"nav-label\">← 上一章</span><span class=\"nav-title\">" + prevTitle + "</span></a>" +
-      "<a class=\"nav-btn next-chapter" + nextDisabled + "\"><span class=\"nav-label\">下一章 →</span><span class=\"nav-title\">" + nextTitle + "</span></a>" +
-      "</div>";
-  }
-
-  function buildStatsHTML() {
-    var cw = chapterWords[currentIndex];
-    var ct = readingTime(cw);
-    return "<div class=\"word-count-stats\">" +
-      "<div class=\"stats-title\">📊 统计信息</div>" +
-      "<div class=\"stats-row\"><span>本章字数</span><span>" + cw + " 字</span></div>" +
-      "<div class=\"stats-row\"><span>本章预计阅读</span><span>" + ct + " 分钟</span></div>" +
-      "<div class=\"stats-row\"><span>全文字数</span><span>" + totalWords + " 字</span></div>" +
-      "<div class=\"stats-row\"><span>全文预计阅读</span><span>" + totalTime + " 分钟</span></div>" +
-      "</div>";
-  }
-
-  // Insert nav + stats
-  var navContainer = document.createElement("div");
-  navContainer.className = "chapter-nav-container";
-  navContainer.innerHTML = buildStatsHTML() + buildNavHTML();
-  main.appendChild(navContainer);
-
-  function showChapter(index) {
-    if (index < 0 || index >= chapterBlocks.length) return;
-    currentIndex = index;
-    chapterBlocks.forEach(function(b, i) {
-      b.classList.toggle("active", i === index);
+  function onScroll() {
+    let current = '';
+    anchors.forEach(function(sec) {
+      const top = sec.getBoundingClientRect().top;
+      if (top <= 60) current = sec.id;
     });
-
-    // Update nav + stats
-    var cnt = main.querySelector(".chapter-nav-container");
-    if (cnt) {
-      cnt.innerHTML = buildStatsHTML() + buildNavHTML();
-    }
-
-    // Update sidebar
-    document.querySelectorAll(".nav-sections a").forEach(function(a) {
-      a.classList.remove("nav-active-chapter");
+    navLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+        const chapter = link.closest('.nav-chapter');
+        if (chapter) chapter.classList.add('open');
+      }
     });
-    var sidebarLink = document.querySelector(".nav-sections a[href=\"#" + chapters[index].id + "\"]");
-    if (sidebarLink) {
-      sidebarLink.classList.add("nav-active-chapter");
-      var chapterToggle = sidebarLink.closest(".nav-chapter");
-      if (chapterToggle) chapterToggle.classList.add("open");
-    }
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-    // Resize charts after switch
-    setTimeout(function() {
-      if (typeof resizeAllCharts === "function") resizeAllCharts();
-    }, 300);
   }
-
-  // Sidebar clicks
-  document.querySelectorAll(".nav-sections a[href^=\"#ch\"]").forEach(function(link) {
-    link.addEventListener("click", function(e) {
-      e.preventDefault();
-      var href = this.getAttribute("href").substring(1);
-      var idx = chapters.findIndex(function(c) { return c.id === href; });
-      if (idx >= 0) showChapter(idx);
-    });
-  });
-
-  // Nav button clicks
-  main.addEventListener("click", function(e) {
-    if (e.target.closest(".prev-chapter")) {
-      e.preventDefault();
-      if (currentIndex > 0) showChapter(currentIndex - 1);
-    }
-    if (e.target.closest(".next-chapter")) {
-      e.preventDefault();
-      if (currentIndex < chapters.length - 1) showChapter(currentIndex + 1);
-    }
-  });
-
-  // Hash handling
-  function checkHash() {
-    var hash = location.hash;
-    if (hash && /^#ch\d+$/.test(hash)) {
-      var id = hash.substring(1);
-      var idx = chapters.findIndex(function(c) { return c.id === id; });
-      if (idx >= 0) setTimeout(function() { showChapter(idx); }, 50);
-    }
-  }
-  window.addEventListener("hashchange", checkHash);
-  checkHash();
-
-  window._chapterSystem = {
-    chapters: chapters,
-    chapterBlocks: chapterBlocks,
-    showChapter: showChapter,
-    getCurrentIndex: function() { return currentIndex; }
-  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 })();
+
 </script>
-
-
 </body>
 </html>
