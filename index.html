@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anqing Peng — 学习资料库</title>
+<style>
+/* ===== CSS Variables ===== */
+:root {
+  --bg: #f8f9fb;
+  --bg2: #eef0f5;
+  --surface: #ffffff;
+  --ink: #1a1a2e;
+  --muted: #6b7280;
+  --rule: #e5e7eb;
+  --accent: #2563eb;
+  --accent2: #7c3aed;
+  --accent-light: #eff6ff;
+  --accent2-light: #f3e8ff;
+  --success: #059669;
+  --warning: #d97706;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,0.08);
+}
+html[data-theme="dark"] {
+  --bg: #0f172a;
+  --bg2: #1e293b;
+  --surface: #1e293b;
+  --ink: #e2e8f0;
+  --muted: #94a3b8;
+  --rule: #334155;
+  --accent: #3b82f6;
+  --accent2: #8b5cf6;
+  --accent-light: #1e3a5f;
+  --accent2-light: #2d1b4e;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+/* ===== Header ===== */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule);
+  padding: 24px 0;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+}
+.header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.header .subtitle {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+/* ===== Theme Toggle ===== */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--muted);
+  transition: all 0.25s;
+  z-index: 200;
+  padding: 0;
+  line-height: 1;
+}
+.theme-toggle:hover {
+  background: var(--bg2);
+  color: var(--accent);
+  box-shadow: var(--shadow);
+}
+html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+html[data-theme="dark"] .theme-toggle .icon-sun { display: inline; }
+html:not([data-theme="dark"]) .theme-toggle .icon-sun { display: none; }
+html:not([data-theme="dark"]) .theme-toggle .icon-moon { display: inline; }
+/* ===== Container ===== */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+/* ===== Section Title ===== */
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 48px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--rule);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title .icon {
+  font-size: 1.4rem;
+}
+.section-title:first-of-type {
+  margin-top: 0;
+}
+/* ===== Card Grid ===== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+/* ===== Card ===== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: all 0.25s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--rule);
+  transition: all 0.25s;
+}
+.card:hover::before {
+  background: var(--accent);
+  width: 5px;
+}
+.card .card-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  letter-spacing: 0.04em;
+}
+.tag-python { background: #dbeafe; color: #1d4ed8; }
+.tag-java { background: #fef3c7; color: #b45309; }
+.tag-sql { background: #d1fae5; color: #065f46; }
+.tag-ml { background: #f3e8ff; color: #6d28d9; }
+.tag-data { background: #e0e7ff; color: #3730a3; }
+.tag-excel { background: #dcfce7; color: #15803d; }
+.tag-ai { background: #fee2e2; color: #b91c1c; }
+.tag-cnn { background: #fff7ed; color: #c2410c; }
+html[data-theme="dark"] .tag-python { background: #1e3a5f; color: #60a5fa; }
+html[data-theme="dark"] .tag-java { background: #3b2f0e; color: #fbbf24; }
+html[data-theme="dark"] .tag-sql { background: #0f3924; color: #34d399; }
+html[data-theme="dark"] .tag-ml { background: #2d1b4e; color: #a78bfa; }
+html[data-theme="dark"] .tag-data { background: #1e2355; color: #818cf8; }
+html[data-theme="dark"] .tag-excel { background: #0f3020; color: #4ade80; }
+html[data-theme="dark"] .tag-ai { background: #3b1a1a; color: #fca5a5; }
+html[data-theme="dark"] .tag-cnn { background: #3b220e; color: #fb923c; }
+.card .card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.card .card-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.6;
+  flex: 1;
+}
+.card .card-meta {
+  margin-top: 14px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card .card-meta .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  display: inline-block;
+}
+/* ===== Footer ===== */
+.footer {
+  text-align: center;
+  padding: 40px 24px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--rule);
+  margin-top: 40px;
+}
+.footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.footer a:hover { text-decoration: underline; }
+/* ===== Stats bar ===== */
+.stats-bar {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.stat-item {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 16px 24px;
+  text-align: center;
+  flex: 1;
+  min-width: 120px;
+}
+.stat-item .stat-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1.2;
+}
+.stat-item .stat-label {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .header h1 { font-size: 1.4rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .container { padding: 24px 16px; }
+  .stats-bar { gap: 12px; }
+  .stat-item { padding: 12px 16px; }
+  .stat-item .stat-num { font-size: 1.4rem; }
+  .theme-toggle { top: 14px; right: 14px; width: 34px; height: 34px; }
+}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" title="切换夜间模式" aria-label="切换夜间模式">
+  <span class="icon-sun">&#9788;</span>
+  <span class="icon-moon">&#9790;</span>
+</button>
+
+<div class="header">
+  <h1>电力行业学习资料库</h1>
+  <div class="subtitle">Powered by Anqing Peng</div>
+</div>
+
+<div class="container">
+
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-num">8</div><div class="stat-label">教程文档</div></div>
+    <div class="stat-item"><div class="stat-num">70+</div><div class="stat-label">总章节</div></div>
+    <div class="stat-item"><div class="stat-num">280+</div><div class="stat-label">表格与图表</div></div>
+    <div class="stat-item"><div class="stat-num">200+</div><div class="stat-label">代码案例</div></div>
+  </div>
+
+  <div class="section-title"><span class="icon">&#x1F4D6;</span> 编程与数据处理</div>
+  <div class="card-grid">
+    <a class="card" href="python-basics.html">
+      <span class="card-tag tag-python">Python</span>
+      <div class="card-title">Python基础教程</div>
+      <div class="card-desc">从Python语法到正则表达式、数据可视化、文件处理，完整覆盖Python编程核心知识，所有案例均基于电网场景。</div>
+      <div class="card-meta"><span class="dot"></span> 9章 · 36节 · 已更新</div>
+    </a>
+    <a class="card" href="java-basics.html">
+      <span class="card-tag tag-java">Java</span>
+      <div class="card-title">Java基础教程</div>
+      <div class="card-desc">Java语法、面向对象编程、IO处理、数据可视化与报表，涵盖调度系统、SCADA等电网应用场景。</div>
+      <div class="card-meta"><span class="dot"></span> 8章 · 32节 · 已更新</div>
+    </a>
+    <a class="card" href="sql-basics.html">
+      <span class="card-tag tag-sql">SQL</span>
+      <div class="card-title">SQL基础教程</div>
+      <div class="card-desc">从基础查询到多表关联、窗口函数、存储过程，MySQL实战结合电网设备台账与运行数据。</div>
+      <div class="card-meta"><span class="dot"></span> 8章 · 33节 · 已更新</div>
+    </a>
+    <a class="card" href="excel-basics.html">
+      <span class="card-tag tag-excel">Excel</span>
+      <div class="card-title">2026年电网Excel数据处理基础教程</div>
+      <div class="card-desc">VLOOKUP/XLOOKUP、INDEX+MATCH、条件统计、数据标准化、数据透视表、图表可视化综合实战。</div>
+      <div class="card-meta"><span class="dot"></span> 8章 · 34节 · 已更新</div>
+    </a>
+  </div>
+
+  <div class="section-title"><span class="icon">&#x1F9E0;</span> 机器学习与人工智能</div>
+  <div class="card-grid">
+    <a class="card" href="ai-study-guide.html">
+      <span class="card-tag tag-ai">AI</span>
+      <div class="card-title">人工智能与大模型系统学习资料</div>
+      <div class="card-desc">覆盖机器学习、深度学习、NLP、大语言模型、CNN、强化学习、图神经网络、多模态模型等12章。</div>
+      <div class="card-meta"><span class="dot"></span> 12章 · 60+节 · 已更新</div>
+    </a>
+    <a class="card" href="ml-basics.html">
+      <span class="card-tag tag-ml">机器学习</span>
+      <div class="card-title">机器学习基础教程</div>
+      <div class="card-desc">回归、分类、聚类、集成学习到深度学习，每种算法含原理、Python代码和电网案例可视化。</div>
+      <div class="card-meta"><span class="dot"></span> 8章 · 33节 · 已更新</div>
+    </a>
+    <a class="card" href="data-processing.html">
+      <span class="card-tag tag-data">数据处理</span>
+      <div class="card-title">电网数据处理教程</div>
+      <div class="card-desc">数据采集、清洗、集成变换、特征工程、统计分析、预测建模，端到端电网数据处理全流程。</div>
+      <div class="card-meta"><span class="dot"></span> 8章 · 32节 · 已更新</div>
+    </a>
+    <a class="card" href="cnn-basics.html">
+      <span class="card-tag tag-cnn">CNN</span>
+      <div class="card-title">CNN基础教程</div>
+      <div class="card-desc">卷积神经网络原理、经典架构、目标检测与分割，结合电网图像识别与红外巡检应用。</div>
+      <div class="card-meta"><span class="dot"></span> 多章 · 已更新</div>
+    </a>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>© 2026 Anqing Peng · Powered by <a href="https://github.com/694587769/ai-study-guide">GitHub Pages</a></p>
+  <p style="margin-top:6px">友情链接：<a href="https://qw.qq.com" target="_blank">QQ安全中心</a></p>
+</div>
+
+<script>
+// ===== Theme Toggle =====
+(function() {
+  var STORAGE_KEY = 'blog-home-theme';
+  var html = document.documentElement;
+  var toggleBtn = document.getElementById('themeToggle');
+  var saved = localStorage.getItem(STORAGE_KEY);
+  if (saved === 'dark') html.setAttribute('data-theme', 'dark');
+  else html.removeAttribute('data-theme');
+  toggleBtn.addEventListener('click', function() {
+    if (html.hasAttribute('data-theme')) {
+      html.removeAttribute('data-theme');
+      localStorage.setItem(STORAGE_KEY, 'light');
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      localStorage.setItem(STORAGE_KEY, 'dark');
+    }
+  });
+})();
+</script>
+</body>
+</html>
